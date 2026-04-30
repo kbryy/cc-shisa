@@ -24,7 +24,8 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run typecheck
       - run: bun test
-      - run: bun run build
+      - name: Build for host
+        run: bun build --compile --minify ./src/cli.ts --outfile=cc-shisa
       - name: Smoke
         run: |
           ./cc-shisa version
