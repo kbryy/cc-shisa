@@ -1,5 +1,5 @@
 {
-  "name": "gh-read",
+  "name": "gh",
   "description": "GitHub CLI read-only subcommands.",
   "rules": [
     { "id": "gh.pr.list", "match": "ast", "binary": "gh", "subcommand": ["pr", "list"], "class": "read", "reason": "gh pr list" },
