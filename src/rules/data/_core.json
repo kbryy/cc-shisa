@@ -169,6 +169,87 @@
       "any_flags": ["-c"],
       "class": "arbitrary-code",
       "reason": "shell -c executes a constructed string"
+    },
+    {
+      "id": "core.eval.flag",
+      "match": "ast",
+      "binaries": ["bun", "node", "deno", "perl", "python", "python3", "ruby", "php"],
+      "any_flags": ["-e", "--eval", "--print", "-c"],
+      "class": "arbitrary-code",
+      "reason": "language runtime -e/--eval/--print/-c executes a constructed string"
+    },
+    {
+      "id": "core.shred",
+      "match": "ast",
+      "binaries": ["shred", "srm", "wipe"],
+      "class": "irreversible",
+      "reason": "secure-erase tools overwrite then unlink the target"
+    },
+    {
+      "id": "core.chown.system",
+      "match": "ast",
+      "binary": "chown",
+      "flags": ["-R"],
+      "path_globs": [
+        "/",
+        "/etc",
+        "/etc/**",
+        "/usr",
+        "/usr/**",
+        "/bin",
+        "/bin/**",
+        "/sbin",
+        "/sbin/**",
+        "/var",
+        "/var/**",
+        "/boot",
+        "/boot/**",
+        "/System",
+        "/System/**",
+        "/Library",
+        "/Library/**"
+      ],
+      "class": "dangerous",
+      "reason": "recursive ownership change on a system path"
+    },
+    {
+      "id": "core.kill.init",
+      "match": "regex",
+      "pattern": "\\b(kill\\s+-(9|SIGKILL)\\s+1\\b|killall\\s+-(9|SIGKILL)\\s+init\\b)",
+      "class": "dangerous",
+      "reason": "SIGKILL to PID 1 / init halts the system"
+    },
+    {
+      "id": "core.rsync.delete",
+      "match": "ast",
+      "binary": "rsync",
+      "any_flags": ["--delete", "--del", "--delete-after", "--delete-before", "--delete-during", "--delete-excluded"],
+      "class": "irreversible",
+      "reason": "rsync --delete removes destination files not present in source"
+    },
+    {
+      "id": "core.git.push.delete",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "push",
+      "any_flags": ["--delete", "-d"],
+      "class": "irreversible",
+      "reason": "git push --delete removes a remote ref"
+    },
+    {
+      "id": "core.gpg.delete-secret",
+      "match": "ast",
+      "binary": "gpg",
+      "any_flags": ["--delete-secret-keys", "--delete-secret-and-public-keys"],
+      "class": "irreversible",
+      "reason": "gpg --delete-secret-keys destroys private keys"
+    },
+    {
+      "id": "core.redirect.disk",
+      "match": "regex",
+      "pattern": "(>>?|&>>?)\\s*/dev/(disk|sd|nvme|hd|rdisk)\\d*",
+      "class": "dangerous",
+      "reason": "shell redirection writing to a raw device"
     }
   ]
 }

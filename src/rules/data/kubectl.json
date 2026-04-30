@@ -21,6 +21,11 @@
     { "id": "kubectl.config.get-users", "match": "ast", "binary": "kubectl", "subcommand": ["config", "get-users"], "class": "read", "reason": "kubectl config get-users" },
 
     { "id": "kubectl.auth.can-i", "match": "ast", "binary": "kubectl", "subcommand": ["auth", "can-i"], "class": "read", "reason": "kubectl auth can-i" },
-    { "id": "kubectl.auth.whoami", "match": "ast", "binary": "kubectl", "subcommand": ["auth", "whoami"], "class": "read", "reason": "kubectl auth whoami" }
+    { "id": "kubectl.auth.whoami", "match": "ast", "binary": "kubectl", "subcommand": ["auth", "whoami"], "class": "read", "reason": "kubectl auth whoami" },
+
+    { "id": "kubectl.options", "match": "ast", "binary": "kubectl", "subcommand": "options", "class": "read", "reason": "kubectl options" },
+    { "id": "kubectl.wait", "match": "ast", "binary": "kubectl", "subcommand": "wait", "class": "read", "reason": "kubectl wait (blocks on state, no mutation)" },
+    { "id": "kubectl.diff", "match": "ast", "binary": "kubectl", "subcommand": "diff", "class": "read", "reason": "kubectl diff (computes delta, does not apply)" },
+    { "id": "kubectl.plugin.list", "match": "ast", "binary": "kubectl", "subcommand": ["plugin", "list"], "class": "read", "reason": "kubectl plugin list" }
   ]
 }

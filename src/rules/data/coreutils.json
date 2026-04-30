@@ -111,6 +111,76 @@
       ],
       "class": "read",
       "reason": "find traversal (no -delete/-exec/-ok variants)"
+    },
+    {
+      "id": "coreutils.env-list",
+      "match": "regex",
+      "pattern": "^\\s*env\\s*$",
+      "class": "read",
+      "reason": "env (no args = list environment)"
+    },
+    {
+      "id": "coreutils.dump",
+      "match": "ast",
+      "binaries": ["xxd", "od", "hexdump"],
+      "class": "read",
+      "reason": "binary dump"
+    },
+    {
+      "id": "coreutils.format",
+      "match": "ast",
+      "binaries": ["column", "nl", "expand", "unexpand"],
+      "class": "read",
+      "reason": "text formatting"
+    },
+    {
+      "id": "coreutils.awk",
+      "match": "ast",
+      "binaries": ["awk", "gawk", "mawk", "nawk"],
+      "class": "read",
+      "reason": "awk text processing (note: awk system() can exec arbitrary code; disable this module to opt out)"
+    },
+    {
+      "id": "coreutils.json-yaml",
+      "match": "ast",
+      "binaries": ["jq", "yq", "fx"],
+      "class": "read",
+      "reason": "JSON/YAML filter"
+    },
+    {
+      "id": "coreutils.docs",
+      "match": "ast",
+      "binaries": ["man", "info", "apropos", "whatis", "tldr"],
+      "class": "read",
+      "reason": "documentation lookup"
+    },
+    {
+      "id": "coreutils.locate",
+      "match": "ast",
+      "binaries": ["locate", "mlocate", "plocate"],
+      "class": "read",
+      "reason": "filename index search"
+    },
+    {
+      "id": "coreutils.network-diag",
+      "match": "ast",
+      "binaries": ["ping", "ping6", "dig", "nslookup", "host", "traceroute", "traceroute6", "tracepath"],
+      "class": "read",
+      "reason": "network diagnostic"
+    },
+    {
+      "id": "coreutils.hash",
+      "match": "ast",
+      "binaries": ["md5", "md5sum", "sha1sum", "sha224sum", "sha256sum", "sha384sum", "sha512sum", "shasum", "cksum", "sum", "b2sum"],
+      "class": "read",
+      "reason": "hash computation"
+    },
+    {
+      "id": "coreutils.encode",
+      "match": "ast",
+      "binaries": ["base64", "base32"],
+      "class": "read",
+      "reason": "base64/base32 encode/decode (note: -o file writes to disk)"
     }
   ]
 }

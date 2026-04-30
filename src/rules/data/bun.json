@@ -13,6 +13,9 @@
     { "id": "bun.outdated", "match": "ast", "binary": "bun", "subcommand": "outdated", "class": "read", "reason": "bun outdated" },
     { "id": "bun.audit", "match": "ast", "binary": "bun", "subcommand": "audit", "class": "read", "reason": "bun audit" },
     { "id": "bun.help", "match": "ast", "binary": "bun", "subcommand": "help", "class": "read", "reason": "bun help" },
-    { "id": "bun.version-flag", "match": "ast", "binary": "bun", "any_flags": ["--version", "-v"], "class": "read", "reason": "bun --version" }
+    { "id": "bun.version-flag", "match": "ast", "binary": "bun", "any_flags": ["--version", "-v"], "class": "read", "reason": "bun --version" },
+    { "id": "bun.pm.view", "match": "ast", "binary": "bun", "subcommand": ["pm", "view"], "class": "read", "reason": "bun pm view (registry metadata read)" },
+    { "id": "bun.revision-flag", "match": "ast", "binary": "bun", "any_flags": ["--revision"], "class": "read", "reason": "bun --revision" },
+    { "id": "bun.completions", "match": "ast", "binary": "bun", "subcommand": "completions", "class": "read", "reason": "bun completions (shell completion script)" }
   ]
 }

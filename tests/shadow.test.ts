@@ -6,7 +6,6 @@ import { join } from "node:path";
 import type { Decision } from "../src/policy/types.ts";
 import {
   apply,
-  defaultLogDir,
   isLogEnabled,
   isShadowEnabled,
 } from "../src/shadow/index.ts";
@@ -156,11 +155,3 @@ describe("shadow.apply — both flags on (shadow wins)", () => {
   });
 });
 
-describe("shadow.defaultLogDir", () => {
-  test("respects XDG_STATE_HOME", () => {
-    expect(defaultLogDir({ XDG_STATE_HOME: "/x", HOME: "/h" })).toBe("/x/cc-shisa");
-  });
-  test("falls back to ~/.local/state", () => {
-    expect(defaultLogDir({ HOME: "/h" })).toBe("/h/.local/state/cc-shisa");
-  });
-});

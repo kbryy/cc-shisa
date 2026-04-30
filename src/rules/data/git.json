@@ -32,6 +32,23 @@
     { "id": "git.remote.show", "match": "ast", "binary": "git", "subcommand": ["remote", "show"], "class": "read", "reason": "git remote show" },
     { "id": "git.remote.get-url", "match": "ast", "binary": "git", "subcommand": ["remote", "get-url"], "class": "read", "reason": "git remote get-url" },
     { "id": "git.tag.list", "match": "ast", "binary": "git", "subcommand": "tag", "any_flags": ["-l", "--list"], "class": "read", "reason": "git tag --list" },
-    { "id": "git.config.get", "match": "ast", "binary": "git", "subcommand": "config", "any_flags": ["--get", "--get-all", "--get-regexp", "-l", "--list", "--show-origin"], "class": "read", "reason": "git config --get/--list" }
+    { "id": "git.config.get", "match": "ast", "binary": "git", "subcommand": "config", "any_flags": ["--get", "--get-all", "--get-regexp", "-l", "--list", "--show-origin"], "class": "read", "reason": "git config --get/--list" },
+    { "id": "git.branch.list", "match": "ast", "binary": "git", "subcommand": "branch", "any_flags": ["-l", "--list", "-a", "--all", "-r", "--remotes", "--show-current", "-v", "--verbose", "-vv", "--contains", "--no-contains", "--merged", "--no-merged"], "excluded_flags": ["-d", "-D", "--delete", "-m", "--move", "-M", "-c", "--copy", "-C", "--edit-description", "--set-upstream-to", "-u", "--unset-upstream"], "class": "read", "reason": "git branch listing/inspection (write flags excluded)" },
+    { "id": "git.show-branch", "match": "ast", "binary": "git", "subcommand": "show-branch", "class": "read", "reason": "git show-branch" },
+    { "id": "git.show-ref", "match": "ast", "binary": "git", "subcommand": "show-ref", "class": "read", "reason": "git show-ref" },
+    { "id": "git.for-each-ref", "match": "ast", "binary": "git", "subcommand": "for-each-ref", "class": "read", "reason": "git for-each-ref" },
+    { "id": "git.diff-tree", "match": "ast", "binary": "git", "subcommand": "diff-tree", "class": "read", "reason": "git diff-tree" },
+    { "id": "git.diff-index", "match": "ast", "binary": "git", "subcommand": "diff-index", "class": "read", "reason": "git diff-index" },
+    { "id": "git.diff-files", "match": "ast", "binary": "git", "subcommand": "diff-files", "class": "read", "reason": "git diff-files" },
+    { "id": "git.range-diff", "match": "ast", "binary": "git", "subcommand": "range-diff", "class": "read", "reason": "git range-diff" },
+    { "id": "git.check-ignore", "match": "ast", "binary": "git", "subcommand": "check-ignore", "class": "read", "reason": "git check-ignore" },
+    { "id": "git.check-attr", "match": "ast", "binary": "git", "subcommand": "check-attr", "class": "read", "reason": "git check-attr" },
+    { "id": "git.check-mailmap", "match": "ast", "binary": "git", "subcommand": "check-mailmap", "class": "read", "reason": "git check-mailmap" },
+    { "id": "git.count-objects", "match": "ast", "binary": "git", "subcommand": "count-objects", "class": "read", "reason": "git count-objects" },
+    { "id": "git.verify-commit", "match": "ast", "binary": "git", "subcommand": "verify-commit", "class": "read", "reason": "git verify-commit" },
+    { "id": "git.verify-tag", "match": "ast", "binary": "git", "subcommand": "verify-tag", "class": "read", "reason": "git verify-tag" },
+    { "id": "git.submodule.status", "match": "ast", "binary": "git", "subcommand": ["submodule", "status"], "class": "read", "reason": "git submodule status" },
+    { "id": "git.submodule.summary", "match": "ast", "binary": "git", "subcommand": ["submodule", "summary"], "class": "read", "reason": "git submodule summary" },
+    { "id": "git.annotate", "match": "ast", "binary": "git", "subcommand": "annotate", "class": "read", "reason": "git annotate (alias for blame)" }
   ]
 }

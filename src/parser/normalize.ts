@@ -127,7 +127,8 @@ export function consumePrefixArgs(
   }
 
   if (prefix === "timeout" || prefix === "nice" || prefix === "ionice") {
-    if (i < rest.length && rest[i] && !rest[i]!.text.startsWith("-")) {
+    const next = rest[i];
+    if (next && !next.text.startsWith("-")) {
       i += 1;
     }
   }

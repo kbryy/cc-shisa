@@ -11,6 +11,7 @@ import {
   summarize,
   type LogEntry,
 } from "../src/logs/index.ts";
+import { defaultLogDir } from "../src/logs/path.ts";
 
 function tmpEnv(): { env: NodeJS.ProcessEnv; dir: string; logPath: string } {
   const dir = mkdtempSync(join(tmpdir(), "cc-shisa-logs-"));
@@ -31,6 +32,15 @@ const sampleEntries: LogEntry[] = [
 function writeEntries(path: string, entries: readonly LogEntry[]): void {
   writeFileSync(path, entries.map((e) => JSON.stringify(e)).join("\n") + "\n");
 }
+
+describe("logs.path.defaultLogDir", () => {
+  test("respects XDG_STATE_HOME", () => {
+    expect(defaultLogDir({ XDG_STATE_HOME: "/x", HOME: "/h" })).toBe("/x/cc-shisa");
+  });
+  test("falls back to ~/.local/state", () => {
+    expect(defaultLogDir({ HOME: "/h" })).toBe("/h/.local/state/cc-shisa");
+  });
+});
 
 describe("logs.logFilePath", () => {
   test("uses XDG_STATE_HOME", () => {

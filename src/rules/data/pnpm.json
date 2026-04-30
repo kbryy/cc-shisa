@@ -23,6 +23,13 @@
     { "id": "pnpm.format-check", "match": "ast", "binary": "pnpm", "subcommand": "format-check", "class": "read", "reason": "pnpm format-check (script shortcut)" },
     { "id": "pnpm.check", "match": "ast", "binary": "pnpm", "subcommand": "check", "class": "read", "reason": "pnpm check (script shortcut)" },
     { "id": "pnpm.help", "match": "ast", "binary": "pnpm", "subcommand": "help", "class": "read", "reason": "pnpm help" },
-    { "id": "pnpm.version-flag", "match": "ast", "binary": "pnpm", "any_flags": ["--version", "-v"], "class": "read", "reason": "pnpm --version" }
+    { "id": "pnpm.version-flag", "match": "ast", "binary": "pnpm", "any_flags": ["--version", "-v"], "class": "read", "reason": "pnpm --version" },
+    { "id": "pnpm.whoami", "match": "ast", "binary": "pnpm", "subcommand": "whoami", "class": "read", "reason": "pnpm whoami" },
+    { "id": "pnpm.root", "match": "ast", "binary": "pnpm", "subcommand": "root", "class": "read", "reason": "pnpm root" },
+    { "id": "pnpm.bin", "match": "ast", "binary": "pnpm", "subcommand": "bin", "class": "read", "reason": "pnpm bin" },
+    { "id": "pnpm.prefix", "match": "ast", "binary": "pnpm", "subcommand": "prefix", "class": "read", "reason": "pnpm prefix" },
+    { "id": "pnpm.config.get", "match": "ast", "binary": "pnpm", "subcommand": ["config", "get"], "class": "read", "reason": "pnpm config get" },
+    { "id": "pnpm.config.list", "match": "ast", "binary": "pnpm", "subcommand": ["config", "list"], "class": "read", "reason": "pnpm config list" },
+    { "id": "pnpm.env.list-remote", "match": "ast", "binary": "pnpm", "subcommand": ["env", "list-remote"], "class": "read", "reason": "pnpm env list-remote (queries Node release index)" }
   ]
 }
