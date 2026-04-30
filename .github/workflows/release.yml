@@ -1,0 +1,180 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build (${{ matrix.target }})
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: bun-darwin-arm64
+            runner: macos-latest
+            asset: cc-shisa-darwin-arm64
+          - target: bun-darwin-x64
+            runner: macos-latest
+            asset: cc-shisa-darwin-x64
+          - target: bun-linux-arm64
+            runner: ubuntu-24.04-arm
+            asset: cc-shisa-linux-arm64
+          - target: bun-linux-x64
+            runner: ubuntu-latest
+            asset: cc-shisa-linux-x64
+    steps:
+      - uses: actions/checkout@v6
+      - uses: jdx/mise-action@v4
+        with:
+          install: true
+          cache: true
+      - run: bun install --frozen-lockfile
+      - name: Build
+        env:
+          TARGET: ${{ matrix.target }}
+          ASSET: ${{ matrix.asset }}
+        run: bun build --compile --minify --target="$TARGET" ./src/cli.ts --outfile="$ASSET"
+      - name: Smoke
+        if: matrix.target == 'bun-darwin-arm64' || matrix.target == 'bun-linux-x64'
+        env:
+          ASSET: ${{ matrix.asset }}
+        run: |
+          "./$ASSET" version
+          echo '' | "./$ASSET" hook | grep -q '"permissionDecision":"ask"'
+      - name: Compute checksum
+        env:
+          ASSET: ${{ matrix.asset }}
+        run: shasum -a 256 "$ASSET" > "${ASSET}.sha256"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset }}
+          path: |
+            ${{ matrix.asset }}
+            ${{ matrix.asset }}.sha256
+          if-no-files-found: error
+
+  release:
+    name: GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Resolve version
+        id: version
+        env:
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          echo "version=${REF_NAME#v}" >> "$GITHUB_OUTPUT"
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/cc-shisa-*
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          draft: false
+          prerelease: false
+
+  update-tap:
+    name: Update Homebrew tap
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Read checksums
+        id: sha
+        run: |
+          for asset in cc-shisa-darwin-arm64 cc-shisa-darwin-x64 cc-shisa-linux-arm64 cc-shisa-linux-x64; do
+            sha=$(awk '{print $1}' "dist/${asset}.sha256")
+            slug=$(echo "$asset" | sed 's/cc-shisa-//; s/-/_/g')
+            echo "sha_${slug}=${sha}" >> "$GITHUB_OUTPUT"
+          done
+
+      - name: Checkout homebrew-tap
+        uses: actions/checkout@v6
+        with:
+          repository: kbryy/homebrew-tap
+          path: homebrew-tap
+          token: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
+
+      - name: Render Formula
+        env:
+          VERSION: ${{ needs.release.outputs.version }}
+          SHA_DARWIN_ARM64: ${{ steps.sha.outputs.sha_darwin_arm64 }}
+          SHA_DARWIN_X64: ${{ steps.sha.outputs.sha_darwin_x64 }}
+          SHA_LINUX_ARM64: ${{ steps.sha.outputs.sha_linux_arm64 }}
+          SHA_LINUX_X64: ${{ steps.sha.outputs.sha_linux_x64 }}
+        run: |
+          mkdir -p homebrew-tap/Formula
+          cat > homebrew-tap/Formula/cc-shisa.rb <<RUBY
+          class CcShisa < Formula
+            desc "Static-analysis PreToolUse hook for Claude Code's Bash tool"
+            homepage "https://github.com/kbryy/cc-shisa"
+            version "${VERSION}"
+            license "MIT"
+
+            on_macos do
+              if Hardware::CPU.arm?
+                url "https://github.com/kbryy/cc-shisa/releases/download/v#{version}/cc-shisa-darwin-arm64"
+                sha256 "${SHA_DARWIN_ARM64}"
+              else
+                url "https://github.com/kbryy/cc-shisa/releases/download/v#{version}/cc-shisa-darwin-x64"
+                sha256 "${SHA_DARWIN_X64}"
+              end
+            end
+
+            on_linux do
+              if Hardware::CPU.arm?
+                url "https://github.com/kbryy/cc-shisa/releases/download/v#{version}/cc-shisa-linux-arm64"
+                sha256 "${SHA_LINUX_ARM64}"
+              else
+                url "https://github.com/kbryy/cc-shisa/releases/download/v#{version}/cc-shisa-linux-x64"
+                sha256 "${SHA_LINUX_X64}"
+              end
+            end
+
+            def install
+              bin.install Dir["cc-shisa-*"].first => "cc-shisa"
+            end
+
+            test do
+              assert_match(/^\d+\.\d+\.\d+/, shell_output("#{bin}/cc-shisa version"))
+            end
+          end
+          RUBY
+
+      - name: Commit and push
+        working-directory: homebrew-tap
+        env:
+          VERSION: ${{ needs.release.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/cc-shisa.rb
+          if git diff --cached --quiet; then
+            echo "Formula unchanged; nothing to commit"
+            exit 0
+          fi
+          git commit -m "cc-shisa ${VERSION}"
+          git push

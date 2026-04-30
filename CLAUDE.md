@@ -30,7 +30,8 @@ classify each segment, return a decision per the configured policy.
 - ✅ Phase 3 hookio runtime + CLI dispatch + e2e fixtures landed: `src/hookio/index.ts`, `src/pipeline.ts`, real `runHook`/`runCheck`/`runTest`, `tests/fixtures/{cases,redteam}.json`, `tests/e2e.test.ts` (130 tests pass)
 - ✅ Phase 4 shadow mode + init subcommand landed: `src/shadow/index.ts` (CC_SHISA_SHADOW=1 forces allow + JSONL log under `$XDG_STATE_HOME/cc-shisa/decisions.jsonl`), `src/init/index.ts` (idempotent settings.json registration with .bak); 147 tests pass
 - ✅ Phase 5 README polish landed: user-facing README rewrite with install / shadow / check / test docs and the safe-profile class table
-- ❌ Phase 6 (release pipeline + Homebrew tap) not yet done
+- ✅ Phase 6 release pipeline workflow committed: `.github/workflows/release.yml` builds 4 cross-platform binaries on tag, publishes a GH Release, and updates the Homebrew Formula
+- ⏳ One-time release setup pending: create `kbryy/homebrew-tap` (public), mint fine-grained PAT, set `HOMEBREW_TAP_GITHUB_TOKEN` secret, bump version, push first tag
 - ❌ Homebrew tap not created yet (`kbryy/homebrew-tap`)
 
 A previous attempt was made in Go (using `mvdan.cc/sh/v3`); it got through the
@@ -323,37 +324,86 @@ Create parents as needed. Failures to write the log must be swallowed silently
 
 ## Distribution: Homebrew tap
 
-Phase 6:
+Driven by `.github/workflows/release.yml`. Trigger: `git push` of any
+tag matching `v*`. Three sequential jobs:
 
-1. Create `kbryy/homebrew-tap` repo (public, empty).
-2. Build with `bun build --compile --target=bun-darwin-arm64 ./src/cli.ts --outfile=cc-shisa-darwin-arm64`.
-   Repeat for `bun-darwin-x64`, `bun-linux-arm64`, `bun-linux-x64`.
-3. GitHub Actions workflow on `git tag v*`:
-   - Build all four binaries.
-   - Compute SHA256 for each.
-   - Create GH Release with binaries.
-   - Update `kbryy/homebrew-tap/Formula/cc-shisa.rb` with new version + sha256s.
-4. Verify: `brew tap kbryy/tap && brew install cc-shisa && cc-shisa version`.
+1. **build** — matrix over four Bun targets (darwin-arm64, darwin-x64,
+   linux-arm64, linux-x64). Each runner runs `bun install --frozen-lockfile`
+   then `bun build --compile --minify --target=...`. The arm64-Mac and
+   linux-x64 variants run a smoke check (`./binary version` + hook
+   fail-safe ask) so a broken bundle never reaches a Release. Each job
+   computes a sha256 and uploads `<asset>` + `<asset>.sha256` as
+   artifacts.
+2. **release** — downloads all four binary artifacts, normalizes the
+   tag (`v0.1.0` → `0.1.0`) into a job output, and uses
+   `softprops/action-gh-release@v2` to publish a Release with
+   auto-generated notes, four binary attachments, and `fail_on_unmatched_files`.
+3. **update-tap** — checks out `kbryy/homebrew-tap` using the
+   `HOMEBREW_TAP_GITHUB_TOKEN` secret, renders `Formula/cc-shisa.rb`
+   from the four sha256 outputs and the resolved version, commits as
+   `github-actions[bot]`, and pushes.
 
-The Formula will look approximately like:
+### One-time setup (must be done before the first tag push)
+
+These are repo-owner actions GitHub Actions cannot perform itself:
+
+1. **Create the tap repo**: `gh repo create kbryy/homebrew-tap --public
+   --description "Homebrew tap for cc-shisa"`. Initialize with an empty
+   README; the `update-tap` job creates `Formula/cc-shisa.rb` on first
+   release.
+2. **Mint a fine-grained PAT** at https://github.com/settings/tokens?type=beta:
+   - Repository access: **only `kbryy/homebrew-tap`**.
+   - Permissions: **Contents: Read and write** (and nothing else).
+   - Expiration: a few months out, then renew.
+3. **Add the secret** to `kbryy/cc-shisa`:
+   `gh secret set HOMEBREW_TAP_GITHUB_TOKEN --body "<paste PAT>"`.
+4. **Bump the version** in `src/version.ts` and `package.json` to the
+   intended tag (without the `v` prefix), commit on main.
+5. **Tag and push**: `git tag -a v0.1.0 -m "release v0.1.0" && git push
+   --follow-tags`.
+6. **Verify on a clean machine**:
+   ```
+   brew tap kbryy/tap
+   brew install cc-shisa
+   cc-shisa version
+   ```
+
+The rendered Formula uses `on_macos`/`on_linux` blocks so a single file
+covers all four arches:
 
 ```ruby
 class CcShisa < Formula
-  desc "Static analysis hook for Claude Code Bash tool"
+  desc "Static-analysis PreToolUse hook for Claude Code's Bash tool"
   homepage "https://github.com/kbryy/cc-shisa"
   version "0.1.0"
-  if OS.mac? && Hardware::CPU.arm?
-    url "https://github.com/kbryy/cc-shisa/releases/download/v#{version}/cc-shisa-darwin-arm64"
-    sha256 "..."
-  elsif OS.mac? && Hardware::CPU.intel?
-    url "..."
-    sha256 "..."
+  license "MIT"
+
+  on_macos do
+    if Hardware::CPU.arm?
+      url "https://github.com/kbryy/cc-shisa/releases/download/v0.1.0/cc-shisa-darwin-arm64"
+      sha256 "..."
+    else
+      url ".../cc-shisa-darwin-x64"
+      sha256 "..."
+    end
   end
+
+  on_linux do
+    if Hardware::CPU.arm?
+      url ".../cc-shisa-linux-arm64"
+      sha256 "..."
+    else
+      url ".../cc-shisa-linux-x64"
+      sha256 "..."
+    end
+  end
+
   def install
     bin.install Dir["cc-shisa-*"].first => "cc-shisa"
   end
+
   test do
-    system "#{bin}/cc-shisa", "version"
+    assert_match(/^\d+\.\d+\.\d+/, shell_output("#{bin}/cc-shisa version"))
   end
 end
 ```
