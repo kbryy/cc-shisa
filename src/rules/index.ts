@@ -232,6 +232,7 @@ function validateRule(data: unknown, index: number, moduleName: string): Rule {
       ...(subcommand !== undefined ? { subcommand } : {}),
       ...(Array.isArray(r["flags"]) ? { flags: r["flags"] as string[] } : {}),
       ...(Array.isArray(r["any_flags"]) ? { any_flags: r["any_flags"] as string[] } : {}),
+      ...(Array.isArray(r["excluded_flags"]) ? { excluded_flags: r["excluded_flags"] as string[] } : {}),
       ...(Array.isArray(r["path_globs"]) ? { path_globs: r["path_globs"] as string[] } : {}),
     };
     if (typeof binary === "string") {

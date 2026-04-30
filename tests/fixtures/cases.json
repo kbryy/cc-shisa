@@ -27,6 +27,10 @@
   { "name": "sh -c asks", "command": "sh -c 'echo hi'", "expect": { "action": "ask", "class": "arbitrary-code", "ruleId": "core.shell.dash-c" } },
 
   { "name": "ls -la allowed", "command": "ls -la", "expect": { "action": "allow", "class": "read", "ruleId": "coreutils.list" } },
+  { "name": "fd pattern allowed (no exec)", "command": "fd '.ts$' src", "expect": { "action": "allow", "class": "read", "ruleId": "coreutils.fd" } },
+  { "name": "fd -x rm asks (excluded flag)", "command": "fd pat -x rm", "expect": { "action": "ask", "class": "unknown" } },
+  { "name": "find . -type f allowed (no exec/delete)", "command": "find . -type f -name x", "expect": { "action": "allow", "class": "read", "ruleId": "coreutils.find" } },
+  { "name": "find . -delete asks (excluded)", "command": "find . -name 'x' -delete", "expect": { "action": "ask", "class": "unknown" } },
   { "name": "cat README.md allowed", "command": "cat README.md", "expect": { "action": "allow", "class": "read", "ruleId": "coreutils.read-file" } },
   { "name": "grep allowed", "command": "grep -r foo src/", "expect": { "action": "allow", "class": "read", "ruleId": "coreutils.grep" } },
   { "name": "git status allowed", "command": "git status", "expect": { "action": "allow", "class": "read", "ruleId": "git.status" } },

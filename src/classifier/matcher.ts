@@ -84,6 +84,12 @@ export function matchAst(seg: Segment, rule: AstRule): boolean {
     }
   }
 
+  if (rule.excluded_flags) {
+    if (rule.excluded_flags.some((pat) => seg.args.some((tok) => matchGlob(pat, tok)))) {
+      return false;
+    }
+  }
+
   if (rule.path_globs) {
     const paths = extractPaths(seg.args);
     const matchesAny = paths.some((p) =>

@@ -78,6 +78,39 @@
       "binary": "printenv",
       "class": "read",
       "reason": "environment listing"
+    },
+    {
+      "id": "coreutils.fd",
+      "match": "ast",
+      "binary": "fd",
+      "excluded_flags": ["-x", "-X", "--exec", "--exec-batch"],
+      "class": "read",
+      "reason": "fd file search (no -x/--exec)"
+    },
+    {
+      "id": "coreutils.fdfind",
+      "match": "ast",
+      "binary": "fdfind",
+      "excluded_flags": ["-x", "-X", "--exec", "--exec-batch"],
+      "class": "read",
+      "reason": "fdfind file search (no -x/--exec)"
+    },
+    {
+      "id": "coreutils.find",
+      "match": "ast",
+      "binary": "find",
+      "excluded_flags": [
+        "-delete",
+        "-exec",
+        "-execdir",
+        "-ok",
+        "-okdir",
+        "-fprint",
+        "-fprintf",
+        "-fls"
+      ],
+      "class": "read",
+      "reason": "find traversal (no -delete/-exec/-ok variants)"
     }
   ]
 }

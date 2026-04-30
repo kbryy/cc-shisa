@@ -31,6 +31,7 @@ export type AstRule = RuleBase & { match: "ast" } & AstSelector & {
   subcommand?: string | readonly [string, ...string[]];
   flags?: readonly string[];
   any_flags?: readonly string[];
+  excluded_flags?: readonly string[];
   path_globs?: readonly string[];
 };
 
