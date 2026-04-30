@@ -17,6 +17,7 @@ import {
   disableModules,
   enableModules,
   listModules,
+  pickWith,
   profilePathHint,
   type ChangeResult,
 } from "./modules/index.ts";
@@ -35,6 +36,7 @@ Usage:
   cc-shisa modules [list]             List built-in and user modules with on/off status
   cc-shisa modules enable <name>...   Add modules to ~/.config/cc-shisa/profile.json
   cc-shisa modules disable <name>...  Remove modules from ~/.config/cc-shisa/profile.json
+  cc-shisa modules pick               Interactive multi-select for built-in optional modules
   cc-shisa logs [summary]             Aggregate the JSONL decision log
   cc-shisa logs tail [-n N]           Show the last N entries (default 20)
   cc-shisa logs path                  Print the log file path
@@ -147,10 +149,33 @@ function runModules(args: readonly string[]): number {
       return runModulesChange(args.slice(1), enableModules);
     case "disable":
       return runModulesChange(args.slice(1), disableModules);
+    case "pick":
+      return runModulesPick();
     default:
       process.stderr.write(`cc-shisa modules: unknown subcommand "${sub}"\n`);
       return 2;
   }
+}
+
+function runModulesPick(): number {
+  const outcome = pickWith({
+    readLine: () => prompt(">"),
+    write: (line) => {
+      console.log(line);
+    },
+  });
+  if (!outcome.saved) {
+    console.log("(cancelled — profile unchanged)");
+    return 0;
+  }
+  if (outcome.added.length === 0 && outcome.removed.length === 0) {
+    console.log("(no changes)");
+    return 0;
+  }
+  for (const n of outcome.added) console.log(`+ ${n}`);
+  for (const n of outcome.removed) console.log(`- ${n}`);
+  console.log(`profile: ${profilePathHint()}`);
+  return 0;
 }
 
 function runLogs(args: readonly string[]): number {
