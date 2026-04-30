@@ -13,13 +13,16 @@
     { "id": "pnpm.licenses", "match": "ast", "binary": "pnpm", "subcommand": "licenses", "class": "read", "reason": "pnpm licenses" },
     { "id": "pnpm.test", "match": "ast", "binary": "pnpm", "subcommand": "test", "class": "read", "reason": "pnpm test (project-defined script, conventionally read-only)" },
     { "id": "pnpm.t", "match": "ast", "binary": "pnpm", "subcommand": "t", "class": "read", "reason": "pnpm t (alias for test)" },
-    { "id": "pnpm.typecheck", "match": "ast", "binary": "pnpm", "subcommand": "typecheck", "class": "read", "reason": "pnpm typecheck" },
-    { "id": "pnpm.lint", "match": "ast", "binary": "pnpm", "subcommand": "lint", "class": "read", "reason": "pnpm lint" },
-    { "id": "pnpm.format-check", "match": "ast", "binary": "pnpm", "subcommand": "format-check", "class": "read", "reason": "pnpm format-check" },
-    { "id": "pnpm.check", "match": "ast", "binary": "pnpm", "subcommand": "check", "class": "read", "reason": "pnpm check" },
-    { "id": "bun.test", "match": "ast", "binary": "bun", "subcommand": "test", "class": "read", "reason": "bun test" },
-    { "id": "bun.run.typecheck", "match": "ast", "binary": "bun", "subcommand": ["run", "typecheck"], "class": "read", "reason": "bun run typecheck" },
-    { "id": "bun.run.lint", "match": "ast", "binary": "bun", "subcommand": ["run", "lint"], "class": "read", "reason": "bun run lint" },
-    { "id": "bun.run.test", "match": "ast", "binary": "bun", "subcommand": ["run", "test"], "class": "read", "reason": "bun run test" }
+    { "id": "pnpm.run.typecheck", "match": "ast", "binary": "pnpm", "subcommand": ["run", "typecheck"], "class": "read", "reason": "pnpm run typecheck" },
+    { "id": "pnpm.run.lint", "match": "ast", "binary": "pnpm", "subcommand": ["run", "lint"], "class": "read", "reason": "pnpm run lint" },
+    { "id": "pnpm.run.test", "match": "ast", "binary": "pnpm", "subcommand": ["run", "test"], "class": "read", "reason": "pnpm run test" },
+    { "id": "pnpm.run.check", "match": "ast", "binary": "pnpm", "subcommand": ["run", "check"], "class": "read", "reason": "pnpm run check" },
+    { "id": "pnpm.run.format-check", "match": "ast", "binary": "pnpm", "subcommand": ["run", "format-check"], "class": "read", "reason": "pnpm run format-check" },
+    { "id": "pnpm.typecheck", "match": "ast", "binary": "pnpm", "subcommand": "typecheck", "class": "read", "reason": "pnpm typecheck (script shortcut)" },
+    { "id": "pnpm.lint", "match": "ast", "binary": "pnpm", "subcommand": "lint", "class": "read", "reason": "pnpm lint (script shortcut)" },
+    { "id": "pnpm.format-check", "match": "ast", "binary": "pnpm", "subcommand": "format-check", "class": "read", "reason": "pnpm format-check (script shortcut)" },
+    { "id": "pnpm.check", "match": "ast", "binary": "pnpm", "subcommand": "check", "class": "read", "reason": "pnpm check (script shortcut)" },
+    { "id": "pnpm.help", "match": "ast", "binary": "pnpm", "subcommand": "help", "class": "read", "reason": "pnpm help" },
+    { "id": "pnpm.version-flag", "match": "ast", "binary": "pnpm", "any_flags": ["--version", "-v"], "class": "read", "reason": "pnpm --version" }
   ]
 }

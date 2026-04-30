@@ -1,0 +1,24 @@
+{
+  "name": "npm",
+  "description": "npm read-only subcommands and conventional read scripts.",
+  "rules": [
+    { "id": "npm.test", "match": "ast", "binary": "npm", "subcommand": "test", "class": "read", "reason": "npm test" },
+    { "id": "npm.t", "match": "ast", "binary": "npm", "subcommand": "t", "class": "read", "reason": "npm t (alias for test)" },
+    { "id": "npm.run.typecheck", "match": "ast", "binary": "npm", "subcommand": ["run", "typecheck"], "class": "read", "reason": "npm run typecheck" },
+    { "id": "npm.run.lint", "match": "ast", "binary": "npm", "subcommand": ["run", "lint"], "class": "read", "reason": "npm run lint" },
+    { "id": "npm.run.test", "match": "ast", "binary": "npm", "subcommand": ["run", "test"], "class": "read", "reason": "npm run test" },
+    { "id": "npm.run.check", "match": "ast", "binary": "npm", "subcommand": ["run", "check"], "class": "read", "reason": "npm run check" },
+    { "id": "npm.run.format-check", "match": "ast", "binary": "npm", "subcommand": ["run", "format-check"], "class": "read", "reason": "npm run format-check" },
+    { "id": "npm.list", "match": "ast", "binary": "npm", "subcommand": "list", "class": "read", "reason": "npm list" },
+    { "id": "npm.ls", "match": "ast", "binary": "npm", "subcommand": "ls", "class": "read", "reason": "npm ls" },
+    { "id": "npm.outdated", "match": "ast", "binary": "npm", "subcommand": "outdated", "class": "read", "reason": "npm outdated" },
+    { "id": "npm.audit", "match": "ast", "binary": "npm", "subcommand": "audit", "class": "read", "reason": "npm audit" },
+    { "id": "npm.view", "match": "ast", "binary": "npm", "subcommand": "view", "class": "read", "reason": "npm view" },
+    { "id": "npm.info", "match": "ast", "binary": "npm", "subcommand": "info", "class": "read", "reason": "npm info" },
+    { "id": "npm.search", "match": "ast", "binary": "npm", "subcommand": "search", "class": "read", "reason": "npm search" },
+    { "id": "npm.doctor", "match": "ast", "binary": "npm", "subcommand": "doctor", "class": "read", "reason": "npm doctor" },
+    { "id": "npm.fund", "match": "ast", "binary": "npm", "subcommand": "fund", "class": "read", "reason": "npm fund" },
+    { "id": "npm.help", "match": "ast", "binary": "npm", "subcommand": "help", "class": "read", "reason": "npm help" },
+    { "id": "npm.version-flag", "match": "ast", "binary": "npm", "any_flags": ["--version", "-v"], "class": "read", "reason": "npm --version (the positional 'version' subcommand mutates package.json and is intentionally not classified read)" }
+  ]
+}

@@ -165,7 +165,10 @@ Built-in modules:
 | `coreutils` | off     | `ls`/`cat`/`grep`/`wc`/`pwd`/...              |
 | `git`       | off     | `git status`/`log`/`diff`/`show`/...          |
 | `gh`        | off     | `gh pr list`/`view`, `gh issue list`/...      |
+| `bun`       | off     | `bun test`/`bun run test/typecheck/lint`/...  |
+| `npm`       | off     | `npm test`/`npm run lint`/`npm ls`/...        |
 | `pnpm`      | off     | `pnpm test`/`typecheck`/`lint`/...            |
+| `yarn`      | off     | `yarn test`/`yarn run lint`/`yarn list`/...   |
 
 Custom modules live at `~/.config/cc-shisa/modules/*.json`. Drop a
 file like:

@@ -2,7 +2,10 @@ import coreData from "./data/_core.json" with { type: "json" };
 import coreutilsData from "./data/coreutils.json" with { type: "json" };
 import gitData from "./data/git.json" with { type: "json" };
 import ghData from "./data/gh.json" with { type: "json" };
+import bunData from "./data/bun.json" with { type: "json" };
+import npmData from "./data/npm.json" with { type: "json" };
 import pnpmData from "./data/pnpm.json" with { type: "json" };
+import yarnData from "./data/yarn.json" with { type: "json" };
 import defaultProfileData from "./data/profiles/default.json" with { type: "json" };
 
 import type { Action, Class, Level, Module, Profile, Rule } from "./types.ts";
@@ -15,7 +18,10 @@ export const BUILTIN_MODULES: Readonly<Record<string, unknown>> = {
   coreutils: coreutilsData,
   git: gitData,
   gh: ghData,
+  bun: bunData,
+  npm: npmData,
   pnpm: pnpmData,
+  yarn: yarnData,
 };
 
 const BUILTIN_NAMES: ReadonlySet<string> = new Set(Object.keys(BUILTIN_MODULES));
