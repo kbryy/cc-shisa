@@ -10,6 +10,7 @@ import {
   writeUserProfile,
   type RawProfile,
 } from "../rules/user-config.ts";
+import { runPick, type PickConfig, type PickResult } from "./pick.ts";
 
 export type ChangeStatus = "added" | "removed" | "already-on" | "already-off" | "noop-mandatory" | "unknown";
 
@@ -116,4 +117,49 @@ function readOrInitProfile(env: NodeJS.ProcessEnv): RawProfile {
 
 export function profilePathHint(env: NodeJS.ProcessEnv = process.env): string {
   return userProfilePath(env);
+}
+
+export interface PickOutcome {
+  saved: boolean;
+  added: readonly string[];
+  removed: readonly string[];
+}
+
+export function pickWith(
+  io: Pick<PickConfig, "readLine" | "write">,
+  env: NodeJS.ProcessEnv = process.env,
+): PickOutcome {
+  const all = listAllModules(env);
+  const optional = all.filter(
+    (m) => m.source === "built-in" && m.name !== MANDATORY_MODULE,
+  );
+  const initiallyEnabled = new Set(
+    all.filter((m) => m.status === "on" && m.name !== MANDATORY_MODULE).map((m) => m.name),
+  );
+
+  const result: PickResult = runPick({
+    modules: optional.map((m) => ({
+      name: m.name,
+      description: m.module.description ?? "",
+    })),
+    initiallyEnabled,
+    readLine: io.readLine,
+    write: io.write,
+  });
+
+  if (!result.saved) {
+    return { saved: false, added: [], removed: [] };
+  }
+
+  const added = [...result.finalEnabled].filter((n) => !initiallyEnabled.has(n));
+  const removed = [...initiallyEnabled].filter((n) => !result.finalEnabled.has(n));
+
+  if (added.length > 0 || removed.length > 0) {
+    const profile = readUserProfile(env) ?? { level: "safe", modules: [] };
+    profile.modules = [...result.finalEnabled];
+    profile.level = profile.level ?? "safe";
+    writeUserProfile(profile, env);
+  }
+
+  return { saved: true, added, removed };
 }
