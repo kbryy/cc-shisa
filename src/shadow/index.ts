@@ -1,20 +1,11 @@
 import { appendFileSync, mkdirSync } from "node:fs";
 
+import { defaultLogDir, LOG_FILENAME } from "../logs/path.ts";
+import type { LogEntry } from "../logs/types.ts";
 import type { Decision } from "../policy/types.ts";
 
 const SHADOW_ENV = "CC_SHISA_SHADOW";
 const LOG_ENV = "CC_SHISA_LOG";
-const LOG_FILENAME = "decisions.jsonl";
-
-interface LogEntry {
-  ts: string;
-  command: string;
-  originalAction: string;
-  class: string;
-  reason: string;
-  matchedRule?: string;
-  segment?: string;
-}
 
 export function isShadowEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
   return env[SHADOW_ENV] === "1";
@@ -58,8 +49,7 @@ export function apply(
       originalAction: decision.action,
       class: decision.class,
       reason: decision.reason,
-      ...(decision.matchedRule !== undefined ? { matchedRule: decision.matchedRule } : {}),
-      ...(decision.segment !== undefined ? { segment: decision.segment } : {}),
+      ...cloneDecisionMeta(decision),
     });
   }
 
@@ -69,15 +59,15 @@ export function apply(
     action: "allow",
     class: decision.class,
     reason: `${decision.reason} (shadow: would have been ${decision.action})`,
-    ...(decision.matchedRule !== undefined ? { matchedRule: decision.matchedRule } : {}),
-    ...(decision.segment !== undefined ? { segment: decision.segment } : {}),
+    ...cloneDecisionMeta(decision),
   };
 }
 
-export function defaultLogDir(env: NodeJS.ProcessEnv = process.env): string {
-  const xdg = env["XDG_STATE_HOME"];
-  const base = xdg && xdg.length > 0 ? xdg : `${env["HOME"] ?? ""}/.local/state`;
-  return `${base}/cc-shisa`;
+function cloneDecisionMeta(d: Decision): Pick<Decision, "matchedRule" | "segment"> {
+  return {
+    ...(d.matchedRule !== undefined ? { matchedRule: d.matchedRule } : {}),
+    ...(d.segment !== undefined ? { segment: d.segment } : {}),
+  };
 }
 
 function writeLogEntry(dir: string, entry: LogEntry): void {

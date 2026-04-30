@@ -18,11 +18,13 @@ dangerous ones.
 
 ## Status
 
-Pre-release. Phase 0–4 of the implementation roadmap are complete:
-parser, classifier, policy, hook I/O, shadow mode, and `init`
-subcommand. v0.1.0 ships once Homebrew tap distribution is wired up.
+v0.2.1. Phases 0–6 of the implementation roadmap are complete:
+parser, classifier, policy, hook I/O, shadow mode, `init` /
+`modules` / `logs` subcommands, and a cross-platform release
+workflow (`.github/workflows/release.yml`). The Homebrew tap
+(`kbryy/homebrew-tap`) and first publish are pending.
 
-## Install (planned, once v0.1.0 ships)
+## Install (planned, once the Homebrew tap is published)
 
 ```bash
 brew tap kbryy/tap
@@ -169,6 +171,10 @@ Built-in modules:
 | `npm`       | off     | `npm test`/`npm run lint`/`npm ls`/...        |
 | `pnpm`      | off     | `pnpm test`/`typecheck`/`lint`/...            |
 | `yarn`      | off     | `yarn test`/`yarn run lint`/`yarn list`/...   |
+| `docker`    | off     | `docker ps`/`logs`/`inspect`/...              |
+| `kubectl`   | off     | `kubectl get`/`describe`/`logs`/...           |
+| `cargo`     | off     | `cargo check`/`build`/`test`/`fmt`/`clippy`/...|
+| `brew`      | off     | `brew list`/`info`/`outdated`/`search`/...    |
 
 Custom modules live at `~/.config/cc-shisa/modules/*.json`. Drop a
 file like:

@@ -1,23 +1,10 @@
 import { existsSync, readFileSync } from "node:fs";
-import { join } from "node:path";
 
-import { defaultLogDir } from "../shadow/index.ts";
+import { logFilePath } from "./path.ts";
+import type { LogEntry } from "./types.ts";
 
-const LOG_FILENAME = "decisions.jsonl";
-
-export interface LogEntry {
-  ts: string;
-  command: string;
-  originalAction: "allow" | "ask" | "deny";
-  class: string;
-  reason: string;
-  matchedRule?: string;
-  segment?: string;
-}
-
-export function logFilePath(env: NodeJS.ProcessEnv = process.env): string {
-  return join(defaultLogDir(env), LOG_FILENAME);
-}
+export { logFilePath } from "./path.ts";
+export type { LogEntry } from "./types.ts";
 
 export function readLog(env: NodeJS.ProcessEnv = process.env): LogEntry[] {
   const path = logFilePath(env);

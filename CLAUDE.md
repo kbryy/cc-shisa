@@ -22,15 +22,16 @@ classify each segment, return a decision per the configured policy.
 - ✅ Naming finalized: **cc-shisa**
 - ✅ Tech stack chosen: **TypeScript + Bun + bash-parser + bun test**
 - ✅ Architecture and design documented in this file
-- ✅ Phase 0 scaffold landed: `package.json` / `tsconfig.json` / `src/cli.ts` (`version`/`help` working) / type stubs under `src/{hookio,parser,policy,rules}/types.ts`
-- ✅ `_core.json` rule catalog drafted (15 critical patterns after the fdisk/diskutil split)
-- ✅ `bun install && bun run typecheck && bun test` pass on a clean clone
+- ✅ Phase 0 scaffold landed
 - ✅ Phase 1 parser landed: `src/parser/{walker,normalize,index}.ts` + 18 unit tests
-- ✅ Phase 2 rules loader / classifier / policy landed: `src/rules/index.ts`, `src/classifier/{index,matcher}.ts`, `src/policy/index.ts`, ~50 additional tests
-- ✅ Phase 3 hookio runtime + CLI dispatch + e2e fixtures landed: `src/hookio/index.ts`, `src/pipeline.ts`, real `runHook`/`runCheck`/`runTest`, `tests/fixtures/{cases,redteam}.json`, `tests/e2e.test.ts` (130 tests pass)
-- ✅ Phase 4 shadow mode + init subcommand landed: `src/shadow/index.ts` (CC_SHISA_SHADOW=1 forces allow + JSONL log under `$XDG_STATE_HOME/cc-shisa/decisions.jsonl`), `src/init/index.ts` (idempotent settings.json registration with .bak); 147 tests pass
-- ✅ Phase 5 README polish landed: user-facing README rewrite with install / shadow / check / test docs and the safe-profile class table
+- ✅ Phase 2 rules loader / classifier / policy landed: `src/rules/{index,registry,level,validate}.ts`, `src/classifier/{index,matcher}.ts`, `src/policy/index.ts`
+- ✅ Phase 3 hookio runtime + CLI dispatch + e2e fixtures landed: `src/hookio/index.ts`, `src/pipeline.ts`, real `runHook`/`runCheck`/`runTest`
+- ✅ Phase 4 shadow mode + init subcommand landed: `src/shadow/index.ts` (CC_SHISA_SHADOW=1 forces allow + JSONL log under `$XDG_STATE_HOME/cc-shisa/decisions.jsonl`), `src/init/index.ts` (idempotent settings.json registration with .bak)
+- ✅ Phase 5 README polish landed
 - ✅ Phase 6 release pipeline workflow committed: `.github/workflows/release.yml` builds 4 cross-platform binaries on tag, publishes a GH Release, and updates the Homebrew Formula
+- ✅ `modules` subcommand landed: `cc-shisa modules list/enable/disable/pick`, user profile at `~/.config/cc-shisa/profile.json`, custom modules at `~/.config/cc-shisa/modules/*.json`; built-in catalog now ships `coreutils`, `git`, `gh`, `bun`, `npm`, `pnpm`, `yarn`, `docker`, `kubectl`, `cargo`, `brew` alongside `_core`
+- ✅ `logs` subcommand landed: `cc-shisa logs summary|tail|path` reads the JSONL written by shadow / `CC_SHISA_LOG=1`
+- ✅ `bun install && bun run typecheck && bun test` pass on a clean clone (241 tests)
 - ⏳ One-time release setup pending: create `kbryy/homebrew-tap` (public), mint fine-grained PAT, set `HOMEBREW_TAP_GITHUB_TOKEN` secret, bump version, push first tag
 - ❌ Homebrew tap not created yet (`kbryy/homebrew-tap`)
 
@@ -111,53 +112,99 @@ Severity ordering (most strict → least):
 **Most-strict wins**: when multiple segments or multiple rules match, the
 strictest classification is the final one.
 
-## File layout (target)
+## File layout
 
 ```
 cc-shisa/
 ├── CLAUDE.md                            ← THIS FILE
-├── README.md                            ← public-facing summary (stub for now)
-├── LICENSE                              ← MIT (already present)
-├── package.json                         ← bun install entry
+├── README.md                            ← user-facing summary
+├── LICENSE                              ← MIT
+├── package.json                         ← bun install entry; bin → ./src/cli.ts
 ├── bun.lock                             ← committed lockfile (Bun 1.3+ text format)
 ├── mise.toml                            ← pins bun version for reproducible builds
 ├── tsconfig.json
 ├── .gitignore
 ├── src/
-│   ├── cli.ts                           ← entry point (subcommand dispatch)
+│   ├── cli.ts                           ← bin entry: argv dispatch + process.exit
+│   ├── cli/                             ← per-subcommand handlers (kept thin)
+│   │   ├── help.ts                      ← printHelp()
+│   │   ├── hook.ts                      ← runHook() (PreToolUse stdin/stdout)
+│   │   ├── check.ts                     ← runCheck()
+│   │   ├── test.ts                      ← runTest() + fixture validation
+│   │   ├── init.ts                      ← runInit() wrapper
+│   │   ├── modules.ts                   ← runModules() routing for list/enable/disable/pick
+│   │   └── logs.ts                      ← runLogs() routing for summary/tail/path
+│   ├── pipeline.ts                      ← parse → classify → decide
 │   ├── version.ts
 │   ├── hookio/
 │   │   ├── types.ts                     ← HookInput, HookOutput, ToolInput
 │   │   └── index.ts                     ← read/write helpers
 │   ├── parser/
-│   │   ├── index.ts                     ← Parse() export
+│   │   ├── index.ts                     ← parse() export
+│   │   ├── types.ts                     ← Segment, ParseResult
 │   │   ├── walker.ts                    ← AST walker, segment collection
-│   │   └── normalize.ts                 ← prefix stripping, literal extraction
-│   ├── rules/
-│   │   ├── types.ts                     ← Class, Action, Rule, Module, Profile, Level
-│   │   ├── index.ts                     ← loader (Bun's import attribute or fs)
-│   │   └── data/
-│   │       ├── _core.json               ← 15 critical patterns (provided)
-│   │       └── profiles/
-│   │           └── default.json         ← level=safe profile (provided)
+│   │   ├── normalize.ts                 ← prefix stripping, literal extraction
+│   │   └── bash-parser.d.ts             ← ambient module shim
 │   ├── classifier/
-│   │   ├── index.ts                     ← Classify(segments, modules) → Class + Match
+│   │   ├── index.ts                     ← classify(segments, modules) → Class + Match
 │   │   └── matcher.ts                   ← matchAst, matchRegex, flag bundle expansion
 │   ├── policy/
-│   │   └── index.ts                     ← SafeLevel(), Decide(class, profile, level)
-│   └── shadow/
-│       └── index.ts                     ← env check + JSONL logger
+│   │   ├── index.ts                     ← decide(class, profile, level) → Decision
+│   │   └── types.ts                     ← Decision
+│   ├── rules/
+│   │   ├── index.ts                     ← public API: loadModule, listAllModules, resolveProfile, loadDefaults
+│   │   ├── registry.ts                  ← BUILTIN_MODULES, MANDATORY_MODULE, JSON imports
+│   │   ├── level.ts                     ← STRICTNESS, strictnessRank, safeLevel
+│   │   ├── validate.ts                  ← validateModule/Rule/Profile
+│   │   ├── user-config.ts               ← XDG-based user profile + modules dir
+│   │   ├── types.ts                     ← Class, Action, Rule, Module, Profile, Level
+│   │   └── data/
+│   │       ├── _core.json               ← 15 critical patterns (always loaded)
+│   │       ├── coreutils.json
+│   │       ├── git.json
+│   │       ├── gh.json
+│   │       ├── bun.json
+│   │       ├── npm.json
+│   │       ├── pnpm.json
+│   │       ├── yarn.json
+│   │       ├── docker.json
+│   │       ├── kubectl.json
+│   │       ├── cargo.json
+│   │       ├── brew.json
+│   │       └── profiles/
+│   │           └── default.json         ← level=safe profile
+│   ├── modules/
+│   │   ├── index.ts                     ← barrel re-export
+│   │   ├── list.ts                      ← renderList, listModules
+│   │   ├── ops.ts                       ← enableModules, disableModules, profilePathHint
+│   │   ├── pick.ts                      ← pure reducer, key parser, frame renderer
+│   │   └── pick-driver.ts               ← pickWith, runPickInteractive (TTY raw mode)
+│   ├── logs/
+│   │   ├── index.ts                     ← readLog, summarize, renderSummary, renderTail
+│   │   ├── path.ts                      ← defaultLogDir, logFilePath, LOG_FILENAME
+│   │   └── types.ts                     ← LogEntry (shared by shadow writer + logs reader)
+│   ├── shadow/
+│   │   └── index.ts                     ← env check + JSONL logger; depends on logs/path + logs/types
+│   └── init/
+│       └── index.ts                     ← idempotent settings.json registration with .bak
 ├── tests/
 │   ├── parser.test.ts
 │   ├── classifier.test.ts
 │   ├── policy.test.ts
-│   ├── e2e.test.ts                      ← end-to-end via stdin/stdout pipe
+│   ├── e2e.test.ts                      ← end-to-end via parse → classify → decide
+│   ├── shadow.test.ts
+│   ├── logs.test.ts
+│   ├── modules.test.ts
+│   ├── pick.test.ts
+│   ├── init.test.ts
+│   ├── version.test.ts
 │   └── fixtures/
-│       ├── cases.json                   ← 30+ standard cases
-│       └── redteam.json                 ← 20+ obfuscation/escape cases
+│       ├── cases.json                   ← standard cases
+│       ├── redteam.json                 ← obfuscation / escape cases
+│       └── full-profile/                ← profile fixture for module loading
 └── .github/
     └── workflows/
-        └── release.yml                  ← Phase 6: bun build + GH Releases + tap update
+        └── release.yml                  ← bun build + GH Releases + tap update
 ```
 
 ## Key types (TypeScript)
