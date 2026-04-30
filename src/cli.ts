@@ -17,8 +17,11 @@ import {
   disableModules,
   enableModules,
   listModules,
+  makeStdoutWriter,
   pickWith,
   profilePathHint,
+  showCursor,
+  streamStdinKeys,
   type ChangeResult,
 } from "./modules/index.ts";
 import { evaluate } from "./pipeline.ts";
@@ -139,7 +142,7 @@ async function runTest(pathArg: string | undefined): Promise<number> {
   return fail > 0 ? 1 : 0;
 }
 
-function runModules(args: readonly string[]): number {
+async function runModules(args: readonly string[]): Promise<number> {
   const sub = args[0] ?? "list";
   switch (sub) {
     case "list":
@@ -157,25 +160,34 @@ function runModules(args: readonly string[]): number {
   }
 }
 
-function runModulesPick(): number {
-  const outcome = pickWith({
-    readLine: () => prompt(">"),
-    write: (line) => {
-      console.log(line);
-    },
-  });
-  if (!outcome.saved) {
-    console.log("(cancelled — profile unchanged)");
-    return 0;
+async function runModulesPick(): Promise<number> {
+  let stream;
+  try {
+    stream = streamStdinKeys();
+  } catch (err) {
+    process.stderr.write(`${(err as Error).message}\n`);
+    return 1;
   }
-  if (outcome.added.length === 0 && outcome.removed.length === 0) {
-    console.log("(no changes)");
+
+  const writer = makeStdoutWriter();
+  try {
+    const outcome = await pickWith({ keys: stream.keys, write: writer });
+    if (!outcome.saved) {
+      console.log("(cancelled — profile unchanged)");
+      return 0;
+    }
+    if (outcome.added.length === 0 && outcome.removed.length === 0) {
+      console.log("(no changes)");
+      return 0;
+    }
+    for (const n of outcome.added) console.log(`+ ${n}`);
+    for (const n of outcome.removed) console.log(`- ${n}`);
+    console.log(`profile: ${profilePathHint()}`);
     return 0;
+  } finally {
+    stream.restore();
+    showCursor();
   }
-  for (const n of outcome.added) console.log(`+ ${n}`);
-  for (const n of outcome.removed) console.log(`- ${n}`);
-  console.log(`profile: ${profilePathHint()}`);
-  return 0;
 }
 
 function runLogs(args: readonly string[]): number {
