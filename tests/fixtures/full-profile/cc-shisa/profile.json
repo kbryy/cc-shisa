@@ -1,4 +1,4 @@
 {
   "level": "safe",
-  "modules": ["_core", "coreutils", "git", "gh", "bun", "npm", "pnpm", "yarn", "docker", "kubectl", "cargo"]
+  "modules": ["_core", "coreutils", "git", "gh", "bun", "npm", "pnpm", "yarn", "docker", "kubectl", "cargo", "brew"]
 }
