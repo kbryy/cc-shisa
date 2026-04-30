@@ -1,0 +1,83 @@
+{
+  "name": "coreutils-read",
+  "description": "Read-only file, text, and system inspection commands. Allowed silently.",
+  "rules": [
+    {
+      "id": "coreutils.list",
+      "match": "ast",
+      "binaries": ["ls", "dir", "vdir", "tree", "exa", "eza", "lsd"],
+      "class": "read",
+      "reason": "directory listing"
+    },
+    {
+      "id": "coreutils.read-file",
+      "match": "ast",
+      "binaries": ["cat", "tac", "head", "tail", "less", "more", "bat"],
+      "class": "read",
+      "reason": "file content read"
+    },
+    {
+      "id": "coreutils.grep",
+      "match": "ast",
+      "binaries": ["grep", "egrep", "fgrep", "rg", "ack", "ag"],
+      "class": "read",
+      "reason": "text search"
+    },
+    {
+      "id": "coreutils.text-process",
+      "match": "ast",
+      "binaries": ["wc", "sort", "uniq", "cut", "paste", "join", "comm", "diff", "cmp", "tr", "rev", "fold"],
+      "class": "read",
+      "reason": "text processing"
+    },
+    {
+      "id": "coreutils.path",
+      "match": "ast",
+      "binaries": ["pwd", "dirname", "basename", "readlink", "realpath", "file", "stat"],
+      "class": "read",
+      "reason": "path/file inspection"
+    },
+    {
+      "id": "coreutils.identity",
+      "match": "ast",
+      "binaries": ["whoami", "id", "hostname", "uname", "uptime", "date", "tty", "groups", "logname"],
+      "class": "read",
+      "reason": "identity/system info"
+    },
+    {
+      "id": "coreutils.disk",
+      "match": "ast",
+      "binaries": ["df", "du", "free", "vm_stat"],
+      "class": "read",
+      "reason": "disk/memory inspection"
+    },
+    {
+      "id": "coreutils.process",
+      "match": "ast",
+      "binaries": ["ps", "pgrep"],
+      "class": "read",
+      "reason": "process inspection"
+    },
+    {
+      "id": "coreutils.lookup",
+      "match": "ast",
+      "binaries": ["which", "whereis", "type"],
+      "class": "read",
+      "reason": "command lookup"
+    },
+    {
+      "id": "coreutils.print",
+      "match": "ast",
+      "binaries": ["echo", "printf", "true", "false", "yes", "seq"],
+      "class": "read",
+      "reason": "trivial output"
+    },
+    {
+      "id": "coreutils.printenv",
+      "match": "ast",
+      "binary": "printenv",
+      "class": "read",
+      "reason": "environment listing"
+    }
+  ]
+}

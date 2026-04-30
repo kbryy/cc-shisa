@@ -1,0 +1,26 @@
+{
+  "name": "gh-read",
+  "description": "GitHub CLI read-only subcommands.",
+  "rules": [
+    { "id": "gh.pr.list", "match": "ast", "binary": "gh", "subcommand": ["pr", "list"], "class": "read", "reason": "gh pr list" },
+    { "id": "gh.pr.view", "match": "ast", "binary": "gh", "subcommand": ["pr", "view"], "class": "read", "reason": "gh pr view" },
+    { "id": "gh.pr.status", "match": "ast", "binary": "gh", "subcommand": ["pr", "status"], "class": "read", "reason": "gh pr status" },
+    { "id": "gh.pr.checks", "match": "ast", "binary": "gh", "subcommand": ["pr", "checks"], "class": "read", "reason": "gh pr checks" },
+    { "id": "gh.pr.diff", "match": "ast", "binary": "gh", "subcommand": ["pr", "diff"], "class": "read", "reason": "gh pr diff" },
+    { "id": "gh.issue.list", "match": "ast", "binary": "gh", "subcommand": ["issue", "list"], "class": "read", "reason": "gh issue list" },
+    { "id": "gh.issue.view", "match": "ast", "binary": "gh", "subcommand": ["issue", "view"], "class": "read", "reason": "gh issue view" },
+    { "id": "gh.issue.status", "match": "ast", "binary": "gh", "subcommand": ["issue", "status"], "class": "read", "reason": "gh issue status" },
+    { "id": "gh.run.list", "match": "ast", "binary": "gh", "subcommand": ["run", "list"], "class": "read", "reason": "gh run list" },
+    { "id": "gh.run.view", "match": "ast", "binary": "gh", "subcommand": ["run", "view"], "class": "read", "reason": "gh run view" },
+    { "id": "gh.run.watch", "match": "ast", "binary": "gh", "subcommand": ["run", "watch"], "class": "read", "reason": "gh run watch" },
+    { "id": "gh.workflow.list", "match": "ast", "binary": "gh", "subcommand": ["workflow", "list"], "class": "read", "reason": "gh workflow list" },
+    { "id": "gh.workflow.view", "match": "ast", "binary": "gh", "subcommand": ["workflow", "view"], "class": "read", "reason": "gh workflow view" },
+    { "id": "gh.release.list", "match": "ast", "binary": "gh", "subcommand": ["release", "list"], "class": "read", "reason": "gh release list" },
+    { "id": "gh.release.view", "match": "ast", "binary": "gh", "subcommand": ["release", "view"], "class": "read", "reason": "gh release view" },
+    { "id": "gh.repo.view", "match": "ast", "binary": "gh", "subcommand": ["repo", "view"], "class": "read", "reason": "gh repo view" },
+    { "id": "gh.repo.list", "match": "ast", "binary": "gh", "subcommand": ["repo", "list"], "class": "read", "reason": "gh repo list" },
+    { "id": "gh.auth.status", "match": "ast", "binary": "gh", "subcommand": ["auth", "status"], "class": "read", "reason": "gh auth status" },
+    { "id": "gh.label.list", "match": "ast", "binary": "gh", "subcommand": ["label", "list"], "class": "read", "reason": "gh label list" },
+    { "id": "gh.search", "match": "ast", "binary": "gh", "subcommand": "search", "class": "read", "reason": "gh search" }
+  ]
+}

@@ -69,7 +69,7 @@ describe("e2e — full hook protocol via subprocess", () => {
     expect(out.hookSpecificOutput.permissionDecision).toBe("deny");
   });
 
-  test("benign command → ask JSON, exit 0", async () => {
+  test("benign read command → allow JSON, exit 0", async () => {
     const proc = Bun.spawn(["bun", "run", "src/cli.ts", "hook"], {
       stdin: "pipe",
       stdout: "pipe",
@@ -79,6 +79,28 @@ describe("e2e — full hook protocol via subprocess", () => {
       JSON.stringify({
         tool_name: "Bash",
         tool_input: { command: "ls -la" },
+      }),
+    );
+    await proc.stdin.end();
+    const exitCode = await proc.exited;
+    const stdout = await new Response(proc.stdout).text();
+    expect(exitCode).toBe(0);
+    const out = JSON.parse(stdout) as {
+      hookSpecificOutput: { permissionDecision: string };
+    };
+    expect(out.hookSpecificOutput.permissionDecision).toBe("allow");
+  });
+
+  test("unmatched command → ask JSON, exit 0", async () => {
+    const proc = Bun.spawn(["bun", "run", "src/cli.ts", "hook"], {
+      stdin: "pipe",
+      stdout: "pipe",
+      stderr: "pipe",
+    });
+    proc.stdin.write(
+      JSON.stringify({
+        tool_name: "Bash",
+        tool_input: { command: "pnpm install" },
       }),
     );
     await proc.stdin.end();

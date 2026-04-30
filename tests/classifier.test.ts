@@ -2,10 +2,9 @@ import { describe, expect, test } from "bun:test";
 
 import { classify } from "../src/classifier/index.ts";
 import { parse } from "../src/parser/index.ts";
-import { loadDefaults } from "../src/rules/index.ts";
+import { loadModule } from "../src/rules/index.ts";
 
-const { module } = loadDefaults();
-const modules = [module];
+const modules = [loadModule("_core")];
 
 interface Case {
   cmd: string;
