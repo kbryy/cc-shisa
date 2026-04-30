@@ -1,6 +1,6 @@
 {
   "name": "cc-shisa",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Static-analysis PreToolUse hook for Claude Code's Bash tool — the Okinawan guardian that lets safe commands flow and stops the dangerous ones.",
   "type": "module",
   "private": true,
