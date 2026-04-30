@@ -5,7 +5,9 @@
  */
 
 import { readInput, writeOutput } from "./hookio/index.ts";
+import { defaultSettingsPath, runInit as runInitImpl } from "./init/index.ts";
 import { evaluate } from "./pipeline.ts";
+import { apply as applyShadow } from "./shadow/index.ts";
 import { VERSION } from "./version.ts";
 
 function printHelp(): void {
@@ -46,7 +48,8 @@ async function runHook(): Promise<number> {
 
   try {
     const decision = evaluate(input.tool_input.command);
-    writeOutput(decision.action, decision.reason);
+    const finalDecision = applyShadow(decision, input.tool_input.command);
+    writeOutput(finalDecision.action, finalDecision.reason);
     return 0;
   } catch (err) {
     if (process.env["CC_SHISA_DEBUG"] === "1") {
@@ -112,9 +115,17 @@ async function runTest(pathArg: string | undefined): Promise<number> {
   return fail > 0 ? 1 : 0;
 }
 
-function notImplemented(name: string): number {
-  console.error(`cc-shisa ${name}: not implemented yet`);
-  return 1;
+function runInit(pathArg: string | undefined): number {
+  let path: string;
+  try {
+    path = pathArg ?? defaultSettingsPath();
+  } catch (err) {
+    process.stderr.write(`cc-shisa init: ${(err as Error).message}\n`);
+    return 1;
+  }
+  const result = runInitImpl(path);
+  console.log(result.message);
+  return result.status === "error" ? 1 : 0;
 }
 
 async function main(): Promise<number> {
@@ -129,7 +140,7 @@ async function main(): Promise<number> {
     case "test":
       return runTest(argv[1]);
     case "init":
-      return notImplemented("init");
+      return runInit(argv[1]);
     case "version":
     case "-v":
     case "--version":
