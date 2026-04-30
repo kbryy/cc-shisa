@@ -330,21 +330,33 @@ Create parents as needed. Failures to write the log must be swallowed silently
 
 ## Distribution: Homebrew tap
 
-Driven by `.github/workflows/release.yml`. Trigger: `git push` of any
-tag matching `v*`. Three sequential jobs:
+Driven by `.github/workflows/release.yml`. Two trigger paths:
 
-1. **build** — matrix over four Bun targets (darwin-arm64, darwin-x64,
-   linux-arm64, linux-x64). Each runner runs `bun install --frozen-lockfile`
-   then `bun build --compile --minify --target=...`. The arm64-Mac and
-   linux-x64 variants run a smoke check (`./binary version` + hook
-   fail-safe ask) so a broken bundle never reaches a Release. Each job
-   computes a sha256 and uploads `<asset>` + `<asset>.sha256` as
-   artifacts.
-2. **release** — downloads all four binary artifacts, normalizes the
-   tag (`v0.1.0` → `0.1.0`) into a job output, and uses
-   `softprops/action-gh-release@v2` to publish a Release with
-   auto-generated notes, four binary attachments, and `fail_on_unmatched_files`.
-3. **update-tap** — checks out `kbryy/homebrew-tap` using the
+- **Manual (default)** — Actions tab → Release → "Run workflow" →
+  pick `patch` / `minor` / `major`. The workflow bumps `package.json`
+  + `src/version.ts`, commits as `github-actions[bot]`, tags
+  `vX.Y.Z`, pushes commit and tag to main, and continues into the
+  build / release / tap-update jobs.
+- **Tag push** — `git tag -a vX.Y.Z … && git push --follow-tags`.
+  The prepare job notices the tag is already in place and skips
+  the bump step. Useful for hotfixes done at the CLI.
+
+Four sequential jobs:
+
+1. **prepare** — on `workflow_dispatch`, computes the next version
+   from the bump input, writes it into both files, commits, tags,
+   and pushes. On `push.tags`, just resolves the tag name. Either
+   way, exposes `tag` and `version` as job outputs.
+2. **build** — matrix over four Bun targets (darwin-arm64,
+   darwin-x64, linux-arm64, linux-x64). Each runner checks out the
+   prepared tag, runs `bun install --frozen-lockfile`, then
+   `bun build --compile --minify --target=...`. The arm64-Mac and
+   linux-x64 variants smoke-test the produced binary (`version` +
+   hook fail-safe ask). Each job uploads `<asset>` + `<asset>.sha256`.
+3. **release** — downloads the four binary artifacts and uses
+   `softprops/action-gh-release@v2` to publish a Release at the
+   prepared tag with auto-generated notes and `fail_on_unmatched_files`.
+4. **update-tap** — checks out `kbryy/homebrew-tap` using the
    `HOMEBREW_TAP_GITHUB_TOKEN` secret, renders `Formula/cc-shisa.rb`
    from the four sha256 outputs and the resolved version, commits as
    `github-actions[bot]`, and pushes.
@@ -364,17 +376,26 @@ These are repo-owner actions GitHub Actions cannot perform itself:
    - Permissions: **Contents: Read and write** (and nothing else).
    - Expiration: a few months out, then renew.
 3. **Add the secret** to `kbryy/cc-shisa`:
-   `gh secret set HOMEBREW_TAP_GITHUB_TOKEN --body "<paste PAT>"`.
-4. **Bump the version** in `src/version.ts` and `package.json` to the
-   intended tag (without the `v` prefix), commit on main.
-5. **Tag and push**: `git tag -a v0.1.0 -m "release v0.1.0" && git push
-   --follow-tags`.
-6. **Verify on a clean machine**:
-   ```
-   brew tap kbryy/tap
-   brew install cc-shisa
-   cc-shisa version
-   ```
+   `gh secret set HOMEBREW_TAP_GITHUB_TOKEN`.
+
+### Cutting a release
+
+Default flow (no CLI work, no manual tag):
+
+1. Open Actions → Release → "Run workflow".
+2. Pick `patch`, `minor`, or `major`.
+3. The workflow bumps version files, commits, tags, builds, publishes
+   the GH Release, and updates the tap. ~5 minutes end-to-end.
+4. Verify: `brew update && brew upgrade cc-shisa && cc-shisa version`.
+
+CLI fallback (hotfix, or manual tag for any reason):
+
+```
+# bump version files yourself, commit, then:
+git tag -a v0.1.2 -m "release v0.1.2" && git push --follow-tags
+```
+
+The same workflow runs on the tag push, just skipping the bump step.
 
 The rendered Formula uses `on_macos`/`on_linux` blocks so a single file
 covers all four arches:
