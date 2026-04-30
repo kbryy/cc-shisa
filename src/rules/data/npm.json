@@ -19,6 +19,17 @@
     { "id": "npm.doctor", "match": "ast", "binary": "npm", "subcommand": "doctor", "class": "read", "reason": "npm doctor" },
     { "id": "npm.fund", "match": "ast", "binary": "npm", "subcommand": "fund", "class": "read", "reason": "npm fund" },
     { "id": "npm.help", "match": "ast", "binary": "npm", "subcommand": "help", "class": "read", "reason": "npm help" },
-    { "id": "npm.version-flag", "match": "ast", "binary": "npm", "any_flags": ["--version", "-v"], "class": "read", "reason": "npm --version (the positional 'version' subcommand mutates package.json and is intentionally not classified read)" }
+    { "id": "npm.version-flag", "match": "ast", "binary": "npm", "any_flags": ["--version", "-v"], "class": "read", "reason": "npm --version (the positional 'version' subcommand mutates package.json and is intentionally not classified read)" },
+    { "id": "npm.whoami", "match": "ast", "binary": "npm", "subcommand": "whoami", "class": "read", "reason": "npm whoami" },
+    { "id": "npm.root", "match": "ast", "binary": "npm", "subcommand": "root", "class": "read", "reason": "npm root" },
+    { "id": "npm.prefix", "match": "ast", "binary": "npm", "subcommand": "prefix", "class": "read", "reason": "npm prefix" },
+    { "id": "npm.bin", "match": "ast", "binary": "npm", "subcommand": "bin", "class": "read", "reason": "npm bin" },
+    { "id": "npm.explain", "match": "ast", "binary": "npm", "subcommand": "explain", "class": "read", "reason": "npm explain" },
+    { "id": "npm.config.get", "match": "ast", "binary": "npm", "subcommand": ["config", "get"], "class": "read", "reason": "npm config get" },
+    { "id": "npm.config.list", "match": "ast", "binary": "npm", "subcommand": ["config", "list"], "class": "read", "reason": "npm config list" },
+    { "id": "npm.config.ls", "match": "ast", "binary": "npm", "subcommand": ["config", "ls"], "class": "read", "reason": "npm config ls" },
+    { "id": "npm.pkg.get", "match": "ast", "binary": "npm", "subcommand": ["pkg", "get"], "class": "read", "reason": "npm pkg get" },
+    { "id": "npm.dist-tag.ls", "match": "ast", "binary": "npm", "subcommand": ["dist-tag", "ls"], "class": "read", "reason": "npm dist-tag ls" },
+    { "id": "npm.token.list", "match": "ast", "binary": "npm", "subcommand": ["token", "list"], "class": "read", "reason": "npm token list (values masked)" }
   ]
 }

@@ -19,6 +19,19 @@
     { "id": "brew.commands", "match": "ast", "binary": "brew", "subcommand": "commands", "class": "read", "reason": "brew commands" },
     { "id": "brew.help", "match": "ast", "binary": "brew", "subcommand": "help", "class": "read", "reason": "brew help" },
     { "id": "brew.analytics.state", "match": "ast", "binary": "brew", "subcommand": ["analytics", "state"], "class": "read", "reason": "brew analytics state" },
-    { "id": "brew.version-flag", "match": "ast", "binary": "brew", "any_flags": ["--version", "-v"], "class": "read", "reason": "brew --version" }
+    { "id": "brew.version-flag", "match": "ast", "binary": "brew", "any_flags": ["--version", "-v"], "class": "read", "reason": "brew --version" },
+    { "id": "brew.prefix-flag", "match": "ast", "binary": "brew", "any_flags": ["--prefix"], "class": "read", "reason": "brew --prefix" },
+    { "id": "brew.cellar-flag", "match": "ast", "binary": "brew", "any_flags": ["--cellar"], "class": "read", "reason": "brew --cellar" },
+    { "id": "brew.cache-flag", "match": "ast", "binary": "brew", "any_flags": ["--cache"], "class": "read", "reason": "brew --cache" },
+    { "id": "brew.repository-flag", "match": "ast", "binary": "brew", "any_flags": ["--repository", "--repo"], "class": "read", "reason": "brew --repository" },
+    { "id": "brew.env-flag", "match": "ast", "binary": "brew", "any_flags": ["--env"], "class": "read", "reason": "brew --env" },
+    { "id": "brew.caskroom-flag", "match": "ast", "binary": "brew", "any_flags": ["--caskroom"], "class": "read", "reason": "brew --caskroom" },
+    { "id": "brew.tap.list", "match": "regex", "pattern": "^\\s*brew\\s+tap(\\s+--[a-z-]+)*\\s*$", "class": "read", "reason": "brew tap (no args = list installed taps)" },
+    { "id": "brew.livecheck", "match": "ast", "binary": "brew", "subcommand": "livecheck", "class": "read", "reason": "brew livecheck (version check, no install)" },
+    { "id": "brew.options", "match": "ast", "binary": "brew", "subcommand": "options", "class": "read", "reason": "brew options (build options for a formula)" },
+    { "id": "brew.style", "match": "ast", "binary": "brew", "subcommand": "style", "class": "read", "reason": "brew style (formula linting)" },
+    { "id": "brew.audit-formula", "match": "ast", "binary": "brew", "subcommand": "audit", "any_flags": ["--formula", "--cask", "--strict", "--online", "--new"], "class": "read", "reason": "brew audit (static analysis, no install)" },
+    { "id": "brew.which-formula", "match": "ast", "binary": "brew", "subcommand": "which-formula", "class": "read", "reason": "brew which-formula" },
+    { "id": "brew.home", "match": "ast", "binary": "brew", "subcommand": "home", "class": "read", "reason": "brew home (opens homepage in browser, no install)" }
   ]
 }

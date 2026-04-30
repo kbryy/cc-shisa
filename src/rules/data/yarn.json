@@ -14,6 +14,14 @@
     { "id": "yarn.info", "match": "ast", "binary": "yarn", "subcommand": "info", "class": "read", "reason": "yarn info" },
     { "id": "yarn.why", "match": "ast", "binary": "yarn", "subcommand": "why", "class": "read", "reason": "yarn why" },
     { "id": "yarn.help", "match": "ast", "binary": "yarn", "subcommand": "help", "class": "read", "reason": "yarn help" },
-    { "id": "yarn.version-flag", "match": "ast", "binary": "yarn", "any_flags": ["--version", "-v"], "class": "read", "reason": "yarn --version" }
+    { "id": "yarn.version-flag", "match": "ast", "binary": "yarn", "any_flags": ["--version", "-v"], "class": "read", "reason": "yarn --version" },
+    { "id": "yarn.config.get", "match": "ast", "binary": "yarn", "subcommand": ["config", "get"], "class": "read", "reason": "yarn config get" },
+    { "id": "yarn.config.list", "match": "ast", "binary": "yarn", "subcommand": ["config", "list"], "class": "read", "reason": "yarn config list" },
+    { "id": "yarn.workspaces.list", "match": "ast", "binary": "yarn", "subcommand": ["workspaces", "list"], "class": "read", "reason": "yarn workspaces list (Berry)" },
+    { "id": "yarn.workspaces.info", "match": "ast", "binary": "yarn", "subcommand": ["workspaces", "info"], "class": "read", "reason": "yarn workspaces info (1.x)" },
+    { "id": "yarn.licenses.list", "match": "ast", "binary": "yarn", "subcommand": ["licenses", "list"], "class": "read", "reason": "yarn licenses list" },
+    { "id": "yarn.licenses.generate-disclaimer", "match": "ast", "binary": "yarn", "subcommand": ["licenses", "generate-disclaimer"], "class": "read", "reason": "yarn licenses generate-disclaimer" },
+    { "id": "yarn.cache.list", "match": "ast", "binary": "yarn", "subcommand": ["cache", "list"], "class": "read", "reason": "yarn cache list (1.x)" },
+    { "id": "yarn.npm.whoami", "match": "ast", "binary": "yarn", "subcommand": ["npm", "whoami"], "class": "read", "reason": "yarn npm whoami (Berry)" }
   ]
 }
