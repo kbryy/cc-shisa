@@ -23,7 +23,7 @@ classify each segment, return a decision per the configured policy.
 - ✅ Tech stack chosen: **TypeScript + Bun + bash-parser + bun test**
 - ✅ Architecture and design documented in this file
 - ✅ Phase 0 scaffold landed: `package.json` / `tsconfig.json` / `src/cli.ts` (`version`/`help` working) / type stubs under `src/{hookio,parser,policy,rules}/types.ts`
-- ✅ `_core.json` rule catalog drafted (14 critical patterns after the fdisk/diskutil split)
+- ✅ `_core.json` rule catalog drafted (15 critical patterns after the fdisk/diskutil split)
 - ✅ `bun install && bun run typecheck && bun test` pass on a clean clone
 - ❌ Phase 1+ source code (parser, classifier, policy, shadow, hookio runtime) not yet implemented
 - ❌ Homebrew tap not created yet (`kbryy/homebrew-tap`)
@@ -130,7 +130,7 @@ cc-shisa/
 │   │   ├── types.ts                     ← Class, Action, Rule, Module, Profile, Level
 │   │   ├── index.ts                     ← loader (Bun's import attribute or fs)
 │   │   └── data/
-│   │       ├── _core.json               ← 14 critical patterns (provided)
+│   │       ├── _core.json               ← 15 critical patterns (provided)
 │   │       └── profiles/
 │   │           └── default.json         ← level=safe profile (provided)
 │   ├── classifier/
@@ -361,7 +361,7 @@ trusted by default.)
 |---|---|
 | 0 | Bun project init, package.json, tsconfig, .gitignore, version subcommand works |
 | 1 | Parser + normalize, 18+ unit tests |
-| 2 | Rules loader, classifier, policy, SafeLevel, _core.json (14 rules) |
+| 2 | Rules loader, classifier, policy, SafeLevel, _core.json (15 rules) |
 | 3 | hookio, CLI dispatch, e2e tests with cases.json + redteam.json |
 | 4 | Shadow mode, init subcommand |
 | 5 | README polish |

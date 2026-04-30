@@ -84,11 +84,27 @@
       "reason": "creating a filesystem destroys all data on the target"
     },
     {
-      "id": "core.fdisk.write",
+      "id": "core.partition.tools",
       "match": "ast",
-      "binaries": ["fdisk", "gdisk", "parted", "diskutil"],
+      "binaries": ["fdisk", "gdisk", "parted"],
       "class": "dangerous",
-      "reason": "partition table tools can destroy disks"
+      "reason": "partition tools default to interactive write mode"
+    },
+    {
+      "id": "core.diskutil.write",
+      "match": "ast",
+      "binary": "diskutil",
+      "any_flags": [
+        "eraseDisk",
+        "eraseVolume",
+        "partitionDisk",
+        "secureErase",
+        "reformat",
+        "zeroDisk",
+        "randomDisk"
+      ],
+      "class": "dangerous",
+      "reason": "diskutil write subcommands destroy data"
     },
     {
       "id": "core.fork.bomb",
