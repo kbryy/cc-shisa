@@ -25,7 +25,8 @@ classify each segment, return a decision per the configured policy.
 - ✅ Phase 0 scaffold landed: `package.json` / `tsconfig.json` / `src/cli.ts` (`version`/`help` working) / type stubs under `src/{hookio,parser,policy,rules}/types.ts`
 - ✅ `_core.json` rule catalog drafted (15 critical patterns after the fdisk/diskutil split)
 - ✅ `bun install && bun run typecheck && bun test` pass on a clean clone
-- ❌ Phase 1+ source code (parser, classifier, policy, shadow, hookio runtime) not yet implemented
+- ✅ Phase 1 parser landed: `src/parser/{walker,normalize,index}.ts` + 18 unit tests
+- ❌ Phase 2+ source code (classifier, policy, shadow, hookio runtime) not yet implemented
 - ❌ Homebrew tap not created yet (`kbryy/homebrew-tap`)
 
 A previous attempt was made in Go (using `mvdan.cc/sh/v3`); it got through the
