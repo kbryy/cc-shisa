@@ -65,8 +65,11 @@ export function matchAst(seg: Segment, rule: AstRule): boolean {
   const expanded = expandFlagBundle(seg.args);
 
   if (rule.subcommand !== undefined) {
-    const sub = expanded.find((t) => !t.startsWith("-"));
-    if (sub !== rule.subcommand) return false;
+    const expected = typeof rule.subcommand === "string" ? [rule.subcommand] : rule.subcommand;
+    const positionals = expanded.filter((t) => !t.startsWith("-"));
+    for (let i = 0; i < expected.length; i += 1) {
+      if (positionals[i] !== expected[i]) return false;
+    }
   }
 
   if (rule.flags) {

@@ -1,7 +1,19 @@
 import coreData from "./data/_core.json" with { type: "json" };
+import coreutilsReadData from "./data/coreutils-read.json" with { type: "json" };
+import gitReadData from "./data/git-read.json" with { type: "json" };
+import ghReadData from "./data/gh-read.json" with { type: "json" };
+import pnpmData from "./data/pnpm.json" with { type: "json" };
 import defaultProfileData from "./data/profiles/default.json" with { type: "json" };
 
 import type { Action, Class, Level, Module, Profile, Rule } from "./types.ts";
+
+const MODULE_REGISTRY: Readonly<Record<string, unknown>> = {
+  _core: coreData,
+  "coreutils-read": coreutilsReadData,
+  "git-read": gitReadData,
+  "gh-read": ghReadData,
+  pnpm: pnpmData,
+};
 
 const STRICTNESS: Readonly<Record<Class, number>> = {
   dangerous: 6,
@@ -32,16 +44,22 @@ export function safeLevel(): Level {
   };
 }
 
+export function loadModule(name: string): Module {
+  const data = MODULE_REGISTRY[name];
+  if (data === undefined) {
+    throw new Error(`unknown module: ${name}`);
+  }
+  return validateModule(data);
+}
+
 export function loadDefaults(): {
-  module: Module;
+  modules: readonly Module[];
   profile: Profile;
   level: Level;
 } {
-  return {
-    module: validateModule(coreData),
-    profile: validateProfile(defaultProfileData),
-    level: safeLevel(),
-  };
+  const profile = validateProfile(defaultProfileData);
+  const modules = profile.modules.map(loadModule);
+  return { modules, profile, level: safeLevel() };
 }
 
 const VALID_CLASSES: ReadonlySet<Class> = new Set([
@@ -111,12 +129,13 @@ function validateRule(data: unknown, index: number, moduleName: string): Rule {
     if (typeof binary !== "string" && !Array.isArray(binaries)) {
       throw new Error(`rule ${id}: ast match needs binary or binaries`);
     }
+    const subcommand = normalizeSubcommand(r["subcommand"], id);
     const base = {
       id,
       class: cls as Class,
       reason,
       match: "ast" as const,
-      ...(typeof r["subcommand"] === "string" ? { subcommand: r["subcommand"] } : {}),
+      ...(subcommand !== undefined ? { subcommand } : {}),
       ...(Array.isArray(r["flags"]) ? { flags: r["flags"] as string[] } : {}),
       ...(Array.isArray(r["any_flags"]) ? { any_flags: r["any_flags"] as string[] } : {}),
       ...(Array.isArray(r["path_globs"]) ? { path_globs: r["path_globs"] as string[] } : {}),
@@ -131,6 +150,18 @@ function validateRule(data: unknown, index: number, moduleName: string): Rule {
   }
 
   throw new Error(`rule ${id}: invalid match kind`);
+}
+
+function normalizeSubcommand(
+  raw: unknown,
+  ruleId: string,
+): string | readonly [string, ...string[]] | undefined {
+  if (raw === undefined) return undefined;
+  if (typeof raw === "string") return raw;
+  if (Array.isArray(raw) && raw.length > 0 && raw.every((x) => typeof x === "string")) {
+    return raw as [string, ...string[]];
+  }
+  throw new Error(`rule ${ruleId}: subcommand must be a string or non-empty string array`);
 }
 
 function validateProfile(data: unknown): Profile {
