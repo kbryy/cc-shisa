@@ -7,6 +7,13 @@
 import { readInput, writeOutput } from "./hookio/index.ts";
 import { defaultSettingsPath, runInit as runInitImpl } from "./init/index.ts";
 import {
+  logFilePath,
+  readLog,
+  renderSummary,
+  renderTail,
+  summarize,
+} from "./logs/index.ts";
+import {
   disableModules,
   enableModules,
   listModules,
@@ -28,6 +35,9 @@ Usage:
   cc-shisa modules [list]             List built-in and user modules with on/off status
   cc-shisa modules enable <name>...   Add modules to ~/.config/cc-shisa/profile.json
   cc-shisa modules disable <name>...  Remove modules from ~/.config/cc-shisa/profile.json
+  cc-shisa logs [summary]             Aggregate the JSONL decision log
+  cc-shisa logs tail [-n N]           Show the last N entries (default 20)
+  cc-shisa logs path                  Print the log file path
   cc-shisa version                    Print version
 
 Environment:
@@ -143,6 +153,41 @@ function runModules(args: readonly string[]): number {
   }
 }
 
+function runLogs(args: readonly string[]): number {
+  const sub = args[0] ?? "summary";
+  switch (sub) {
+    case "summary": {
+      const path = logFilePath();
+      const entries = readLog();
+      console.log(renderSummary(summarize(entries, path)));
+      return 0;
+    }
+    case "tail": {
+      const n = parseTailCount(args.slice(1));
+      if (n === null) {
+        process.stderr.write("usage: cc-shisa logs tail [-n N]\n");
+        return 2;
+      }
+      console.log(renderTail(readLog(), n));
+      return 0;
+    }
+    case "path":
+      console.log(logFilePath());
+      return 0;
+    default:
+      process.stderr.write(`cc-shisa logs: unknown subcommand "${sub}"\n`);
+      return 2;
+  }
+}
+
+function parseTailCount(args: readonly string[]): number | null {
+  if (args.length === 0) return 20;
+  if (args[0] !== "-n" || args[1] === undefined) return null;
+  const n = Number(args[1]);
+  if (!Number.isFinite(n) || n <= 0) return null;
+  return Math.floor(n);
+}
+
 function runModulesChange(
   names: readonly string[],
   fn: (names: readonly string[]) => ChangeResult[],
@@ -189,6 +234,8 @@ async function main(): Promise<number> {
       return runInit(argv[1]);
     case "modules":
       return runModules(argv.slice(1));
+    case "logs":
+      return runLogs(argv.slice(1));
     case "version":
     case "-v":
     case "--version":
