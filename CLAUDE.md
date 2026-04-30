@@ -26,7 +26,8 @@ classify each segment, return a decision per the configured policy.
 - ✅ `_core.json` rule catalog drafted (15 critical patterns after the fdisk/diskutil split)
 - ✅ `bun install && bun run typecheck && bun test` pass on a clean clone
 - ✅ Phase 1 parser landed: `src/parser/{walker,normalize,index}.ts` + 18 unit tests
-- ❌ Phase 2+ source code (classifier, policy, shadow, hookio runtime) not yet implemented
+- ✅ Phase 2 rules loader / classifier / policy landed: `src/rules/index.ts`, `src/classifier/{index,matcher}.ts`, `src/policy/index.ts`, ~50 additional tests
+- ❌ Phase 3+ (hookio runtime, CLI dispatch, e2e fixtures, shadow mode, init subcommand) not yet implemented
 - ❌ Homebrew tap not created yet (`kbryy/homebrew-tap`)
 
 A previous attempt was made in Go (using `mvdan.cc/sh/v3`); it got through the
