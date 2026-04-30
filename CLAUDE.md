@@ -348,11 +348,11 @@ tag matching `v*`. Three sequential jobs:
 These are repo-owner actions GitHub Actions cannot perform itself:
 
 1. **Create the tap repo**: `gh repo create kbryy/homebrew-tap --public
-   --description "Personal Homebrew tap"`. The repo is a generic tap
-   that can host any number of Formulae (`Formula/*.rb`) — cc-shisa is
-   just its first resident. Initialize with an empty README; the
-   `update-tap` job creates `Formula/cc-shisa.rb` on first release and
-   leaves any sibling Formulae untouched.
+   --description "Homebrew tap"`. The repo is a generic tap that can
+   host any number of Formulae (`Formula/*.rb`) — cc-shisa is just its
+   first resident. Initialize with an empty README; the `update-tap`
+   job creates `Formula/cc-shisa.rb` on first release and leaves any
+   sibling Formulae untouched.
 2. **Mint a fine-grained PAT** at https://github.com/settings/tokens?type=beta:
    - Repository access: **only `kbryy/homebrew-tap`**.
    - Permissions: **Contents: Read and write** (and nothing else).
