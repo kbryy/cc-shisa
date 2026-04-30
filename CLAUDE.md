@@ -21,15 +21,17 @@ classify each segment, return a decision per the configured policy.
 - ✅ GitHub repo created: `kbryy/cc-shisa` (private, MIT)
 - ✅ Naming finalized: **cc-shisa**
 - ✅ Tech stack chosen: **TypeScript + Bun + bash-parser + bun test**
-- ✅ Architecture and design documented (this file + `docs/`)
-- ✅ `_core.json` rule catalog drafted (13 critical patterns)
-- ❌ **Bun is NOT installed yet** — install first: `curl -fsSL https://bun.sh/install | bash`
-- ❌ Source code not implemented (project skeleton only)
+- ✅ Architecture and design documented in this file
+- ✅ Phase 0 scaffold landed: `package.json` / `tsconfig.json` / `src/cli.ts` (`version`/`help` working) / type stubs under `src/{hookio,parser,policy,rules}/types.ts`
+- ✅ `_core.json` rule catalog drafted (14 critical patterns after the fdisk/diskutil split)
+- ✅ `bun install && bun run typecheck && bun test` pass on a clean clone
+- ❌ Phase 1+ source code (parser, classifier, policy, shadow, hookio runtime) not yet implemented
 - ❌ Homebrew tap not created yet (`kbryy/homebrew-tap`)
 
 A previous attempt was made in Go (using `mvdan.cc/sh/v3`); it got through the
 parser layer with 18 passing tests before the user pivoted to TypeScript. The
-parser logic translates directly — see `docs/HISTORY.md` for what we learned.
+parser logic translates directly — same `Segment` shape, same prefix-stripping
+edge cases (notably `timeout` over-eating positionals if not bounded).
 
 ## Tech stack (finalized — do not re-litigate)
 
@@ -114,11 +116,6 @@ cc-shisa/
 ├── bun.lockb                            ← committed lockfile
 ├── tsconfig.json
 ├── .gitignore
-├── docs/
-│   ├── DESIGN.md                        ← detailed architecture
-│   ├── IMPLEMENTATION.md                ← phase plan + status
-│   ├── PATTERNS.md                      ← _core.json rule catalog
-│   └── HISTORY.md                       ← decision history (Go pivot, naming, etc.)
 ├── src/
 │   ├── cli.ts                           ← entry point (subcommand dispatch)
 │   ├── version.ts
@@ -133,7 +130,7 @@ cc-shisa/
 │   │   ├── types.ts                     ← Class, Action, Rule, Module, Profile, Level
 │   │   ├── index.ts                     ← loader (Bun's import attribute or fs)
 │   │   └── data/
-│   │       ├── _core.json               ← 13 critical patterns (provided)
+│   │       ├── _core.json               ← 14 critical patterns (provided)
 │   │       └── profiles/
 │   │           └── default.json         ← level=safe profile (provided)
 │   ├── classifier/
@@ -360,16 +357,14 @@ trusted by default.)
 
 ## Implementation phases (target)
 
-See `docs/IMPLEMENTATION.md` for the full breakdown. Summary:
-
 | Phase | Deliverable |
 |---|---|
 | 0 | Bun project init, package.json, tsconfig, .gitignore, version subcommand works |
 | 1 | Parser + normalize, 18+ unit tests |
-| 2 | Rules loader, classifier, policy, SafeLevel, _core.json (13 rules) |
+| 2 | Rules loader, classifier, policy, SafeLevel, _core.json (14 rules) |
 | 3 | hookio, CLI dispatch, e2e tests with cases.json + redteam.json |
 | 4 | Shadow mode, init subcommand |
-| 5 | README, docs cleanup |
+| 5 | README polish |
 | 6 | GH Action release workflow + Homebrew tap |
 
 Do **not** skip phases. Each must produce passing tests before moving on.
@@ -426,12 +421,10 @@ to the user — don't silently change direction.
 
 If you're picking this up cold:
 
-1. **Install Bun**: `curl -fsSL https://bun.sh/install | bash`. Restart shell.
-2. **Read `docs/DESIGN.md`** (architecture details).
-3. **Read `docs/IMPLEMENTATION.md`** (phase-by-phase plan with deliverables).
-4. **Read `docs/PATTERNS.md`** (the rule catalog you'll encode in `_core.json`).
-5. **Read `docs/HISTORY.md`** (why we're here, decisions you don't need to re-debate).
-6. Start with **Phase 0**: `bun init`, set up tsconfig, write a stub `src/cli.ts` whose `version` subcommand returns the literal string from `src/version.ts`. Verify with `bun build --compile ./src/cli.ts --outfile=cc-shisa && ./cc-shisa version`.
-7. Move through Phase 1 → 6 in order. Don't skip ahead.
+1. **Install Bun** if missing: `brew install oven-sh/bun/bun` (or `curl -fsSL https://bun.sh/install | bash`).
+2. **Read this file fully.** Architecture, class system, file layout, hook protocol, decision log, and pitfalls all live here. There is no separate `docs/` tree.
+3. Run `bun install && bun run typecheck && bun test` to confirm Phase 0 still passes on your machine.
+4. Pick up at **Phase 1** (parser): `bun add bash-parser`, then implement `src/parser/{walker.ts,normalize.ts,index.ts}` per the architecture diagram. Aim for 18+ unit tests covering compound splits, prefix peeling, expansion flags, and parse errors.
+5. Move through Phase 2 → 6 in order. Don't skip ahead — each phase has a "Done when" gate (typecheck + tests green) implied.
 
-When in doubt, ask the user. Do not silently re-interpret design decisions.
+When in doubt, ask the user. Do not silently re-interpret design decisions in the "Decision log" section.

@@ -8,8 +8,7 @@ classifies it by structure (not text patterns), and returns
 `allow` / `ask` / `deny` so you can stop hand-curating `permissions.allow`.
 
 **Status: pre-implementation.** This README is a placeholder. See
-[`CLAUDE.md`](./CLAUDE.md) and [`docs/`](./docs) for the design and
-implementation plan.
+[`CLAUDE.md`](./CLAUDE.md) for the design and implementation plan.
 
 ## Why
 
@@ -49,17 +48,13 @@ Inspect the log, tune rules, then `unset CC_SHISA_SHADOW` for enforce mode.
 
 `rm -rf /` and friends, `dd` to raw disks, `mkfs`, fork bombs, `curl|sh`,
 `git push --force`, `git reset --hard`, `chmod -R 777`, `eval`, `bash -c`.
-Full list in [`docs/PATTERNS.md`](./docs/PATTERNS.md).
+Full list lives in `src/rules/data/_core.json`.
 
 Tool-specific modules (git, gh, pnpm, etc.) come in v0.2+.
 
 ## Documents
 
-- [`CLAUDE.md`](./CLAUDE.md) — agent-facing context (read this first if you're an AI assistant)
-- [`docs/DESIGN.md`](./docs/DESIGN.md) — architecture and algorithms
-- [`docs/IMPLEMENTATION.md`](./docs/IMPLEMENTATION.md) — phase-by-phase build plan
-- [`docs/PATTERNS.md`](./docs/PATTERNS.md) — rule catalog (source of truth)
-- [`docs/HISTORY.md`](./docs/HISTORY.md) — design decision history
+- [`CLAUDE.md`](./CLAUDE.md) — agent-facing context: architecture, class system, hook protocol, decision log. Read this first if you're an AI assistant.
 
 ## License
 
