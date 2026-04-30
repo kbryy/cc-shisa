@@ -1,0 +1,19 @@
+{
+  "name": "yarn",
+  "description": "Yarn read-only subcommands and conventional read scripts.",
+  "rules": [
+    { "id": "yarn.test", "match": "ast", "binary": "yarn", "subcommand": "test", "class": "read", "reason": "yarn test" },
+    { "id": "yarn.run.typecheck", "match": "ast", "binary": "yarn", "subcommand": ["run", "typecheck"], "class": "read", "reason": "yarn run typecheck" },
+    { "id": "yarn.run.lint", "match": "ast", "binary": "yarn", "subcommand": ["run", "lint"], "class": "read", "reason": "yarn run lint" },
+    { "id": "yarn.run.test", "match": "ast", "binary": "yarn", "subcommand": ["run", "test"], "class": "read", "reason": "yarn run test" },
+    { "id": "yarn.run.check", "match": "ast", "binary": "yarn", "subcommand": ["run", "check"], "class": "read", "reason": "yarn run check" },
+    { "id": "yarn.run.format-check", "match": "ast", "binary": "yarn", "subcommand": ["run", "format-check"], "class": "read", "reason": "yarn run format-check" },
+    { "id": "yarn.list", "match": "ast", "binary": "yarn", "subcommand": "list", "class": "read", "reason": "yarn list" },
+    { "id": "yarn.outdated", "match": "ast", "binary": "yarn", "subcommand": "outdated", "class": "read", "reason": "yarn outdated" },
+    { "id": "yarn.audit", "match": "ast", "binary": "yarn", "subcommand": "audit", "class": "read", "reason": "yarn audit" },
+    { "id": "yarn.info", "match": "ast", "binary": "yarn", "subcommand": "info", "class": "read", "reason": "yarn info" },
+    { "id": "yarn.why", "match": "ast", "binary": "yarn", "subcommand": "why", "class": "read", "reason": "yarn why" },
+    { "id": "yarn.help", "match": "ast", "binary": "yarn", "subcommand": "help", "class": "read", "reason": "yarn help" },
+    { "id": "yarn.version-flag", "match": "ast", "binary": "yarn", "any_flags": ["--version", "-v"], "class": "read", "reason": "yarn --version" }
+  ]
+}
