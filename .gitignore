@@ -1,9 +1,9 @@
 node_modules/
 .DS_Store
 
-# Compiled binaries from `bun build --compile`
-cc-shisa
-cc-shisa-*
+# Compiled binaries from `bun build --compile` (anchor to repo root only)
+/cc-shisa
+/cc-shisa-*
 
 # Local logs / state
 *.log
