@@ -1,0 +1,16 @@
+{
+  "name": "cargo",
+  "description": "Cargo read-only subcommands. cargo build/run/test execute build.rs and project code, so they stay at unknown→ask.",
+  "rules": [
+    { "id": "cargo.check", "match": "ast", "binary": "cargo", "subcommand": "check", "class": "read", "reason": "cargo check (typecheck only, no execution)" },
+    { "id": "cargo.tree", "match": "ast", "binary": "cargo", "subcommand": "tree", "class": "read", "reason": "cargo tree" },
+    { "id": "cargo.metadata", "match": "ast", "binary": "cargo", "subcommand": "metadata", "class": "read", "reason": "cargo metadata" },
+    { "id": "cargo.search", "match": "ast", "binary": "cargo", "subcommand": "search", "class": "read", "reason": "cargo search" },
+    { "id": "cargo.version", "match": "ast", "binary": "cargo", "subcommand": "version", "class": "read", "reason": "cargo version" },
+    { "id": "cargo.help", "match": "ast", "binary": "cargo", "subcommand": "help", "class": "read", "reason": "cargo help" },
+    { "id": "cargo.fmt-check", "match": "ast", "binary": "cargo", "subcommand": "fmt", "any_flags": ["--check"], "class": "read", "reason": "cargo fmt --check" },
+    { "id": "cargo.locate-project", "match": "ast", "binary": "cargo", "subcommand": "locate-project", "class": "read", "reason": "cargo locate-project" },
+    { "id": "cargo.pkgid", "match": "ast", "binary": "cargo", "subcommand": "pkgid", "class": "read", "reason": "cargo pkgid" },
+    { "id": "cargo.version-flag", "match": "ast", "binary": "cargo", "any_flags": ["--version", "-V"], "class": "read", "reason": "cargo --version" }
+  ]
+}

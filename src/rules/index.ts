@@ -6,6 +6,9 @@ import bunData from "./data/bun.json" with { type: "json" };
 import npmData from "./data/npm.json" with { type: "json" };
 import pnpmData from "./data/pnpm.json" with { type: "json" };
 import yarnData from "./data/yarn.json" with { type: "json" };
+import dockerData from "./data/docker.json" with { type: "json" };
+import kubectlData from "./data/kubectl.json" with { type: "json" };
+import cargoData from "./data/cargo.json" with { type: "json" };
 import defaultProfileData from "./data/profiles/default.json" with { type: "json" };
 
 import type { Action, Class, Level, Module, Profile, Rule } from "./types.ts";
@@ -22,6 +25,9 @@ export const BUILTIN_MODULES: Readonly<Record<string, unknown>> = {
   npm: npmData,
   pnpm: pnpmData,
   yarn: yarnData,
+  docker: dockerData,
+  kubectl: kubectlData,
+  cargo: cargoData,
 };
 
 const BUILTIN_NAMES: ReadonlySet<string> = new Set(Object.keys(BUILTIN_MODULES));
