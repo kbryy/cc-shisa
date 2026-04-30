@@ -386,6 +386,14 @@ These are repo-owner actions GitHub Actions cannot perform itself:
    - Expiration: a few months out, then renew.
 3. **Add the secret** to `kbryy/cc-shisa`:
    `gh secret set HOMEBREW_TAP_GITHUB_TOKEN`.
+4. **Mint a second fine-grained PAT** for the cc-shisa repo itself,
+   used by the bump-pr job to open release PRs as a real user (not
+   github-actions[bot]) — without this, `pull_request: closed`
+   events cannot fire downstream workflow jobs because GitHub
+   suppresses GITHUB_TOKEN-originated events to prevent recursion:
+   - Repository access: **only `kbryy/cc-shisa`**.
+   - Permissions: **Contents: Read and write**, **Pull requests: Read and write**.
+5. **Add the secret**: `gh secret set RELEASE_TOKEN`.
 
 ### Cutting a release
 
