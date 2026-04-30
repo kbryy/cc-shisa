@@ -1,20 +1,22 @@
 #!/usr/bin/env bun
 /**
- * cc-shisa CLI entry.
- *
- * Subcommands:
- *   hook (default)  Read PreToolUse JSON from stdin, emit decision JSON to stdout.
- *   check '<cmd>'   Evaluate one command and pretty-print decision.
- *   test [path]     Run tests/fixtures/cases.json (or path) end-to-end.
- *   init            Register hook in ~/.claude/settings.json (idempotent, .bak'd).
- *   version         Print version.
- *   help            Print usage.
- *
- * NOTE: This is a Phase 0 stub. Subcommands beyond `version`/`help` are
- * unimplemented placeholders. See docs/IMPLEMENTATION.md for the build plan.
+ * cc-shisa CLI entry. Phase 0 stub: only `version` and `help` are wired up.
+ * `hook` returns a fail-safe ask payload (per Claude Code hook contract: must
+ * exit 0 with stdout JSON, never crash). `check`/`test`/`init` print a
+ * not-implemented message — they are not part of the hook contract.
  */
 
 import { VERSION } from "./version.ts";
+import type { HookOutput } from "./hookio/types.ts";
+
+const PHASE0_ASK: HookOutput = {
+  hookSpecificOutput: {
+    hookEventName: "PreToolUse",
+    permissionDecision: "ask",
+    permissionDecisionReason:
+      "cc-shisa Phase 0 stub: enforcement not yet wired (asking by default)",
+  },
+};
 
 function printHelp(): void {
   console.log(`cc-shisa — static analysis hook for Claude Code Bash tool
@@ -36,13 +38,18 @@ function notImplemented(name: string): number {
   return 1;
 }
 
+function emitFailSafeAsk(): number {
+  process.stdout.write(JSON.stringify(PHASE0_ASK));
+  return 0;
+}
+
 async function main(): Promise<number> {
   const argv = Bun.argv.slice(2);
   const sub = argv[0] ?? "hook";
 
   switch (sub) {
     case "hook":
-      return notImplemented("hook");
+      return emitFailSafeAsk();
     case "check":
       return notImplemented("check");
     case "test":
