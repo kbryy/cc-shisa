@@ -29,7 +29,8 @@ classify each segment, return a decision per the configured policy.
 - ✅ Phase 2 rules loader / classifier / policy landed: `src/rules/index.ts`, `src/classifier/{index,matcher}.ts`, `src/policy/index.ts`, ~50 additional tests
 - ✅ Phase 3 hookio runtime + CLI dispatch + e2e fixtures landed: `src/hookio/index.ts`, `src/pipeline.ts`, real `runHook`/`runCheck`/`runTest`, `tests/fixtures/{cases,redteam}.json`, `tests/e2e.test.ts` (130 tests pass)
 - ✅ Phase 4 shadow mode + init subcommand landed: `src/shadow/index.ts` (CC_SHISA_SHADOW=1 forces allow + JSONL log under `$XDG_STATE_HOME/cc-shisa/decisions.jsonl`), `src/init/index.ts` (idempotent settings.json registration with .bak); 147 tests pass
-- ❌ Phase 5 (README polish) and Phase 6 (release pipeline + Homebrew tap) not yet done
+- ✅ Phase 5 README polish landed: user-facing README rewrite with install / shadow / check / test docs and the safe-profile class table
+- ❌ Phase 6 (release pipeline + Homebrew tap) not yet done
 - ❌ Homebrew tap not created yet (`kbryy/homebrew-tap`)
 
 A previous attempt was made in Go (using `mvdan.cc/sh/v3`); it got through the
