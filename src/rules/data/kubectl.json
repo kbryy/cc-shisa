@@ -1,0 +1,26 @@
+{
+  "name": "kubectl",
+  "description": "kubectl read-only verbs. Excludes apply/create/delete/patch/edit/exec/run/scale/cp.",
+  "rules": [
+    { "id": "kubectl.get", "match": "ast", "binary": "kubectl", "subcommand": "get", "class": "read", "reason": "kubectl get" },
+    { "id": "kubectl.describe", "match": "ast", "binary": "kubectl", "subcommand": "describe", "class": "read", "reason": "kubectl describe" },
+    { "id": "kubectl.logs", "match": "ast", "binary": "kubectl", "subcommand": "logs", "class": "read", "reason": "kubectl logs" },
+    { "id": "kubectl.top", "match": "ast", "binary": "kubectl", "subcommand": "top", "class": "read", "reason": "kubectl top" },
+    { "id": "kubectl.events", "match": "ast", "binary": "kubectl", "subcommand": "events", "class": "read", "reason": "kubectl events" },
+    { "id": "kubectl.explain", "match": "ast", "binary": "kubectl", "subcommand": "explain", "class": "read", "reason": "kubectl explain" },
+    { "id": "kubectl.api-resources", "match": "ast", "binary": "kubectl", "subcommand": "api-resources", "class": "read", "reason": "kubectl api-resources" },
+    { "id": "kubectl.api-versions", "match": "ast", "binary": "kubectl", "subcommand": "api-versions", "class": "read", "reason": "kubectl api-versions" },
+    { "id": "kubectl.cluster-info", "match": "ast", "binary": "kubectl", "subcommand": "cluster-info", "class": "read", "reason": "kubectl cluster-info" },
+    { "id": "kubectl.version", "match": "ast", "binary": "kubectl", "subcommand": "version", "class": "read", "reason": "kubectl version" },
+    { "id": "kubectl.help", "match": "ast", "binary": "kubectl", "subcommand": "help", "class": "read", "reason": "kubectl help" },
+
+    { "id": "kubectl.config.view", "match": "ast", "binary": "kubectl", "subcommand": ["config", "view"], "class": "read", "reason": "kubectl config view" },
+    { "id": "kubectl.config.current-context", "match": "ast", "binary": "kubectl", "subcommand": ["config", "current-context"], "class": "read", "reason": "kubectl config current-context" },
+    { "id": "kubectl.config.get-contexts", "match": "ast", "binary": "kubectl", "subcommand": ["config", "get-contexts"], "class": "read", "reason": "kubectl config get-contexts" },
+    { "id": "kubectl.config.get-clusters", "match": "ast", "binary": "kubectl", "subcommand": ["config", "get-clusters"], "class": "read", "reason": "kubectl config get-clusters" },
+    { "id": "kubectl.config.get-users", "match": "ast", "binary": "kubectl", "subcommand": ["config", "get-users"], "class": "read", "reason": "kubectl config get-users" },
+
+    { "id": "kubectl.auth.can-i", "match": "ast", "binary": "kubectl", "subcommand": ["auth", "can-i"], "class": "read", "reason": "kubectl auth can-i" },
+    { "id": "kubectl.auth.whoami", "match": "ast", "binary": "kubectl", "subcommand": ["auth", "whoami"], "class": "read", "reason": "kubectl auth whoami" }
+  ]
+}
