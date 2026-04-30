@@ -1,22 +1,12 @@
 #!/usr/bin/env bun
 /**
- * cc-shisa CLI entry. Phase 0 stub: only `version` and `help` are wired up.
- * `hook` returns a fail-safe ask payload (per Claude Code hook contract: must
- * exit 0 with stdout JSON, never crash). `check`/`test`/`init` print a
- * not-implemented message — they are not part of the hook contract.
+ * cc-shisa CLI entry. Subcommands: hook (default), check, test, init, version, help.
+ * `init` is still a stub — Phase 4 territory.
  */
 
+import { readInput, writeOutput } from "./hookio/index.ts";
+import { evaluate } from "./pipeline.ts";
 import { VERSION } from "./version.ts";
-import type { HookOutput } from "./hookio/types.ts";
-
-const PHASE0_ASK: HookOutput = {
-  hookSpecificOutput: {
-    hookEventName: "PreToolUse",
-    permissionDecision: "ask",
-    permissionDecisionReason:
-      "cc-shisa Phase 0 stub: enforcement not yet wired (asking by default)",
-  },
-};
 
 function printHelp(): void {
   console.log(`cc-shisa — static analysis hook for Claude Code Bash tool
@@ -25,7 +15,7 @@ Usage:
   cc-shisa hook                  Read PreToolUse JSON from stdin, write decision to stdout
   cc-shisa check '<command>'     Evaluate a command and print the decision
   cc-shisa test [path]           Run testdata cases end-to-end
-  cc-shisa init                  Register hook in ~/.claude/settings.json
+  cc-shisa init                  Register hook in ~/.claude/settings.json (stub)
   cc-shisa version               Print version
 
 Environment:
@@ -33,14 +23,98 @@ Environment:
   CC_SHISA_DEBUG=1               Print debug info to stderr`);
 }
 
-function notImplemented(name: string): number {
-  console.error(`cc-shisa ${name}: not implemented yet (Phase 0 stub)`);
-  return 1;
+function emitFailSafeAsk(reason: string): void {
+  writeOutput("ask", reason);
 }
 
-function emitFailSafeAsk(): number {
-  process.stdout.write(JSON.stringify(PHASE0_ASK));
+async function runHook(): Promise<number> {
+  let input;
+  try {
+    input = await readInput();
+  } catch (err) {
+    if (process.env["CC_SHISA_DEBUG"] === "1") {
+      process.stderr.write(`cc-shisa: ${(err as Error).message}\n`);
+    }
+    emitFailSafeAsk("cc-shisa could not read hook input; asking for safety");
+    return 0;
+  }
+
+  if (input.tool_name !== "Bash") {
+    emitFailSafeAsk(`cc-shisa only handles Bash; got ${input.tool_name}`);
+    return 0;
+  }
+
+  try {
+    const decision = evaluate(input.tool_input.command);
+    writeOutput(decision.action, decision.reason);
+    return 0;
+  } catch (err) {
+    if (process.env["CC_SHISA_DEBUG"] === "1") {
+      process.stderr.write(`cc-shisa: ${(err as Error).message}\n`);
+    }
+    emitFailSafeAsk("cc-shisa internal error; asking for safety");
+    return 0;
+  }
+}
+
+function runCheck(cmd: string | undefined): number {
+  if (cmd === undefined || cmd === "") {
+    process.stderr.write("usage: cc-shisa check '<command>'\n");
+    return 2;
+  }
+  const decision = evaluate(cmd);
+  console.log(`Action:  ${decision.action}`);
+  console.log(`Class:   ${decision.class}`);
+  console.log(`Reason:  ${decision.reason}`);
+  if (decision.matchedRule !== undefined) {
+    console.log(`Rule:    ${decision.matchedRule}`);
+  }
+  if (decision.segment !== undefined) {
+    console.log(`Segment: ${decision.segment}`);
+  }
   return 0;
+}
+
+interface FixtureCase {
+  name: string;
+  command: string;
+  expect: { action: string; class?: string; ruleId?: string };
+}
+
+async function runTest(pathArg: string | undefined): Promise<number> {
+  const path = pathArg ?? "tests/fixtures/cases.json";
+  let cases: FixtureCase[];
+  try {
+    cases = (await Bun.file(path).json()) as FixtureCase[];
+  } catch (err) {
+    process.stderr.write(`cc-shisa test: failed to load ${path}: ${(err as Error).message}\n`);
+    return 2;
+  }
+
+  let pass = 0;
+  let fail = 0;
+  for (const tc of cases) {
+    const d = evaluate(tc.command);
+    const ok =
+      d.action === tc.expect.action &&
+      (tc.expect.class === undefined || d.class === tc.expect.class) &&
+      (tc.expect.ruleId === undefined || d.matchedRule === tc.expect.ruleId);
+    if (ok) {
+      pass += 1;
+    } else {
+      fail += 1;
+      console.log(
+        `FAIL  ${tc.name}\n  cmd:      ${tc.command}\n  expected: ${tc.expect.action}${tc.expect.class ? `/${tc.expect.class}` : ""}${tc.expect.ruleId ? ` (${tc.expect.ruleId})` : ""}\n  got:      ${d.action}/${d.class}${d.matchedRule ? ` (${d.matchedRule})` : ""}`,
+      );
+    }
+  }
+  console.log(`\n${pass} pass, ${fail} fail (of ${cases.length})`);
+  return fail > 0 ? 1 : 0;
+}
+
+function notImplemented(name: string): number {
+  console.error(`cc-shisa ${name}: not implemented yet`);
+  return 1;
 }
 
 async function main(): Promise<number> {
@@ -49,11 +123,11 @@ async function main(): Promise<number> {
 
   switch (sub) {
     case "hook":
-      return emitFailSafeAsk();
+      return runHook();
     case "check":
-      return notImplemented("check");
+      return runCheck(argv[1]);
     case "test":
-      return notImplemented("test");
+      return runTest(argv[1]);
     case "init":
       return notImplemented("init");
     case "version":
