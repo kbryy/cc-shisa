@@ -1,4 +1,4 @@
 {
   "level": "safe",
-  "modules": ["_core", "coreutils-read", "git-read", "gh-read", "pnpm"]
+  "modules": ["_core", "coreutils", "git", "gh", "pnpm"]
 }

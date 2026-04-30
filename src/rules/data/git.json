@@ -1,5 +1,5 @@
 {
-  "name": "git-read",
+  "name": "git",
   "description": "Git read-only subcommands. Allowed silently.",
   "rules": [
     { "id": "git.status", "match": "ast", "binary": "git", "subcommand": "status", "class": "read", "reason": "git status" },

@@ -1,5 +1,5 @@
 {
-  "name": "coreutils-read",
+  "name": "coreutils",
   "description": "Read-only file, text, and system inspection commands. Allowed silently.",
   "rules": [
     {

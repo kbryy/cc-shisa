@@ -1,7 +1,7 @@
 import coreData from "./data/_core.json" with { type: "json" };
-import coreutilsReadData from "./data/coreutils-read.json" with { type: "json" };
-import gitReadData from "./data/git-read.json" with { type: "json" };
-import ghReadData from "./data/gh-read.json" with { type: "json" };
+import coreutilsData from "./data/coreutils.json" with { type: "json" };
+import gitData from "./data/git.json" with { type: "json" };
+import ghData from "./data/gh.json" with { type: "json" };
 import pnpmData from "./data/pnpm.json" with { type: "json" };
 import defaultProfileData from "./data/profiles/default.json" with { type: "json" };
 
@@ -9,9 +9,9 @@ import type { Action, Class, Level, Module, Profile, Rule } from "./types.ts";
 
 const MODULE_REGISTRY: Readonly<Record<string, unknown>> = {
   _core: coreData,
-  "coreutils-read": coreutilsReadData,
-  "git-read": gitReadData,
-  "gh-read": ghReadData,
+  coreutils: coreutilsData,
+  git: gitData,
+  gh: ghData,
   pnpm: pnpmData,
 };
 
