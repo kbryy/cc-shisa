@@ -87,25 +87,37 @@ plumbing breaking never lets a dangerous command through unprompted.
 A syntax error, an unknown binary, an unresolved variable, an internal
 exception — all collapse to `ask`.
 
-## Shadow mode
+## Logging
 
-For a careful rollout, run in shadow mode so cc-shisa decides on every
-Bash command but always answers `allow`, while logging what it would
-have done:
+cc-shisa supports two non-default modes that both write JSONL to
+`${XDG_STATE_HOME:-~/.local/state}/cc-shisa/decisions.jsonl`:
 
 ```bash
+# Audit-only: enforcement stays on, every decision is also logged.
+export CC_SHISA_LOG=1
+
+# Shadow: every decision is forced to "allow" and logged. The hook is
+# essentially a passive observer — useful for the first week to make
+# sure rules behave the way you expect before you trust them to block
+# real commands.
 export CC_SHISA_SHADOW=1
-# Hook runs normally but every decision is forced to "allow".
-# JSONL log: ${XDG_STATE_HOME:-~/.local/state}/cc-shisa/decisions.jsonl
 ```
 
-Run a normal Claude Code session for a week, then inspect the log:
+When both are set, `CC_SHISA_SHADOW` wins (one log entry per decision,
+action forced to allow).
 
-- Lines with `originalAction:"deny"` are commands cc-shisa would have
-  blocked. Verify they were genuinely dangerous.
-- Lines with `originalAction:"ask"` are commands it would have asked
-  about. Verify the prompts are bearable in volume.
-- `unset CC_SHISA_SHADOW` and restart Claude Code to enter enforce mode.
+Suggested rollout:
+
+1. Run with `CC_SHISA_SHADOW=1` for ~1 week.
+2. Inspect the log:
+   - `originalAction:"deny"` lines — would-have-blocked. Were they
+     genuinely dangerous?
+   - `originalAction:"ask"` lines — would-have-prompted. Is the
+     volume bearable?
+3. Tune `_core.json` if needed.
+4. `unset CC_SHISA_SHADOW` and restart Claude Code to enter enforce
+   mode. Optionally keep `CC_SHISA_LOG=1` set so you still capture an
+   audit trail.
 
 ## Try a single command
 

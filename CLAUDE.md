@@ -309,14 +309,20 @@ Init must:
 6. Otherwise append our hook spec.
 7. Write back with stable formatting (2-space indent).
 
-## Shadow mode
+## Logging and shadow mode
 
-Triggered by `CC_SHISA_SHADOW=1` in the environment. Behavior:
+Two env vars compose enforcement and audit behaviour:
 
-- Parser/classifier/policy run normally.
-- Just before output, override `Decision.action` to `allow`.
-- Append the original (pre-override) decision to JSONL log.
-- Append `(shadow: would have been <orig>)` to the reason for visibility.
+- `CC_SHISA_SHADOW=1` — force `Decision.action` to `allow` for every
+  command, append the original (pre-override) decision to JSONL, and
+  tag the reason with `(shadow: would have been <orig>)`. Use during
+  initial rollout when you do not yet trust the rules to block real
+  commands.
+- `CC_SHISA_LOG=1` — leave enforcement intact and just append the
+  decision to JSONL. Use as an ongoing audit trail in enforce mode.
+- Both set — shadow wins; one log line per decision, action forced
+  to allow.
+- Neither set — pass-through, no log.
 
 Log path: `${XDG_STATE_HOME:-$HOME/.local/state}/cc-shisa/decisions.jsonl`.
 Create parents as needed. Failures to write the log must be swallowed silently
