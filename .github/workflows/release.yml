@@ -4,6 +4,9 @@ on:
   push:
     tags:
       - "v*"
+  pull_request:
+    types: [closed]
+    branches: [main]
   workflow_dispatch:
     inputs:
       bump:
@@ -24,20 +27,21 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  prepare:
-    name: Prepare release
+  bump-pr:
+    name: Open release PR
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
-    outputs:
-      tag: ${{ steps.resolve.outputs.tag }}
-      version: ${{ steps.resolve.outputs.version }}
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - name: Bump version (workflow_dispatch only)
-        if: github.event_name == 'workflow_dispatch'
+      - name: Bump and open PR
         env:
           BUMP: ${{ inputs.bump }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
           current=$(jq -r .version package.json)
@@ -49,30 +53,71 @@ jobs:
             *) echo "unknown bump: $BUMP" >&2; exit 1 ;;
           esac
           new="${major}.${minor}.${patch}"
+          branch="release/v${new}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+
           jq --arg v "$new" '.version = $v' package.json > package.json.tmp
           mv package.json.tmp package.json
           sed -i "s/^export const VERSION = \".*\";$/export const VERSION = \"${new}\";/" src/version.ts
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git add package.json src/version.ts
           git commit -m "chore(release): v${new}"
-          git tag -a "v${new}" -m "release v${new}"
-          git push origin HEAD:main "v${new}"
+          git push origin "$branch"
+
+          gh pr create \
+            --base main \
+            --head "$branch" \
+            --title "chore(release): v${new}" \
+            --body "Bump version to v${new}. Auto-merge enabled — PR will land once CI is green."
+          gh pr merge "$branch" --auto --squash --delete-branch
+
+  prepare:
+    name: Prepare release
+    if: |
+      github.event_name == 'push' ||
+      (github.event_name == 'pull_request' &&
+       github.event.pull_request.merged == true &&
+       startsWith(github.event.pull_request.head.ref, 'release/v'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      tag: ${{ steps.resolve.outputs.tag }}
+      version: ${{ steps.resolve.outputs.version }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Tag merged release commit
+        if: github.event_name == 'pull_request'
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        run: |
+          set -euo pipefail
+          version="${HEAD_REF#release/v}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "v${version}" -m "release v${version}"
+          git push origin "v${version}"
+          echo "RELEASE_VERSION=${version}" >> "$GITHUB_ENV"
       - name: Resolve tag
         id: resolve
         env:
-          REF_NAME: ${{ github.ref_name }}
           EVENT: ${{ github.event_name }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
           set -euo pipefail
-          if [ "$EVENT" = "workflow_dispatch" ]; then
-            v=$(jq -r .version package.json)
-            tag="v${v}"
+          if [ "$EVENT" = "pull_request" ]; then
+            v="$RELEASE_VERSION"
           else
             tag="$REF_NAME"
             v="${tag#v}"
           fi
-          echo "tag=${tag}" >> "$GITHUB_OUTPUT"
+          echo "tag=v${v}" >> "$GITHUB_OUTPUT"
           echo "version=${v}" >> "$GITHUB_OUTPUT"
 
   build:

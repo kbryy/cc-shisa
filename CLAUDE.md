@@ -330,33 +330,42 @@ Create parents as needed. Failures to write the log must be swallowed silently
 
 ## Distribution: Homebrew tap
 
-Driven by `.github/workflows/release.yml`. Two trigger paths:
+Driven by `.github/workflows/release.yml`. Three trigger paths:
 
 - **Manual (default)** — Actions tab → Release → "Run workflow" →
-  pick `patch` / `minor` / `major`. The workflow bumps `package.json`
-  + `src/version.ts`, commits as `github-actions[bot]`, tags
-  `vX.Y.Z`, pushes commit and tag to main, and continues into the
-  build / release / tap-update jobs.
-- **Tag push** — `git tag -a vX.Y.Z … && git push --follow-tags`.
-  The prepare job notices the tag is already in place and skips
-  the bump step. Useful for hotfixes done at the CLI.
+  pick `patch` / `minor` / `major`. The `bump-pr` job bumps
+  `package.json` + `src/version.ts`, commits as
+  `github-actions[bot]`, pushes a `release/vX.Y.Z` branch, and
+  opens a PR with auto-merge (squash) enabled. CI runs on the PR;
+  once `test` is green and the PR auto-merges, the workflow's
+  `pull_request.closed` trigger fires the release jobs.
+- **PR-merged (continuation of manual)** — `pull_request: closed`
+  with `merged == true` and a head ref starting with `release/v`.
+  The `prepare` job tags the squashed commit on main as
+  `vX.Y.Z`, pushes the tag, and continues into build / release /
+  tap-update.
+- **Tag push (CLI fallback)** — `git tag -a vX.Y.Z … && git push
+  --follow-tags`. Used for hotfixes when the manual flow is not
+  practical. Prepare just resolves the tag from `github.ref_name`.
 
-Four sequential jobs:
+Five jobs gated by `if:` on event type:
 
-1. **prepare** — on `workflow_dispatch`, computes the next version
-   from the bump input, writes it into both files, commits, tags,
-   and pushes. On `push.tags`, just resolves the tag name. Either
-   way, exposes `tag` and `version` as job outputs.
-2. **build** — matrix over four Bun targets (darwin-arm64,
+1. **bump-pr** (workflow_dispatch only) — the PR-opening job.
+2. **prepare** — runs on `push.tags` or merged release PR. Tags
+   main HEAD when triggered by a PR merge; just resolves the tag
+   when triggered by an explicit tag push. Exposes `tag` and
+   `version` as job outputs.
+3. **build** — matrix over four Bun targets (darwin-arm64,
    darwin-x64, linux-arm64, linux-x64). Each runner checks out the
    prepared tag, runs `bun install --frozen-lockfile`, then
    `bun build --compile --minify --target=...`. The arm64-Mac and
-   linux-x64 variants smoke-test the produced binary (`version` +
-   hook fail-safe ask). Each job uploads `<asset>` + `<asset>.sha256`.
-3. **release** — downloads the four binary artifacts and uses
+   linux-x64 variants smoke-test the produced binary. Each job
+   uploads `<asset>` + `<asset>.sha256`.
+4. **release** — downloads the four binary artifacts and uses
    `softprops/action-gh-release@v2` to publish a Release at the
-   prepared tag with auto-generated notes and `fail_on_unmatched_files`.
-4. **update-tap** — checks out `kbryy/homebrew-tap` using the
+   prepared tag with auto-generated notes and
+   `fail_on_unmatched_files`.
+5. **update-tap** — checks out `kbryy/homebrew-tap` using the
    `HOMEBREW_TAP_GITHUB_TOKEN` secret, renders `Formula/cc-shisa.rb`
    from the four sha256 outputs and the resolved version, commits as
    `github-actions[bot]`, and pushes.
