@@ -1,0 +1,24 @@
+{
+  "name": "brew",
+  "description": "Homebrew read-only subcommands. Skips install/uninstall/upgrade/update/tap/cleanup and other write verbs.",
+  "rules": [
+    { "id": "brew.list", "match": "ast", "binary": "brew", "subcommand": "list", "class": "read", "reason": "brew list" },
+    { "id": "brew.ls", "match": "ast", "binary": "brew", "subcommand": "ls", "class": "read", "reason": "brew ls" },
+    { "id": "brew.info", "match": "ast", "binary": "brew", "subcommand": "info", "class": "read", "reason": "brew info" },
+    { "id": "brew.abv", "match": "ast", "binary": "brew", "subcommand": "abv", "class": "read", "reason": "brew abv" },
+    { "id": "brew.search", "match": "ast", "binary": "brew", "subcommand": "search", "class": "read", "reason": "brew search" },
+    { "id": "brew.deps", "match": "ast", "binary": "brew", "subcommand": "deps", "class": "read", "reason": "brew deps" },
+    { "id": "brew.uses", "match": "ast", "binary": "brew", "subcommand": "uses", "class": "read", "reason": "brew uses" },
+    { "id": "brew.leaves", "match": "ast", "binary": "brew", "subcommand": "leaves", "class": "read", "reason": "brew leaves" },
+    { "id": "brew.outdated", "match": "ast", "binary": "brew", "subcommand": "outdated", "class": "read", "reason": "brew outdated" },
+    { "id": "brew.config", "match": "ast", "binary": "brew", "subcommand": "config", "class": "read", "reason": "brew config" },
+    { "id": "brew.doctor", "match": "ast", "binary": "brew", "subcommand": "doctor", "class": "read", "reason": "brew doctor" },
+    { "id": "brew.formulae", "match": "ast", "binary": "brew", "subcommand": "formulae", "class": "read", "reason": "brew formulae" },
+    { "id": "brew.casks", "match": "ast", "binary": "brew", "subcommand": "casks", "class": "read", "reason": "brew casks" },
+    { "id": "brew.log", "match": "ast", "binary": "brew", "subcommand": "log", "class": "read", "reason": "brew log <formula>" },
+    { "id": "brew.commands", "match": "ast", "binary": "brew", "subcommand": "commands", "class": "read", "reason": "brew commands" },
+    { "id": "brew.help", "match": "ast", "binary": "brew", "subcommand": "help", "class": "read", "reason": "brew help" },
+    { "id": "brew.analytics.state", "match": "ast", "binary": "brew", "subcommand": ["analytics", "state"], "class": "read", "reason": "brew analytics state" },
+    { "id": "brew.version-flag", "match": "ast", "binary": "brew", "any_flags": ["--version", "-v"], "class": "read", "reason": "brew --version" }
+  ]
+}

@@ -9,6 +9,7 @@ import yarnData from "./data/yarn.json" with { type: "json" };
 import dockerData from "./data/docker.json" with { type: "json" };
 import kubectlData from "./data/kubectl.json" with { type: "json" };
 import cargoData from "./data/cargo.json" with { type: "json" };
+import brewData from "./data/brew.json" with { type: "json" };
 import defaultProfileData from "./data/profiles/default.json" with { type: "json" };
 
 import type { Action, Class, Level, Module, Profile, Rule } from "./types.ts";
@@ -28,6 +29,7 @@ export const BUILTIN_MODULES: Readonly<Record<string, unknown>> = {
   docker: dockerData,
   kubectl: kubectlData,
   cargo: cargoData,
+  brew: brewData,
 };
 
 const BUILTIN_NAMES: ReadonlySet<string> = new Set(Object.keys(BUILTIN_MODULES));
