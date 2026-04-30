@@ -91,10 +91,9 @@ export function matchAst(seg: Segment, rule: AstRule): boolean {
   }
 
   if (rule.path_globs) {
+    const globs = rule.path_globs;
     const paths = extractPaths(seg.args);
-    const matchesAny = paths.some((p) =>
-      rule.path_globs!.some((g) => matchGlob(g, p)),
-    );
+    const matchesAny = paths.some((p) => globs.some((g) => matchGlob(g, p)));
     if (!matchesAny) return false;
   }
 
