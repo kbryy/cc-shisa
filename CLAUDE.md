@@ -113,7 +113,8 @@ cc-shisa/
 ├── README.md                            ← public-facing summary (stub for now)
 ├── LICENSE                              ← MIT (already present)
 ├── package.json                         ← bun install entry
-├── bun.lockb                            ← committed lockfile
+├── bun.lock                             ← committed lockfile (Bun 1.3+ text format)
+├── mise.toml                            ← pins bun version for reproducible builds
 ├── tsconfig.json
 ├── .gitignore
 ├── src/
