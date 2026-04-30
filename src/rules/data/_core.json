@@ -1,0 +1,150 @@
+{
+  "name": "_core",
+  "description": "Critical patterns shipped with cc-shisa. Always loaded; cannot be disabled.",
+  "rules": [
+    {
+      "id": "core.rm.rf.root",
+      "match": "ast",
+      "binary": "rm",
+      "flags": ["-r", "-f"],
+      "path_globs": ["/"],
+      "class": "dangerous",
+      "reason": "rm -rf against filesystem root"
+    },
+    {
+      "id": "core.rm.rf.home",
+      "match": "ast",
+      "binary": "rm",
+      "flags": ["-r", "-f"],
+      "path_globs": ["$HOME", "~", "~/", "$HOME/", "/Users/*"],
+      "class": "dangerous",
+      "reason": "rm -rf against home directory"
+    },
+    {
+      "id": "core.rm.rf.system",
+      "match": "ast",
+      "binary": "rm",
+      "flags": ["-r", "-f"],
+      "path_globs": [
+        "/etc/**",
+        "/usr/**",
+        "/bin/**",
+        "/sbin/**",
+        "/var/**",
+        "/boot/**",
+        "/System/**",
+        "/Library/**"
+      ],
+      "class": "dangerous",
+      "reason": "rm -rf against system path"
+    },
+    {
+      "id": "core.rm.rf.dotgit",
+      "match": "ast",
+      "binary": "rm",
+      "flags": ["-r", "-f"],
+      "path_globs": ["**/.git", ".git", "**/.git/"],
+      "class": "irreversible",
+      "reason": "removing .git directory destroys repository history"
+    },
+    {
+      "id": "core.dd.disk",
+      "match": "ast",
+      "binary": "dd",
+      "any_flags": [
+        "of=/dev/disk*",
+        "of=/dev/sd*",
+        "of=/dev/nvme*",
+        "of=/dev/hd*",
+        "of=/dev/rdisk*"
+      ],
+      "class": "dangerous",
+      "reason": "dd writing to a raw device"
+    },
+    {
+      "id": "core.mkfs",
+      "match": "ast",
+      "binaries": [
+        "mkfs",
+        "mkfs.ext2",
+        "mkfs.ext3",
+        "mkfs.ext4",
+        "mkfs.xfs",
+        "mkfs.btrfs",
+        "mkfs.fat",
+        "mkfs.vfat",
+        "mkfs.ntfs",
+        "mkfs.exfat",
+        "mkfs.hfsplus",
+        "newfs",
+        "newfs_hfs",
+        "newfs_apfs"
+      ],
+      "class": "dangerous",
+      "reason": "creating a filesystem destroys all data on the target"
+    },
+    {
+      "id": "core.fdisk.write",
+      "match": "ast",
+      "binaries": ["fdisk", "gdisk", "parted", "diskutil"],
+      "class": "dangerous",
+      "reason": "partition table tools can destroy disks"
+    },
+    {
+      "id": "core.fork.bomb",
+      "match": "regex",
+      "pattern": ":\\(\\)\\s*\\{\\s*:\\s*\\|\\s*:\\s*&\\s*\\}\\s*;\\s*:",
+      "class": "dangerous",
+      "reason": "classic bash fork bomb pattern"
+    },
+    {
+      "id": "core.curl.pipe.sh",
+      "match": "regex",
+      "pattern": "(curl|wget)\\s+[^|]*\\|\\s*(sh|bash|zsh|fish|dash|ksh)\\b",
+      "class": "arbitrary-code",
+      "reason": "piping remote content directly into a shell"
+    },
+    {
+      "id": "core.git.push.force",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "push",
+      "any_flags": ["--force", "-f", "--force-with-lease"],
+      "class": "irreversible",
+      "reason": "force push rewrites remote history"
+    },
+    {
+      "id": "core.git.reset.hard",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "reset",
+      "flags": ["--hard"],
+      "class": "irreversible",
+      "reason": "git reset --hard discards uncommitted changes"
+    },
+    {
+      "id": "core.chmod.777.recursive",
+      "match": "ast",
+      "binary": "chmod",
+      "flags": ["-R"],
+      "any_flags": ["777", "a+rwx", "a=rwx"],
+      "class": "dangerous",
+      "reason": "recursive world-writable permission change"
+    },
+    {
+      "id": "core.eval",
+      "match": "ast",
+      "binary": "eval",
+      "class": "arbitrary-code",
+      "reason": "eval executes a constructed string"
+    },
+    {
+      "id": "core.shell.dash-c",
+      "match": "ast",
+      "binaries": ["bash", "sh", "zsh", "ksh", "dash"],
+      "any_flags": ["-c"],
+      "class": "arbitrary-code",
+      "reason": "shell -c executes a constructed string"
+    }
+  ]
+}

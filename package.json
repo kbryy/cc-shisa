@@ -1,0 +1,35 @@
+{
+  "name": "cc-shisa",
+  "version": "0.0.0-dev",
+  "description": "Static-analysis PreToolUse hook for Claude Code's Bash tool — the Okinawan guardian that lets safe commands flow and stops the dangerous ones.",
+  "type": "module",
+  "private": true,
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kbryy/cc-shisa.git"
+  },
+  "homepage": "https://github.com/kbryy/cc-shisa",
+  "bin": {
+    "cc-shisa": "./src/cli.ts"
+  },
+  "scripts": {
+    "dev": "bun run src/cli.ts",
+    "test": "bun test",
+    "test:coverage": "bun test --coverage",
+    "build": "bun build --compile --minify --target=bun-darwin-arm64 ./src/cli.ts --outfile=cc-shisa",
+    "build:darwin-arm64": "bun build --compile --minify --target=bun-darwin-arm64 ./src/cli.ts --outfile=cc-shisa-darwin-arm64",
+    "build:darwin-x64": "bun build --compile --minify --target=bun-darwin-x64 ./src/cli.ts --outfile=cc-shisa-darwin-x64",
+    "build:linux-arm64": "bun build --compile --minify --target=bun-linux-arm64 ./src/cli.ts --outfile=cc-shisa-linux-arm64",
+    "build:linux-x64": "bun build --compile --minify --target=bun-linux-x64 ./src/cli.ts --outfile=cc-shisa-linux-x64",
+    "build:all": "bun run build:darwin-arm64 && bun run build:darwin-x64 && bun run build:linux-arm64 && bun run build:linux-x64",
+    "typecheck": "bun --bun tsc --noEmit"
+  },
+  "dependencies": {
+    "bash-parser": "^0.5.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.6.0"
+  }
+}

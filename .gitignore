@@ -1,0 +1,25 @@
+node_modules/
+.DS_Store
+
+# Compiled binaries from `bun build --compile`
+cc-shisa
+cc-shisa-*
+
+# Local logs / state
+*.log
+.local-state/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+.cursor/
+
+# OS / temp
+.~lock.*
+*.tmp
+
+# Test coverage
+coverage/
+.bun-coverage/
