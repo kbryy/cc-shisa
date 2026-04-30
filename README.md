@@ -141,10 +141,56 @@ This runs the bundled fixture data through the same pipeline the hook
 uses, useful for verifying an installed binary against a known-good
 corpus.
 
+## Modules
+
+cc-shisa ships a mandatory safety baseline (`_core`) plus a handful
+of opt-in modules that classify common workflow commands as
+read-only. After install, only `_core` is active; pick the optional
+modules you actually use:
+
+```bash
+cc-shisa modules                         # list everything with status
+cc-shisa modules enable coreutils git    # opt in
+cc-shisa modules disable gh              # opt out
+```
+
+This writes `~/.config/cc-shisa/profile.json`. Restart Claude Code
+(or just let the next hook fire) to pick up the change.
+
+Built-in modules:
+
+| Name        | Default | What it does                                  |
+|-------------|---------|-----------------------------------------------|
+| `_core`     | always  | 15 destructive patterns; **cannot be disabled** |
+| `coreutils` | off     | `ls`/`cat`/`grep`/`wc`/`pwd`/...              |
+| `git`       | off     | `git status`/`log`/`diff`/`show`/...          |
+| `gh`        | off     | `gh pr list`/`view`, `gh issue list`/...      |
+| `pnpm`      | off     | `pnpm test`/`typecheck`/`lint`/...            |
+
+Custom modules live at `~/.config/cc-shisa/modules/*.json`. Drop a
+file like:
+
+```json
+{
+  "name": "our-team",
+  "rules": [
+    {
+      "id": "team.no-prod",
+      "match": "regex",
+      "pattern": "kubectl.*--context=prod",
+      "class": "dangerous",
+      "reason": "Touching prod cluster requires the on-call hat"
+    }
+  ]
+}
+```
+
+User modules are auto-loaded — no `enable` step needed. They cannot
+loosen `_core` (strictest-class wins), so they are safe to drop in.
+
 ## Configuration
 
-cc-shisa is intentionally configuration-light at v0.1. The single
-profile is `safe`, which maps:
+The single profile is `safe`, which maps:
 
 | Class            | Action |
 |------------------|--------|

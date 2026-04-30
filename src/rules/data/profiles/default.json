@@ -1,4 +1,4 @@
 {
   "level": "safe",
-  "modules": ["_core", "coreutils", "git", "gh", "pnpm"]
+  "modules": ["_core"]
 }

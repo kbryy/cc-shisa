@@ -6,6 +6,13 @@
 
 import { readInput, writeOutput } from "./hookio/index.ts";
 import { defaultSettingsPath, runInit as runInitImpl } from "./init/index.ts";
+import {
+  disableModules,
+  enableModules,
+  listModules,
+  profilePathHint,
+  type ChangeResult,
+} from "./modules/index.ts";
 import { evaluate } from "./pipeline.ts";
 import { apply as applyShadow } from "./shadow/index.ts";
 import { VERSION } from "./version.ts";
@@ -14,16 +21,20 @@ function printHelp(): void {
   console.log(`cc-shisa — static analysis hook for Claude Code Bash tool
 
 Usage:
-  cc-shisa hook                  Read PreToolUse JSON from stdin, write decision to stdout
-  cc-shisa check '<command>'     Evaluate a command and print the decision
-  cc-shisa test [path]           Run testdata cases end-to-end
-  cc-shisa init                  Register hook in ~/.claude/settings.json (stub)
-  cc-shisa version               Print version
+  cc-shisa hook                       Read PreToolUse JSON from stdin, write decision to stdout
+  cc-shisa check '<command>'          Evaluate a command and print the decision
+  cc-shisa test [path]                Run testdata cases end-to-end
+  cc-shisa init                       Register hook in ~/.claude/settings.json
+  cc-shisa modules [list]             List built-in and user modules with on/off status
+  cc-shisa modules enable <name>...   Add modules to ~/.config/cc-shisa/profile.json
+  cc-shisa modules disable <name>...  Remove modules from ~/.config/cc-shisa/profile.json
+  cc-shisa version                    Print version
 
 Environment:
-  CC_SHISA_SHADOW=1              Force allow on every decision and log to ~/.local/state/cc-shisa/decisions.jsonl
-  CC_SHISA_LOG=1                 Keep enforcement intact and log every decision (audit trail)
-  CC_SHISA_DEBUG=1               Print debug info to stderr`);
+  CC_SHISA_SHADOW=1                   Force allow on every decision and log to ~/.local/state/cc-shisa/decisions.jsonl
+  CC_SHISA_LOG=1                      Keep enforcement intact and log every decision (audit trail)
+  CC_SHISA_DEBUG=1                    Print debug info to stderr
+  XDG_CONFIG_HOME=<path>              Override the user config root (default: ~/.config)`);
 }
 
 function emitFailSafeAsk(reason: string): void {
@@ -116,6 +127,40 @@ async function runTest(pathArg: string | undefined): Promise<number> {
   return fail > 0 ? 1 : 0;
 }
 
+function runModules(args: readonly string[]): number {
+  const sub = args[0] ?? "list";
+  switch (sub) {
+    case "list":
+      console.log(listModules());
+      return 0;
+    case "enable":
+      return runModulesChange(args.slice(1), enableModules);
+    case "disable":
+      return runModulesChange(args.slice(1), disableModules);
+    default:
+      process.stderr.write(`cc-shisa modules: unknown subcommand "${sub}"\n`);
+      return 2;
+  }
+}
+
+function runModulesChange(
+  names: readonly string[],
+  fn: (names: readonly string[]) => ChangeResult[],
+): number {
+  if (names.length === 0) {
+    process.stderr.write("usage: cc-shisa modules <enable|disable> <name>...\n");
+    return 2;
+  }
+  const results = fn(names);
+  for (const r of results) {
+    console.log(`${r.name}: ${r.status}`);
+  }
+  if (results.some((r) => r.status === "added" || r.status === "removed")) {
+    console.log(`profile: ${profilePathHint()}`);
+  }
+  return results.some((r) => r.status === "unknown") ? 1 : 0;
+}
+
 function runInit(pathArg: string | undefined): number {
   let path: string;
   try {
@@ -142,6 +187,8 @@ async function main(): Promise<number> {
       return runTest(argv[1]);
     case "init":
       return runInit(argv[1]);
+    case "modules":
+      return runModules(argv.slice(1));
     case "version":
     case "-v":
     case "--version":

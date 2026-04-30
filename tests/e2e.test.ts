@@ -3,7 +3,11 @@ import { describe, expect, test } from "bun:test";
 import casesData from "./fixtures/cases.json" with { type: "json" };
 import redteamData from "./fixtures/redteam.json" with { type: "json" };
 
-import { evaluate } from "../src/pipeline.ts";
+import { classify } from "../src/classifier/index.ts";
+import { parse } from "../src/parser/index.ts";
+import { decide } from "../src/policy/index.ts";
+import { BUILTIN_MODULES, loadModule, safeLevel } from "../src/rules/index.ts";
+import type { Decision } from "../src/policy/types.ts";
 
 interface FixtureCase {
   name: string;
@@ -14,10 +18,20 @@ interface FixtureCase {
 const cases: FixtureCase[] = casesData as FixtureCase[];
 const redteam: FixtureCase[] = redteamData as FixtureCase[];
 
+const allBuiltinModules = Object.keys(BUILTIN_MODULES).map(loadModule);
+const level = safeLevel();
+const fullProfile = { level: "safe" as const, modules: Object.keys(BUILTIN_MODULES) };
+
+function evaluateWithAll(command: string): Decision {
+  const result = parse(command);
+  const cls = classify(result, allBuiltinModules);
+  return decide(cls, fullProfile, level);
+}
+
 describe("e2e — cases.json fixtures", () => {
   for (const tc of cases) {
     test(tc.name, () => {
-      const d = evaluate(tc.command);
+      const d = evaluateWithAll(tc.command);
       expect(d.action).toBe(tc.expect.action as never);
       if (tc.expect.class !== undefined) {
         expect(d.class).toBe(tc.expect.class as never);
@@ -32,7 +46,7 @@ describe("e2e — cases.json fixtures", () => {
 describe("e2e — redteam.json fixtures", () => {
   for (const tc of redteam) {
     test(tc.name, () => {
-      const d = evaluate(tc.command);
+      const d = evaluateWithAll(tc.command);
       expect(d.action).toBe(tc.expect.action as never);
       if (tc.expect.class !== undefined) {
         expect(d.class).toBe(tc.expect.class as never);
@@ -44,12 +58,18 @@ describe("e2e — redteam.json fixtures", () => {
   }
 });
 
+const SUBPROCESS_ENV = {
+  ...process.env,
+  XDG_CONFIG_HOME: `${process.cwd()}/tests/fixtures/full-profile`,
+};
+
 describe("e2e — full hook protocol via subprocess", () => {
   test("dangerous command → deny JSON, exit 0", async () => {
     const proc = Bun.spawn(["bun", "run", "src/cli.ts", "hook"], {
       stdin: "pipe",
       stdout: "pipe",
       stderr: "pipe",
+      env: SUBPROCESS_ENV,
     });
     proc.stdin.write(
       JSON.stringify({
@@ -74,6 +94,7 @@ describe("e2e — full hook protocol via subprocess", () => {
       stdin: "pipe",
       stdout: "pipe",
       stderr: "pipe",
+      env: SUBPROCESS_ENV,
     });
     proc.stdin.write(
       JSON.stringify({
@@ -96,6 +117,7 @@ describe("e2e — full hook protocol via subprocess", () => {
       stdin: "pipe",
       stdout: "pipe",
       stderr: "pipe",
+      env: SUBPROCESS_ENV,
     });
     proc.stdin.write(
       JSON.stringify({
@@ -118,6 +140,7 @@ describe("e2e — full hook protocol via subprocess", () => {
       stdin: "pipe",
       stdout: "pipe",
       stderr: "pipe",
+      env: SUBPROCESS_ENV,
     });
     proc.stdin.write("not json");
     await proc.stdin.end();
@@ -135,6 +158,7 @@ describe("e2e — full hook protocol via subprocess", () => {
       stdin: "pipe",
       stdout: "pipe",
       stderr: "pipe",
+      env: SUBPROCESS_ENV,
     });
     proc.stdin.write(
       JSON.stringify({
