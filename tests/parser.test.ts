@@ -128,12 +128,12 @@ const cases: Case[] = [
     },
   },
   {
-    name: "parameter expansion marks hasExpr",
+    name: "parameter expansion preserves raw text and marks hasExpr",
     input: "rm -rf $HOME",
     expect: (s) => {
       expect(seg(s, 0).binary).toBe("rm");
       expect(seg(s, 0).hasExpr).toBe(true);
-      expect(seg(s, 0).args).toEqual(["-rf", "<expr>"]);
+      expect(seg(s, 0).args).toEqual(["-rf", "$HOME"]);
     },
   },
   {

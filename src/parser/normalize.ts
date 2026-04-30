@@ -37,7 +37,7 @@ export function resolveWord(word: Word): ResolvedToken {
   const lit = litString(word);
   return lit !== null
     ? { text: lit, isLiteral: true }
-    : { text: "<expr>", isLiteral: false };
+    : { text: word.text, isLiteral: false };
 }
 
 /**
