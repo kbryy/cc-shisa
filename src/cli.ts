@@ -1,5 +1,6 @@
 #!/usr/bin/env bun
 import { runCheck } from "./cli/check.ts";
+import { runCompletion } from "./cli/completion.ts";
 import { runHere } from "./cli/here.ts";
 import { printHelp } from "./cli/help.ts";
 import { runHook } from "./cli/hook.ts";
@@ -34,6 +35,8 @@ async function main(): Promise<number> {
       return runLocations(argv.slice(1));
     case "logs":
       return runLogs(argv.slice(1));
+    case "completion":
+      return runCompletion(argv.slice(1));
     case "version":
     case "-v":
     case "--version":

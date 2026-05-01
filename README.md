@@ -180,6 +180,43 @@ Whitelist project-specific libraries at
 The strictest match wins — a script that imports `pandas` AND shells
 out is still `dangerous`.
 
+## Tab completion
+
+Homebrew installs completions automatically — restart your shell after
+`brew install` and `cc-shisa <TAB>` should work.
+
+To install manually (or to refresh):
+
+```bash
+# bash
+cc-shisa completion bash > "$(brew --prefix)/etc/bash_completion.d/cc-shisa"
+
+# zsh
+cc-shisa completion zsh > "$(brew --prefix)/share/zsh/site-functions/_cc-shisa"
+# Then restart zsh, or run: autoload -Uz compinit && compinit
+
+# fish
+cc-shisa completion fish > ~/.config/fish/completions/cc-shisa.fish
+```
+
+Or for a single shell session:
+
+```bash
+# bash
+eval "$(cc-shisa completion bash)"
+
+# zsh
+eval "$(cc-shisa completion zsh)"
+
+# fish
+cc-shisa completion fish | source
+```
+
+Completion covers every subcommand, level (`strict|safe|loose`), class
+(`dangerous`, `local.read`, `remote.write`, ...), action (`allow|ask|deny`),
+and dynamically resolves enabled module names for `cc-shisa modules
+enable|disable`.
+
 ## Per-directory profile
 
 Sometimes you want stricter behavior in `~/work` than in `~/personal-projects`,
