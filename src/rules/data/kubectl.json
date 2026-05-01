@@ -201,6 +201,388 @@
       ],
       "class": "remote.read",
       "reason": "kubectl plugin list"
+    },
+    {
+      "id": "kubectl.apply",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "apply",
+      "class": "remote.write",
+      "reason": "kubectl apply"
+    },
+    {
+      "id": "kubectl.create",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "create",
+      "class": "remote.write",
+      "reason": "kubectl create"
+    },
+    {
+      "id": "kubectl.replace",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "replace",
+      "class": "remote.write",
+      "reason": "kubectl replace"
+    },
+    {
+      "id": "kubectl.patch",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "patch",
+      "class": "remote.write",
+      "reason": "kubectl patch"
+    },
+    {
+      "id": "kubectl.edit",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "edit",
+      "class": "remote.write",
+      "reason": "kubectl edit"
+    },
+    {
+      "id": "kubectl.set",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "set",
+      "class": "remote.write",
+      "reason": "kubectl set image/env/resources/etc."
+    },
+    {
+      "id": "kubectl.label",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "label",
+      "class": "remote.write",
+      "reason": "kubectl label"
+    },
+    {
+      "id": "kubectl.annotate",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "annotate",
+      "class": "remote.write",
+      "reason": "kubectl annotate"
+    },
+    {
+      "id": "kubectl.scale",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "scale",
+      "class": "remote.write",
+      "reason": "kubectl scale"
+    },
+    {
+      "id": "kubectl.autoscale",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "autoscale",
+      "class": "remote.write",
+      "reason": "kubectl autoscale"
+    },
+    {
+      "id": "kubectl.expose",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "expose",
+      "class": "remote.write",
+      "reason": "kubectl expose"
+    },
+    {
+      "id": "kubectl.run",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "run",
+      "class": "remote.write",
+      "reason": "kubectl run (creates a Pod)"
+    },
+    {
+      "id": "kubectl.cp",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "cp",
+      "class": "remote.write",
+      "reason": "kubectl cp (copies between pod and host)"
+    },
+    {
+      "id": "kubectl.exec",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "exec",
+      "class": "dynamic",
+      "reason": "kubectl exec runs an arbitrary command in a pod"
+    },
+    {
+      "id": "kubectl.attach",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "attach",
+      "class": "dynamic",
+      "reason": "kubectl attach (interactive)"
+    },
+    {
+      "id": "kubectl.port-forward",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "port-forward",
+      "class": "remote.write",
+      "reason": "kubectl port-forward (opens cluster-side tunnel)"
+    },
+    {
+      "id": "kubectl.proxy",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "proxy",
+      "class": "remote.write",
+      "reason": "kubectl proxy (opens API proxy)"
+    },
+    {
+      "id": "kubectl.cordon",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "cordon",
+      "class": "remote.write",
+      "reason": "kubectl cordon (marks node unschedulable)"
+    },
+    {
+      "id": "kubectl.uncordon",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "uncordon",
+      "class": "remote.write",
+      "reason": "kubectl uncordon"
+    },
+    {
+      "id": "kubectl.taint",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "taint",
+      "class": "remote.write",
+      "reason": "kubectl taint"
+    },
+    {
+      "id": "kubectl.rollout.restart",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "rollout",
+        "restart"
+      ],
+      "class": "remote.write",
+      "reason": "kubectl rollout restart"
+    },
+    {
+      "id": "kubectl.rollout.pause",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "rollout",
+        "pause"
+      ],
+      "class": "remote.write",
+      "reason": "kubectl rollout pause"
+    },
+    {
+      "id": "kubectl.rollout.resume",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "rollout",
+        "resume"
+      ],
+      "class": "remote.write",
+      "reason": "kubectl rollout resume"
+    },
+    {
+      "id": "kubectl.rollout.undo",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "rollout",
+        "undo"
+      ],
+      "class": "remote.write",
+      "reason": "kubectl rollout undo (rolls back a deployment)"
+    },
+    {
+      "id": "kubectl.rollout.status",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "rollout",
+        "status"
+      ],
+      "class": "remote.read",
+      "reason": "kubectl rollout status"
+    },
+    {
+      "id": "kubectl.rollout.history",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "rollout",
+        "history"
+      ],
+      "class": "remote.read",
+      "reason": "kubectl rollout history"
+    },
+    {
+      "id": "kubectl.config.set-context",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "config",
+        "set-context"
+      ],
+      "class": "local.write",
+      "reason": "kubectl config set-context (writes ~/.kube/config)"
+    },
+    {
+      "id": "kubectl.config.use-context",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "config",
+        "use-context"
+      ],
+      "class": "local.write",
+      "reason": "kubectl config use-context"
+    },
+    {
+      "id": "kubectl.config.set-cluster",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "config",
+        "set-cluster"
+      ],
+      "class": "local.write",
+      "reason": "kubectl config set-cluster"
+    },
+    {
+      "id": "kubectl.config.set-credentials",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "config",
+        "set-credentials"
+      ],
+      "class": "local.write",
+      "reason": "kubectl config set-credentials"
+    },
+    {
+      "id": "kubectl.config.set",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "config",
+        "set"
+      ],
+      "class": "local.write",
+      "reason": "kubectl config set"
+    },
+    {
+      "id": "kubectl.config.unset",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "config",
+        "unset"
+      ],
+      "class": "local.write",
+      "reason": "kubectl config unset"
+    },
+    {
+      "id": "kubectl.config.delete-context",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "config",
+        "delete-context"
+      ],
+      "class": "local.write.destroy",
+      "reason": "kubectl config delete-context"
+    },
+    {
+      "id": "kubectl.config.delete-cluster",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "config",
+        "delete-cluster"
+      ],
+      "class": "local.write.destroy",
+      "reason": "kubectl config delete-cluster"
+    },
+    {
+      "id": "kubectl.config.delete-user",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "config",
+        "delete-user"
+      ],
+      "class": "local.write.destroy",
+      "reason": "kubectl config delete-user"
+    },
+    {
+      "id": "kubectl.config.rename-context",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "config",
+        "rename-context"
+      ],
+      "class": "local.write",
+      "reason": "kubectl config rename-context"
+    },
+    {
+      "id": "kubectl.delete",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "delete",
+      "class": "remote.write.destroy",
+      "reason": "kubectl delete (removes resources from the cluster)"
+    },
+    {
+      "id": "kubectl.drain",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "drain",
+      "class": "remote.write.destroy",
+      "reason": "kubectl drain (evicts pods from a node)"
+    },
+    {
+      "id": "kubectl.certificate.approve",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "certificate",
+        "approve"
+      ],
+      "class": "remote.write",
+      "reason": "kubectl certificate approve"
+    },
+    {
+      "id": "kubectl.certificate.deny",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "certificate",
+        "deny"
+      ],
+      "class": "remote.write",
+      "reason": "kubectl certificate deny"
+    },
+    {
+      "id": "kubectl.debug",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "debug",
+      "class": "remote.write",
+      "reason": "kubectl debug (creates an ephemeral debug container)"
     }
   ]
 }

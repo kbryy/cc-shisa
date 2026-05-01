@@ -502,19 +502,21 @@
     }
   },
   {
-    "name": "docker run asks",
+    "name": "docker run allows (creates container; image pull may be needed)",
     "command": "docker run -it ubuntu bash",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "docker.run"
     }
   },
   {
-    "name": "docker exec asks",
+    "name": "docker exec asks (dynamic, runs arbitrary command)",
     "command": "docker exec -it foo sh",
     "expect": {
       "action": "ask",
-      "class": "unknown"
+      "class": "dynamic",
+      "ruleId": "docker.exec"
     }
   },
   {
@@ -545,19 +547,21 @@
     }
   },
   {
-    "name": "kubectl apply asks",
+    "name": "kubectl apply allows (safe level)",
     "command": "kubectl apply -f manifest.yaml",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "kubectl.apply"
     }
   },
   {
-    "name": "kubectl delete asks",
+    "name": "kubectl delete asks (destroys cluster resource)",
     "command": "kubectl delete pod foo",
     "expect": {
       "action": "ask",
-      "class": "unknown"
+      "class": "remote.write.destroy",
+      "ruleId": "kubectl.delete"
     }
   },
   {
@@ -2574,6 +2578,231 @@
       "action": "ask",
       "class": "dynamic",
       "ruleId": "bun.x"
+    }
+  },
+  {
+    "name": "docker pull allows",
+    "command": "docker pull alpine",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "docker.pull"
+    }
+  },
+  {
+    "name": "docker push allows (safe)",
+    "command": "docker push myimg:latest",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "docker.push"
+    }
+  },
+  {
+    "name": "docker build allows",
+    "command": "docker build -t app .",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "docker.build"
+    }
+  },
+  {
+    "name": "docker stop allows",
+    "command": "docker stop foo",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "docker.stop"
+    }
+  },
+  {
+    "name": "docker rm asks (destroy)",
+    "command": "docker rm foo",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "docker.rm"
+    }
+  },
+  {
+    "name": "docker rmi asks (destroy)",
+    "command": "docker rmi alpine",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "docker.rmi"
+    }
+  },
+  {
+    "name": "docker system prune asks",
+    "command": "docker system prune -af",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "docker.system.prune"
+    }
+  },
+  {
+    "name": "docker volume rm asks",
+    "command": "docker volume rm myvol",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "docker.volume.rm"
+    }
+  },
+  {
+    "name": "docker compose up allows",
+    "command": "docker compose up -d",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "docker.compose.up"
+    }
+  },
+  {
+    "name": "docker compose down asks (tears services down)",
+    "command": "docker compose down",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "docker.compose.down"
+    }
+  },
+  {
+    "name": "docker compose exec asks (dynamic)",
+    "command": "docker compose exec web sh",
+    "expect": {
+      "action": "ask",
+      "class": "dynamic",
+      "ruleId": "docker.compose.exec"
+    }
+  },
+  {
+    "name": "docker login allows",
+    "command": "docker login ghcr.io",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "docker.login"
+    }
+  },
+  {
+    "name": "docker swarm leave asks",
+    "command": "docker swarm leave --force",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "docker.swarm.leave"
+    }
+  },
+  {
+    "name": "docker context rm asks",
+    "command": "docker context rm staging",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "docker.context.rm"
+    }
+  },
+  {
+    "name": "kubectl create allows",
+    "command": "kubectl create deployment app --image=alpine",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "kubectl.create"
+    }
+  },
+  {
+    "name": "kubectl edit allows",
+    "command": "kubectl edit deployment app",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "kubectl.edit"
+    }
+  },
+  {
+    "name": "kubectl scale allows",
+    "command": "kubectl scale deployment app --replicas=3",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "kubectl.scale"
+    }
+  },
+  {
+    "name": "kubectl rollout restart allows",
+    "command": "kubectl rollout restart deployment/app",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "kubectl.rollout.restart"
+    }
+  },
+  {
+    "name": "kubectl rollout undo allows",
+    "command": "kubectl rollout undo deployment/app",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "kubectl.rollout.undo"
+    }
+  },
+  {
+    "name": "kubectl drain asks (evicts pods)",
+    "command": "kubectl drain node-1 --ignore-daemonsets",
+    "expect": {
+      "action": "ask",
+      "class": "remote.write.destroy",
+      "ruleId": "kubectl.drain"
+    }
+  },
+  {
+    "name": "kubectl exec asks (dynamic)",
+    "command": "kubectl exec -it pod sh",
+    "expect": {
+      "action": "ask",
+      "class": "dynamic",
+      "ruleId": "kubectl.exec"
+    }
+  },
+  {
+    "name": "kubectl port-forward allows",
+    "command": "kubectl port-forward svc/app 8080:80",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "kubectl.port-forward"
+    }
+  },
+  {
+    "name": "kubectl config use-context allows",
+    "command": "kubectl config use-context staging",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "kubectl.config.use-context"
+    }
+  },
+  {
+    "name": "kubectl config delete-context asks",
+    "command": "kubectl config delete-context staging",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "kubectl.config.delete-context"
+    }
+  },
+  {
+    "name": "kubectl debug allows",
+    "command": "kubectl debug pod/foo --image=alpine",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "kubectl.debug"
     }
   }
 ]

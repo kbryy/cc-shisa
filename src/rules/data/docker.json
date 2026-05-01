@@ -630,6 +630,709 @@
       ],
       "class": "local.read",
       "reason": "docker config ls"
+    },
+    {
+      "id": "docker.run",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "run",
+      "class": "local.write",
+      "reason": "docker run (creates a container; may pull, may bind-mount)"
+    },
+    {
+      "id": "docker.create",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "create",
+      "class": "local.write",
+      "reason": "docker create"
+    },
+    {
+      "id": "docker.start",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "start",
+      "class": "local.write",
+      "reason": "docker start"
+    },
+    {
+      "id": "docker.stop",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "stop",
+      "class": "local.write",
+      "reason": "docker stop"
+    },
+    {
+      "id": "docker.restart",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "restart",
+      "class": "local.write",
+      "reason": "docker restart"
+    },
+    {
+      "id": "docker.kill",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "kill",
+      "class": "local.write",
+      "reason": "docker kill (stop signal to container)"
+    },
+    {
+      "id": "docker.pause",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "pause",
+      "class": "local.write",
+      "reason": "docker pause"
+    },
+    {
+      "id": "docker.unpause",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "unpause",
+      "class": "local.write",
+      "reason": "docker unpause"
+    },
+    {
+      "id": "docker.rename",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "rename",
+      "class": "local.write",
+      "reason": "docker rename"
+    },
+    {
+      "id": "docker.update",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "update",
+      "class": "local.write",
+      "reason": "docker update (resource constraints)"
+    },
+    {
+      "id": "docker.commit",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "commit",
+      "class": "local.write",
+      "reason": "docker commit (creates a new image from a container)"
+    },
+    {
+      "id": "docker.tag",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "tag",
+      "class": "local.write",
+      "reason": "docker tag"
+    },
+    {
+      "id": "docker.cp",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "cp",
+      "class": "local.write",
+      "reason": "docker cp (copies between container and host)"
+    },
+    {
+      "id": "docker.exec",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "exec",
+      "class": "dynamic",
+      "reason": "docker exec runs an arbitrary command in a container"
+    },
+    {
+      "id": "docker.attach",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "attach",
+      "class": "dynamic",
+      "reason": "docker attach (interactive shell with running container)"
+    },
+    {
+      "id": "docker.build",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "build",
+      "class": "local.write",
+      "reason": "docker build (creates a local image)"
+    },
+    {
+      "id": "docker.buildx.build",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "buildx",
+        "build"
+      ],
+      "class": "local.write",
+      "reason": "docker buildx build"
+    },
+    {
+      "id": "docker.buildx.bake",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "buildx",
+        "bake"
+      ],
+      "class": "local.write",
+      "reason": "docker buildx bake"
+    },
+    {
+      "id": "docker.pull",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "pull",
+      "class": "local.write",
+      "reason": "docker pull (fetches an image to local store)"
+    },
+    {
+      "id": "docker.push",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "push",
+      "class": "remote.write",
+      "reason": "docker push (uploads an image to a registry)"
+    },
+    {
+      "id": "docker.save",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "save",
+      "class": "local.write",
+      "reason": "docker save (writes image tarball)"
+    },
+    {
+      "id": "docker.load",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "load",
+      "class": "local.write",
+      "reason": "docker load"
+    },
+    {
+      "id": "docker.export",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "export",
+      "class": "local.write",
+      "reason": "docker export (writes container fs as tarball)"
+    },
+    {
+      "id": "docker.import",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "import",
+      "class": "local.write",
+      "reason": "docker import"
+    },
+    {
+      "id": "docker.login",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "login",
+      "class": "local.write",
+      "reason": "docker login (writes auth to ~/.docker/config.json)"
+    },
+    {
+      "id": "docker.logout",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "logout",
+      "class": "local.write",
+      "reason": "docker logout"
+    },
+    {
+      "id": "docker.rm",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "rm",
+      "class": "local.write.destroy",
+      "reason": "docker rm (removes a container)"
+    },
+    {
+      "id": "docker.rmi",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "rmi",
+      "class": "local.write.destroy",
+      "reason": "docker rmi (removes an image)"
+    },
+    {
+      "id": "docker.system.prune",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "system",
+        "prune"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker system prune"
+    },
+    {
+      "id": "docker.image.prune",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "image",
+        "prune"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker image prune"
+    },
+    {
+      "id": "docker.container.prune",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "container",
+        "prune"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker container prune"
+    },
+    {
+      "id": "docker.volume.prune",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "volume",
+        "prune"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker volume prune"
+    },
+    {
+      "id": "docker.network.prune",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "network",
+        "prune"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker network prune"
+    },
+    {
+      "id": "docker.builder.prune",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "builder",
+        "prune"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker builder prune"
+    },
+    {
+      "id": "docker.buildx.prune",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "buildx",
+        "prune"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker buildx prune"
+    },
+    {
+      "id": "docker.image.rm",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "image",
+        "rm"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker image rm"
+    },
+    {
+      "id": "docker.image.remove",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "image",
+        "remove"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker image remove"
+    },
+    {
+      "id": "docker.container.rm",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "container",
+        "rm"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker container rm"
+    },
+    {
+      "id": "docker.container.remove",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "container",
+        "remove"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker container remove"
+    },
+    {
+      "id": "docker.container.kill",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "container",
+        "kill"
+      ],
+      "class": "local.write",
+      "reason": "docker container kill"
+    },
+    {
+      "id": "docker.container.stop",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "container",
+        "stop"
+      ],
+      "class": "local.write",
+      "reason": "docker container stop"
+    },
+    {
+      "id": "docker.container.start",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "container",
+        "start"
+      ],
+      "class": "local.write",
+      "reason": "docker container start"
+    },
+    {
+      "id": "docker.container.exec",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "container",
+        "exec"
+      ],
+      "class": "dynamic",
+      "reason": "docker container exec runs an arbitrary command"
+    },
+    {
+      "id": "docker.image.pull",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "image",
+        "pull"
+      ],
+      "class": "local.write",
+      "reason": "docker image pull"
+    },
+    {
+      "id": "docker.image.push",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "image",
+        "push"
+      ],
+      "class": "remote.write",
+      "reason": "docker image push"
+    },
+    {
+      "id": "docker.image.tag",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "image",
+        "tag"
+      ],
+      "class": "local.write",
+      "reason": "docker image tag"
+    },
+    {
+      "id": "docker.image.build",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "image",
+        "build"
+      ],
+      "class": "local.write",
+      "reason": "docker image build"
+    },
+    {
+      "id": "docker.network.create",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "network",
+        "create"
+      ],
+      "class": "local.write",
+      "reason": "docker network create"
+    },
+    {
+      "id": "docker.network.rm",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "network",
+        "rm"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker network rm"
+    },
+    {
+      "id": "docker.network.connect",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "network",
+        "connect"
+      ],
+      "class": "local.write",
+      "reason": "docker network connect"
+    },
+    {
+      "id": "docker.network.disconnect",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "network",
+        "disconnect"
+      ],
+      "class": "local.write",
+      "reason": "docker network disconnect"
+    },
+    {
+      "id": "docker.volume.create",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "volume",
+        "create"
+      ],
+      "class": "local.write",
+      "reason": "docker volume create"
+    },
+    {
+      "id": "docker.volume.rm",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "volume",
+        "rm"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker volume rm"
+    },
+    {
+      "id": "docker.volume.remove",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "volume",
+        "remove"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker volume remove"
+    },
+    {
+      "id": "docker.compose.up",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "up"
+      ],
+      "class": "local.write",
+      "reason": "docker compose up"
+    },
+    {
+      "id": "docker.compose.down",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "down"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker compose down (tears down services and containers)"
+    },
+    {
+      "id": "docker.compose.build",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "build"
+      ],
+      "class": "local.write",
+      "reason": "docker compose build"
+    },
+    {
+      "id": "docker.compose.pull",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "pull"
+      ],
+      "class": "local.write",
+      "reason": "docker compose pull"
+    },
+    {
+      "id": "docker.compose.push",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "push"
+      ],
+      "class": "remote.write",
+      "reason": "docker compose push"
+    },
+    {
+      "id": "docker.compose.start",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "start"
+      ],
+      "class": "local.write",
+      "reason": "docker compose start"
+    },
+    {
+      "id": "docker.compose.stop",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "stop"
+      ],
+      "class": "local.write",
+      "reason": "docker compose stop"
+    },
+    {
+      "id": "docker.compose.restart",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "restart"
+      ],
+      "class": "local.write",
+      "reason": "docker compose restart"
+    },
+    {
+      "id": "docker.compose.kill",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "kill"
+      ],
+      "class": "local.write",
+      "reason": "docker compose kill"
+    },
+    {
+      "id": "docker.compose.rm",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "rm"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker compose rm"
+    },
+    {
+      "id": "docker.compose.exec",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "exec"
+      ],
+      "class": "dynamic",
+      "reason": "docker compose exec runs an arbitrary command"
+    },
+    {
+      "id": "docker.compose.run",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "run"
+      ],
+      "class": "dynamic",
+      "reason": "docker compose run runs an arbitrary command in a one-off container"
+    },
+    {
+      "id": "docker.swarm.init",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "swarm",
+        "init"
+      ],
+      "class": "local.write",
+      "reason": "docker swarm init"
+    },
+    {
+      "id": "docker.swarm.leave",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "swarm",
+        "leave"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker swarm leave"
+    },
+    {
+      "id": "docker.context.create",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "context",
+        "create"
+      ],
+      "class": "local.write",
+      "reason": "docker context create"
+    },
+    {
+      "id": "docker.context.use",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "context",
+        "use"
+      ],
+      "class": "local.write",
+      "reason": "docker context use"
+    },
+    {
+      "id": "docker.context.rm",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "context",
+        "rm"
+      ],
+      "class": "local.write.destroy",
+      "reason": "docker context rm"
     }
   ]
 }
