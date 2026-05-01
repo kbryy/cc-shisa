@@ -3,6 +3,8 @@
 > Static-analysis `PreToolUse` hook for Claude Code — the Okinawan
 > guardian that lets safe commands flow and stops the dangerous ones.
 
+🇯🇵 [日本語版 README はこちら](./README.ja.md)
+
 Claude Code's Bash permission story falls apart at scale: hand-curated
 allowlists never cover the long tail, denylists have infinite holes, and
 compound commands like `pnpm typecheck && pnpm build` defeat both.
@@ -18,21 +20,22 @@ dangerous ones.
 
 ## Status
 
-v0.2.1. Phases 0–6 of the implementation roadmap are complete:
-parser, classifier, policy, hook I/O, shadow mode, `init` /
-`modules` / `logs` subcommands, and a cross-platform release
-workflow (`.github/workflows/release.yml`). The Homebrew tap
-(`kbryy/homebrew-tap`) and first publish are pending.
+v0.2.3 published. The Homebrew tap (`kbryy/homebrew-tap`) is live and
+the release workflow auto-publishes binaries + Formula on every tag.
+Core feature set covered: parser, classifier with content inspection
+(`python -c` introspection), 9-class policy with `strict` / `safe` /
+`loose` levels, hook I/O, shadow mode, and `init` / `modules` / `level`
+/ `logs` subcommands.
 
-## Install (planned, once the Homebrew tap is published)
+## Install
 
 ```bash
-brew tap kbryy/tap
+brew tap kbryy/homebrew-tap
 brew install cc-shisa
 cc-shisa init      # registers the hook in ~/.claude/settings.json
 ```
 
-Until then, build from source:
+Or build from source:
 
 ```bash
 git clone git@github.com:kbryy/cc-shisa.git && cd cc-shisa
@@ -44,24 +47,33 @@ bun run build                # produces ./cc-shisa for darwin-arm64
 
 ## What it blocks
 
-The bundled `_core.json` covers 15 destructive patterns:
+The bundled `_core.json` covers ~23 critical patterns. Highlights:
 
 - `rm -rf /`, `$HOME`, `~`, `/Users/*`, `/etc`, `/usr`, `/var`, ... (system paths)
 - `rm -rf .git` (repo destruction)
 - `dd of=/dev/{disk,sd,nvme,hd,rdisk}*` (raw-device writes)
+- Shell redirection to a raw device (`> /dev/sda`, `>> /dev/disk0`)
 - `mkfs*`, `newfs*` (filesystem creation)
 - `fdisk` / `gdisk` / `parted` (partition tools)
 - `diskutil eraseDisk` / `partitionDisk` / `secureErase` / ...
 - The classic bash fork bomb
 - `curl … | sh` and `wget … | bash` (and zsh / fish / dash / ksh variants)
-- `git push --force` / `-f` / `--force-with-lease`
-- `git reset --hard`
+- `kill -9 1` / `killall -9 init` (SIGKILL to PID 1)
+- Recursive `chown` on system paths
 - `chmod -R 777` / `a+rwx`
-- `eval`
-- `bash -c` / `sh -c` / `zsh -c` / ...
+- `git push --force` / `-f` / `--force-with-lease` / `--delete`
+- `git reset --hard`
+- `shred` / `srm` / `wipe`
+- `rsync --delete`
+- `gpg --delete-secret-keys`
+- `eval` / `bash -c` / `sh -c` / `zsh -c`
+- Language runtime inline `-e` / `--eval` / `-c` (`node -e`, `python -c`,
+  `perl -e`, `ruby -e`, ... — see the [`python -c` inspector](#inspecting-python--c-) below)
 
-Tool-specific modules (git read commands, gh, pnpm, docker, …) come in
-v0.2+ so common workflows stop falling to `ask`.
+Tool-specific modules (git, gh, npm, pnpm, yarn, bun, docker, kubectl,
+cargo, brew, coreutils) ship enabled-on-demand via `cc-shisa modules`
+and classify hundreds of common workflow commands as `local.read` /
+`local.write` / `remote.read` so they stop falling to `ask`.
 
 ## How it decides
 
@@ -135,13 +147,15 @@ cc-shisa check 'rm -rf /'
 ## Run the rule fixtures
 
 ```bash
-cc-shisa test                              # 36 cases.json
-cc-shisa test tests/fixtures/redteam.json  # 21 obfuscation cases
+cc-shisa test                              # standard cases (~220)
+cc-shisa test tests/fixtures/redteam.json  # obfuscation / escape cases
 ```
 
 This runs the bundled fixture data through the same pipeline the hook
 uses, useful for verifying an installed binary against a known-good
-corpus.
+corpus. Note: the standard suite assumes all built-in modules are
+enabled; run `cc-shisa modules pick` first (or use the `loose` level
+in a temp profile) to avoid `ask`-class fixture mismatches.
 
 ## Modules
 
@@ -151,9 +165,11 @@ read-only. After install, only `_core` is active; pick the optional
 modules you actually use:
 
 ```bash
-cc-shisa modules                         # list everything with status
+cc-shisa modules                         # interactive picker (TTY) / list (non-TTY)
+cc-shisa modules list                    # list everything with status
 cc-shisa modules enable coreutils git    # opt in
 cc-shisa modules disable gh              # opt out
+cc-shisa modules pick                    # explicit picker
 ```
 
 This writes `~/.config/cc-shisa/profile.json`. Restart Claude Code
@@ -163,7 +179,7 @@ Built-in modules:
 
 | Name        | Default | What it does                                  |
 |-------------|---------|-----------------------------------------------|
-| `_core`     | always  | 15 destructive patterns; **cannot be disabled** |
+| `_core`     | always  | ~23 catastrophic + irreversible patterns; **cannot be disabled** |
 | `coreutils` | off     | `ls`/`cat`/`grep`/`wc`/`pwd`/...              |
 | `git`       | off     | `git status`/`log`/`diff`/`show`/...          |
 | `gh`        | off     | `gh pr list`/`view`, `gh issue list`/...      |
@@ -247,44 +263,66 @@ Per-class overrides via `~/.config/cc-shisa/profile.json` (e.g.
 `"overrides": { "eval": "deny" }`) and per-repo `.claude/cc-shisa.json` are
 deferred to v0.4.
 
-## Inspecting `python -c "..."`
+## Inspecting interpreter `-c` / `-e` content
 
 `bash -c` / `python -c` / `node -e` style commands are normally classified
 as `dynamic` (cc-shisa cannot see inside the constructed string). For
-`python -c "..."` specifically, cc-shisa runs a regex inspector against
-the inline content and refines the class:
+language interpreter inline forms, cc-shisa runs a per-language regex
+inspector against the content and refines the class. Supported binaries:
+- Python: `python` / `python3` / `python2`
+- JavaScript / TypeScript runtimes: `node` / `nodejs` / `bun` / `tsx` / `ts-node` / `deno` (Deno uses the same patterns plus its `Deno.*` namespace — `Deno.run`, `Deno.writeTextFile`, `Deno.serve`, etc.)
+- Ruby: `ruby` / `irb`
+- Perl: `perl`
 
-| `-c` content | refined class |
-|--------------|---------------|
-| Shells out (`os.system`, subprocess spawn) | `dangerous` |
-| `os.remove`, `shutil.rmtree`, `Path.unlink` | `local.write.destroy` |
-| `requests.post/put/delete/patch`, `socket.bind/listen`, `http.server` | `remote.write` |
-| `requests.get`, `urllib.request` | `remote.read` |
-| `open(..., 'w')`, `os.makedirs`, `Path.write_text` | `local.write` |
-| pure `print(...)` / arithmetic / safe stdlib reads | `local.read` |
-| anything else | stays `dynamic` (ask) |
+The inspector follows the same shape across languages — pick the
+strictest match between built-in DENY patterns and the user whitelist:
 
-For project-specific libraries, drop a whitelist at
+| Behavior on the `-c`/`-e` body | Refined class |
+|--------------------------------|--------------|
+| Shells out / spawns child process | `dangerous` |
+| Removes files (rm / unlink / rmtree / Path.unlink / FileUtils.rm_rf) | `local.write.destroy` |
+| Network mutations (HTTP POST/PUT/DELETE, socket bind/listen, HTTP server) | `remote.write` |
+| Network reads (HTTP GET, urllib.request, fetch, Net::HTTP.get, LWP) | `remote.read` |
+| File writes (open w/a, makedirs, writeFile, File.write) | `local.write` |
+| Pure literal / arithmetic / `print` / `console.log` / `puts` of a literal | `local.read` |
+| Dynamic constructs (eval, vm.runIn*, instance_eval, eval-block) | stays `dynamic` (ask) |
+| Anything else | stays `dynamic` (ask) |
+
+For project-specific libraries, drop a per-language whitelist at
 `~/.config/cc-shisa/interpreter.json`:
 
 ```jsonc
 {
   "python": {
     "modules": {
-      "openpyxl":     "local.write",
-      "python-pptx":  "local.write",
-      "pandas":       "local.read",
-      "numpy":        "local.read"
+      "pandas":   "local.read",
+      "numpy":    "local.read",
+      "polars":   "local.read",
+      "httpx":    "remote.read",
+      "boto3":    "remote.write"
+    }
+  },
+  "node": {
+    "modules": {
+      "axios":    "remote.read",
+      "esbuild":  "local.write",
+      "prettier": "local.write"
+    }
+  },
+  "ruby": {
+    "modules": {
+      "faraday":  "remote.read",
+      "oj":       "local.read"
     }
   }
 }
 ```
 
-When the inspector sees `import openpyxl` (or `from openpyxl…`), it tags
-the segment as `local.write` and lets it through under `safe`. The
-strictest match across built-in DENY patterns + the user whitelist
-wins, so a script that imports openpyxl AND shells out still classifies
-as `dangerous`.
+When the inspector detects an `import` (Python), `require` / `from … import`
+(Node), `require` (Ruby), or `use` (Perl) of a whitelisted module, it
+tags the segment with the user-mapped class. The strictest match across
+built-in DENY patterns + the user whitelist wins, so a script that
+imports `pandas` AND shells out still classifies as `dangerous`.
 
 ## Documents
 

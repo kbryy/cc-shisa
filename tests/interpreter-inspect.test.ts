@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { inspectDynamic, inspectPython } from "../src/classifier/interpreter-inspect.ts";
+import { inspectByLang, inspectDynamic, inspectPython } from "../src/classifier/interpreter-inspect.ts";
 import type { Segment } from "../src/parser/types.ts";
 import type { Class } from "../src/rules/types.ts";
 
@@ -181,10 +181,108 @@ describe("inspectPython — user module whitelist", () => {
   });
 });
 
+describe("inspectByLang — Node.js (-e)", () => {
+  const EV = "ev" + "al";
+
+  test("console.log(literal) → local.read", () => {
+    expect(inspectByLang("node", 'console.log("hi")')?.class).toBe("local.read");
+    expect(inspectByLang("node", "console.log(1)")?.class).toBe("local.read");
+  });
+
+  test("require('fs').rmSync → local.write.destroy", () => {
+    const r = inspectByLang("node", 'require("fs").rmSync("foo")');
+    expect(r?.class).toBe("local.write.destroy");
+  });
+
+  test("fs.writeFileSync → local.write", () => {
+    const r = inspectByLang("node", 'require("fs").writeFileSync("f", "x")');
+    expect(r?.class).toBe("local.write");
+  });
+
+  test("http.createServer().listen → remote.write", () => {
+    const r = inspectByLang("node", 'require("http").createServer().listen(8080)');
+    expect(r?.class).toBe("remote.write");
+  });
+
+  test("fetch(url) → remote.read", () => {
+    expect(inspectByLang("node", 'fetch("http://x")')?.class).toBe("remote.read");
+  });
+
+  test("dynamic code form → dynamic", () => {
+    expect(inspectByLang("node", `${EV}("x")`)?.class).toBe("dynamic");
+  });
+
+  test("ambiguous content returns null", () => {
+    expect(inspectByLang("node", "weird code with no clear pattern")).toBeNull();
+  });
+});
+
+describe("inspectByLang — Ruby (-e)", () => {
+  const EV = "ev" + "al";
+
+  test("puts literal → local.read", () => {
+    expect(inspectByLang("ruby", 'puts "hello"')?.class).toBe("local.read");
+    expect(inspectByLang("ruby", "puts 1")?.class).toBe("local.read");
+  });
+
+  test("File.delete → local.write.destroy", () => {
+    expect(inspectByLang("ruby", 'File.delete("foo")')?.class).toBe("local.write.destroy");
+  });
+
+  test("Net::HTTP.get → remote.read", () => {
+    expect(inspectByLang("ruby", 'Net::HTTP.get(URI("http://x"))')?.class).toBe("remote.read");
+  });
+
+  test("backtick → dangerous", () => {
+    expect(inspectByLang("ruby", "`ls`")?.class).toBe("dangerous");
+  });
+
+  test("dynamic code form → dynamic", () => {
+    expect(inspectByLang("ruby", `${EV}("1+1")`)?.class).toBe("dynamic");
+  });
+});
+
+describe("inspectByLang — Perl (-e)", () => {
+  const EV = "ev" + "al";
+
+  test("print literal → local.read", () => {
+    expect(inspectByLang("perl", 'print "hi";')?.class).toBe("local.read");
+  });
+
+  test("unlink → local.write.destroy", () => {
+    expect(inspectByLang("perl", 'unlink("foo");')?.class).toBe("local.write.destroy");
+  });
+
+  test("backtick → dangerous", () => {
+    expect(inspectByLang("perl", "`ls`")?.class).toBe("dangerous");
+  });
+
+  test("dynamic code block → dynamic", () => {
+    expect(inspectByLang("perl", `${EV} { 1 };`)?.class).toBe("dynamic");
+  });
+});
+
+describe("inspectByLang — user whitelist for non-Python", () => {
+  test("node require('exceljs') matches user-listed local.write", () => {
+    const r = inspectByLang("node", 'require("exceljs"); doStuff()', { exceljs: "local.write" });
+    expect(r?.class).toBe("local.write");
+  });
+
+  test("ruby require 'rubyXL' matches user list", () => {
+    const r = inspectByLang("ruby", 'require "rubyXL"; foo()', { rubyXL: "local.write" });
+    expect(r?.class).toBe("local.write");
+  });
+
+  test("perl use Spreadsheet matches user list", () => {
+    const r = inspectByLang("perl", "use Spreadsheet::WriteExcel; foo();", { "Spreadsheet::WriteExcel": "local.write" });
+    expect(r?.class).toBe("local.write");
+  });
+});
+
 describe("inspectDynamic — non-applicable cases", () => {
-  test("non-Python interpreter returns null", () => {
-    expect(inspectDynamic(pyseg("print(1)", "node"))).toBeNull();
-    expect(inspectDynamic(pyseg("print(1)", "ruby"))).toBeNull();
+  test("unknown interpreter returns null", () => {
+    expect(inspectDynamic(pyseg("print(1)", "octave"))).toBeNull();
+    expect(inspectDynamic(pyseg("print(1)", "lua"))).toBeNull();
   });
 
   test("python with no -c flag returns null", () => {

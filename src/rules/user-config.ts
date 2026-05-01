@@ -100,8 +100,15 @@ export function writeUserProfile(profile: RawProfile, env: NodeJS.ProcessEnv = p
  *     }
  *   }
  */
+export interface LanguageConfig {
+  modules?: Readonly<Record<string, Class>>;
+}
+
 export interface InterpreterConfig {
-  python?: { modules?: Readonly<Record<string, Class>> };
+  python?: LanguageConfig;
+  node?: LanguageConfig;
+  ruby?: LanguageConfig;
+  perl?: LanguageConfig;
 }
 
 export function interpreterConfigPath(env: NodeJS.ProcessEnv = process.env): string {
@@ -132,28 +139,36 @@ function validateInterpreterConfig(
   if (typeof raw !== "object" || raw === null) return null;
   const obj = raw as Record<string, unknown>;
   const out: InterpreterConfig = {};
-  const py = obj["python"];
-  if (typeof py === "object" && py !== null) {
-    const modulesRaw = (py as Record<string, unknown>)["modules"];
-    if (typeof modulesRaw === "object" && modulesRaw !== null) {
-      const modules: Record<string, Class> = {};
-      for (const [name, cls] of Object.entries(modulesRaw as Record<string, unknown>)) {
-        if (typeof cls !== "string" || !VALID_CLASSES_FOR_MODULES.has(cls as Class)) {
-          if (env["CC_SHISA_DEBUG"] === "1") {
-            process.stderr.write(
-              `cc-shisa: interpreter.json python.modules["${name}"] has invalid class "${String(cls)}"; skipping\n`,
-            );
-          }
-          continue;
-        }
-        modules[name] = cls as Class;
-      }
-      if (Object.keys(modules).length > 0) {
-        out.python = { modules };
-      }
+  for (const lang of ["python", "node", "ruby", "perl"] as const) {
+    const langCfg = parseLanguageConfig(obj[lang], lang, env);
+    if (langCfg !== null) {
+      out[lang] = langCfg;
     }
   }
   return out;
+}
+
+function parseLanguageConfig(
+  raw: unknown,
+  lang: string,
+  env: NodeJS.ProcessEnv,
+): LanguageConfig | null {
+  if (typeof raw !== "object" || raw === null) return null;
+  const modulesRaw = (raw as Record<string, unknown>)["modules"];
+  if (typeof modulesRaw !== "object" || modulesRaw === null) return null;
+  const modules: Record<string, Class> = {};
+  for (const [name, cls] of Object.entries(modulesRaw as Record<string, unknown>)) {
+    if (typeof cls !== "string" || !VALID_CLASSES_FOR_MODULES.has(cls as Class)) {
+      if (env["CC_SHISA_DEBUG"] === "1") {
+        process.stderr.write(
+          `cc-shisa: interpreter.json ${lang}.modules["${name}"] has invalid class "${String(cls)}"; skipping\n`,
+        );
+      }
+      continue;
+    }
+    modules[name] = cls as Class;
+  }
+  return Object.keys(modules).length > 0 ? { modules } : null;
 }
 
 const VALID_CLASSES_FOR_MODULES: ReadonlySet<Class> = new Set([
