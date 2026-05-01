@@ -324,6 +324,30 @@ tags the segment with the user-mapped class. The strictest match across
 built-in DENY patterns + the user whitelist wins, so a script that
 imports `pandas` AND shells out still classifies as `dangerous`.
 
+## Parser backends
+
+cc-shisa parses each Bash command into an AST before classifying. Two
+backends are bundled and selectable via `CC_SHISA_PARSER`:
+
+| Backend | Default | Pros | Cons |
+|---|---|---|---|
+| `bash-parser` | ✅ | Pure JS, no extra runtime, ~22ms cold start | Fails on certain edge cases (e.g. parens inside quoted heredocs) |
+| `tree-sitter` |   | Robust grammar, handles all real-world bash | +~7ms cold start, +1.6 MB binary |
+
+If the active backend's parse fails (syntax error, library limitation),
+cc-shisa falls back to:
+
+1. Stripping quoted-heredoc bodies and re-parsing.
+2. Splitting on newlines and parsing each line independently.
+3. Returning `ask` with reason "parser failed".
+
+Recovery handles the common cases by itself, so most users never need
+to switch. To opt into tree-sitter:
+
+```bash
+export CC_SHISA_PARSER=tree-sitter
+```
+
 ## Documents
 
 - [`CLAUDE.md`](./CLAUDE.md) — agent-facing context: architecture,

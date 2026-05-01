@@ -319,6 +319,29 @@ whitelist で最も厳しい match を採用します:
 します。組み込み DENY パターンと strictest-wins で合成されるので、
 危険なシステムコールが混在していれば依然 `dangerous` 判定になります。
 
+## パーサーバックエンド
+
+cc-shisa は Bash コマンドを AST にパースしてから分類します。2 つの
+バックエンドが同梱されており `CC_SHISA_PARSER` で切替可能:
+
+| バックエンド | デフォルト | 利点 | 欠点 |
+|---|---|---|---|
+| `bash-parser` | ✅ | 純 JS、追加ランタイム不要、cold start ~22ms | 特定エッジケース (quoted heredoc 内の `(parens)` 等) で失敗 |
+| `tree-sitter` |   | 堅牢な grammar、実世界の bash を網羅 | +~7ms cold start、+1.6 MB バイナリ |
+
+active backend の parse が失敗した場合、cc-shisa は次の順で recovery:
+
+1. quoted-heredoc body を空にして再 parse
+2. 行単位で split し各行を独立 parse
+3. 全部ダメなら `ask` (理由: "parser failed")
+
+通常 recovery で十分なので、大半のユーザーは切り替え不要。tree-sitter
+を試したい場合:
+
+```bash
+export CC_SHISA_PARSER=tree-sitter
+```
+
 ## ドキュメント
 
 - [`CLAUDE.md`](./CLAUDE.md) — エージェント向けコンテキスト:
