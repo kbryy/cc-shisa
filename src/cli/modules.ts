@@ -8,11 +8,13 @@ import {
 } from "../modules/index.ts";
 
 export async function runModules(args: readonly string[]): Promise<number> {
-  const sub = args[0] ?? "list";
+  const sub = args[0];
+  if (sub === undefined) {
+    return process.stdin.isTTY === true ? runModulesPick() : runModulesList();
+  }
   switch (sub) {
     case "list":
-      console.log(listModules());
-      return 0;
+      return runModulesList();
     case "enable":
       return runModulesChange(args.slice(1), enableModules);
     case "disable":
@@ -23,6 +25,11 @@ export async function runModules(args: readonly string[]): Promise<number> {
       process.stderr.write(`cc-shisa modules: unknown subcommand "${sub}"\n`);
       return 2;
   }
+}
+
+function runModulesList(): number {
+  console.log(listModules());
+  return 0;
 }
 
 async function runModulesPick(): Promise<number> {

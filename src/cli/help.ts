@@ -6,10 +6,11 @@ Usage:
   cc-shisa check '<command>'          Evaluate a command and print the decision
   cc-shisa test [path]                Run testdata cases end-to-end
   cc-shisa init                       Register hook in ~/.claude/settings.json
-  cc-shisa modules [list]             List built-in and user modules with on/off status
+  cc-shisa modules                    Interactive picker (TTY) / falls back to list (non-TTY)
+  cc-shisa modules list               List built-in and user modules with on/off status
   cc-shisa modules enable <name>...   Add modules to ~/.config/cc-shisa/profile.json
   cc-shisa modules disable <name>...  Remove modules from ~/.config/cc-shisa/profile.json
-  cc-shisa modules pick               Interactive multi-select for built-in optional modules
+  cc-shisa modules pick               Interactive multi-select (same as bare 'modules' on TTY)
   cc-shisa logs [summary]             Aggregate the JSONL decision log
   cc-shisa logs tail [-n N]           Show the last N entries (default 20)
   cc-shisa logs path                  Print the log file path
