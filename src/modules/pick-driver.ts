@@ -87,22 +87,27 @@ export function streamStdinKeys(): {
  * Print a frame, tracking the previous frame's line count so the next
  * call clears the in-place region (no flicker, no scrollback noise).
  * Returns a writer suitable for PickIO.write.
+ *
+ * The optional `out` argument is for tests; production passes nothing
+ * and writes directly to stdout.
  */
-export function makeStdoutWriter(): (frame: string) => void {
+export function makeStdoutWriter(
+  out: (chunk: string) => void = (s) => process.stdout.write(s),
+): (frame: string) => void {
   let prevLines = 0;
-  process.stdout.write("[?25l");
+  out("\x1b[?25l");
   return (frame: string) => {
     if (prevLines > 0) {
-      process.stdout.write(`[${prevLines}A[J`);
+      out(`\x1b[${prevLines}A\x1b[J`);
     }
-    process.stdout.write(frame);
-    process.stdout.write("\n");
+    out(frame);
+    out("\n");
     prevLines = frame.split("\n").length;
   };
 }
 
-export function showCursor(): void {
-  process.stdout.write("[?25h");
+export function showCursor(out: (chunk: string) => void = (s) => process.stdout.write(s)): void {
+  out("\x1b[?25h");
 }
 
 /**
