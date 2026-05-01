@@ -23,7 +23,8 @@
     "build:linux-arm64": "bun build --compile --minify --target=bun-linux-arm64 ./src/cli.ts --outfile=cc-shisa-linux-arm64",
     "build:linux-x64": "bun build --compile --minify --target=bun-linux-x64 ./src/cli.ts --outfile=cc-shisa-linux-x64",
     "build:all": "bun run build:darwin-arm64 && bun run build:darwin-x64 && bun run build:linux-arm64 && bun run build:linux-x64",
-    "typecheck": "bun --bun tsc --noEmit"
+    "typecheck": "bun --bun tsc --noEmit",
+    "vendor:wasm": "cp node_modules/web-tree-sitter/web-tree-sitter.wasm src/parser/impl/web-tree-sitter-runtime.wasm"
   },
   "dependencies": {
     "bash-parser": "^0.5.0",

@@ -18,22 +18,19 @@ classify each segment, return a decision per the configured policy.
 
 ## Status (as of this handoff)
 
-- ✅ GitHub repo created: `kbryy/cc-shisa` (private, MIT)
+- ✅ GitHub repo created: `kbryy/cc-shisa` (public, MIT)
 - ✅ Naming finalized: **cc-shisa**
-- ✅ Tech stack chosen: **TypeScript + Bun + bash-parser + bun test**
-- ✅ Architecture and design documented in this file
-- ✅ Phase 0 scaffold landed
-- ✅ Phase 1 parser landed: `src/parser/{walker,normalize,index}.ts` + 18 unit tests
-- ✅ Phase 2 rules loader / classifier / policy landed: `src/rules/{index,registry,level,validate}.ts`, `src/classifier/{index,matcher}.ts`, `src/policy/index.ts`
-- ✅ Phase 3 hookio runtime + CLI dispatch + e2e fixtures landed: `src/hookio/index.ts`, `src/pipeline.ts`, real `runHook`/`runCheck`/`runTest`
-- ✅ Phase 4 shadow mode + init subcommand landed: `src/shadow/index.ts` (CC_SHISA_SHADOW=1 forces allow + JSONL log under `$XDG_STATE_HOME/cc-shisa/decisions.jsonl`), `src/init/index.ts` (idempotent settings.json registration with .bak)
-- ✅ Phase 5 README polish landed
-- ✅ Phase 6 release pipeline workflow committed: `.github/workflows/release.yml` builds 4 cross-platform binaries on tag, publishes a GH Release, and updates the Homebrew Formula
-- ✅ `modules` subcommand landed: `cc-shisa modules list/enable/disable/pick`, user profile at `~/.config/cc-shisa/profile.json`, custom modules at `~/.config/cc-shisa/modules/*.json`; built-in catalog now ships `coreutils`, `git`, `gh`, `bun`, `npm`, `pnpm`, `yarn`, `docker`, `kubectl`, `cargo`, `brew` alongside `_core`
-- ✅ `logs` subcommand landed: `cc-shisa logs summary|tail|path` reads the JSONL written by shadow / `CC_SHISA_LOG=1`
-- ✅ `bun install && bun run typecheck && bun test` pass on a clean clone (241 tests)
-- ⏳ One-time release setup pending: create `kbryy/homebrew-tap` (public), mint fine-grained PAT, set `HOMEBREW_TAP_GITHUB_TOKEN` secret, bump version, push first tag
-- ❌ Homebrew tap not created yet (`kbryy/homebrew-tap`)
+- ✅ Tech stack chosen: **TypeScript + Bun + bash-parser + tree-sitter (opt-in) + bun test**
+- ✅ Phase 0–6 (scaffold → parser → classifier/policy → hookio → shadow/init → README → release pipeline) all landed
+- ✅ `modules` subcommand: `cc-shisa modules list/enable/disable/pick` (bare `modules` opens picker on TTY); user profile at `~/.config/cc-shisa/profile.json`, custom modules at `~/.config/cc-shisa/modules/*.json`. Built-in catalog: `_core`, `coreutils`, `git`, `gh`, `bun`, `npm`, `pnpm`, `yarn`, `docker`, `kubectl`, `cargo`, `brew`
+- ✅ `logs` subcommand: `cc-shisa logs summary|tail|path` reads the JSONL written by shadow / `CC_SHISA_LOG=1`
+- ✅ `level` subcommand and 3-level system: `strict` (block remote.write), `safe` (default; ask on destroy/dynamic/unknown), `loose` (only block `dangerous`); `cc-shisa level get/set/list` writes `~/.config/cc-shisa/profile.json`
+- ✅ 9-class hierarchy (locality-first): `local.read`, `local.write`, `local.write.destroy`, `remote.read`, `remote.write`, `remote.write.destroy`, plus flat specials `dangerous`, `dynamic`, `unknown`
+- ✅ Multi-language interpreter inspector: refines `dynamic` content for `python` / `python3` / `python2`, JS+TS runtimes (`node`, `nodejs`, `bun`, `tsx`, `ts-node`, `deno`), `ruby` / `irb`, and `perl`. Per-language whitelist at `~/.config/cc-shisa/interpreter.json`
+- ✅ Parser abstraction: `ShellParser` interface + `bash-parser` (default) and `tree-sitter` (opt-in via `CC_SHISA_PARSER=tree-sitter`) backends. `src/parser/recovery.ts` provides graceful fallback (heredoc-body strip + line-by-line) when the active backend errors out
+- ✅ Homebrew tap (`kbryy/homebrew-tap`) live; releases via `.github/workflows/release.yml` ship 4 cross-platform binaries and update the Formula automatically
+- ✅ `bun install && bun run typecheck && bun test` pass on a clean clone (459 tests, both backends)
+- Current released version: **v0.2.4**
 
 A previous attempt was made in Go (using `mvdan.cc/sh/v3`); it got through the
 parser layer with 18 passing tests before the user pivoted to TypeScript. The
@@ -46,7 +43,7 @@ edge cases (notably `timeout` over-eating positionals if not bounded).
 |---|---|---|
 | Language | TypeScript | Familiar ecosystem, type safety in security-critical code, large contributor pool |
 | Runtime | **Bun** | 10–30 ms cold start (Node would be 50–150 ms — too slow per hook call); `bun build --compile` makes single-binary distribution; `bun test` ships built-in |
-| Bash parser | `bash-parser` (npm) | Pure JS, established package; tree-sitter-bash via WASM also possible but adds complexity |
+| Bash parser | `bash-parser` (default) + `tree-sitter` via `web-tree-sitter` (opt-in) | bash-parser keeps cold start small; tree-sitter handles edge cases bash-parser fails on (parens inside quoted heredocs etc.). Both implement a common `ShellParser` interface |
 | Config format | JSON | stdlib parsing, mirror Claude Code's hook IO format; `reason` field substitutes for comments |
 | Bundling | `bun build --compile` | ~50 MB single binary; ships everything including the runtime |
 | Distribution | Homebrew tap (`kbryy/homebrew-tap`) | macOS-first user; auto-handles Gatekeeper |
@@ -67,14 +64,20 @@ Treat each new `bun add` as a security review.
                      └─────────┬───────────┘
                                ▼
                      ┌─────────────────────┐
-                     │  src/parser         │  bash-parser AST →
-                     │   walker.ts         │   normalized Segments
-                     │   normalize.ts      │   (peel sudo/timeout/env,
-                     └─────────┬───────────┘    split pipes/&&/;,
-                               ▼                 recurse $()/<())
+                     │  src/parser         │  ShellParser-selected AST →
+                     │   parse.ts          │   normalized Segments
+                     │   recovery.ts       │   (peel sudo/timeout/env,
+                     │   normalize.ts      │    split pipes/&&/;,
+                     │   impl/{bash,tree}  │    recurse $()/<())
+                     └─────────┬───────────┘
+                               ▼                 (recovery: heredoc strip +
+                               │                   line-by-line on parse fail)
+                               ▼
                      ┌─────────────────────┐
                      │  src/classifier     │  Segment + Rules →
                      │   matcher.ts        │   Class (most-strict wins)
+                     │   interpreter-      │  + inspect python/node/ruby/perl
+                     │     inspect.ts      │    inline content
                      └─────────┬───────────┘
                                ▼
                      ┌─────────────────────┐
@@ -135,6 +138,7 @@ cc-shisa/
 │   │   ├── test.ts                      ← runTest() + fixture validation
 │   │   ├── init.ts                      ← runInit() wrapper
 │   │   ├── modules.ts                   ← runModules() routing for list/enable/disable/pick
+│   │   ├── level.ts                     ← runLevel() routing for get/set/list
 │   │   └── logs.ts                      ← runLogs() routing for summary/tail/path
 │   ├── pipeline.ts                      ← parse → classify → decide
 │   ├── version.ts
@@ -142,26 +146,34 @@ cc-shisa/
 │   │   ├── types.ts                     ← HookInput, HookOutput, ToolInput
 │   │   └── index.ts                     ← read/write helpers
 │   ├── parser/
-│   │   ├── index.ts                     ← parse() export
-│   │   ├── types.ts                     ← Segment, ParseResult
-│   │   ├── walker.ts                    ← AST walker, segment collection
-│   │   ├── normalize.ts                 ← prefix stripping, literal extraction
-│   │   └── bash-parser.d.ts             ← ambient module shim
+│   │   ├── index.ts                     ← façade: re-exports parse() + types
+│   │   ├── parse.ts                     ← backend selection (CC_SHISA_PARSER) + recovery wiring
+│   │   ├── recovery.ts                  ← heredoc strip + line-by-line fallback on parse error
+│   │   ├── types.ts                     ← Segment, ParseResult, ShellParser
+│   │   ├── normalize.ts                 ← prefix stripping (table-driven), peelPrefixes
+│   │   ├── bash-parser.d.ts             ← ambient module shim for the bash-parser npm pkg
+│   │   └── impl/
+│   │       ├── bash-parser.ts           ← BashParserBackend (default)
+│   │       ├── tree-sitter.ts           ← TreeSitterBackend (opt-in)
+│   │       ├── tree-sitter-bash.wasm    ← vendored grammar
+│   │       ├── web-tree-sitter-runtime.wasm ← vendored web-tree-sitter runtime (`bun run vendor:wasm` resyncs)
+│   │       └── wasm.d.ts                ← *.wasm module declaration
 │   ├── classifier/
 │   │   ├── index.ts                     ← classify(segments, modules) → Class + Match
-│   │   └── matcher.ts                   ← matchAst, matchRegex, flag bundle expansion
+│   │   ├── matcher.ts                   ← matchAst, matchRegex, flag bundle expansion
+│   │   └── interpreter-inspect.ts       ← refine `dynamic` for python/node/ruby/perl `-c`/`-e`
 │   ├── policy/
 │   │   ├── index.ts                     ← decide(class, profile, level) → Decision
 │   │   └── types.ts                     ← Decision
 │   ├── rules/
 │   │   ├── index.ts                     ← public API: loadModule, listAllModules, resolveProfile, loadDefaults
 │   │   ├── registry.ts                  ← BUILTIN_MODULES, MANDATORY_MODULE, JSON imports
-│   │   ├── level.ts                     ← STRICTNESS, strictnessRank, safeLevel
-│   │   ├── validate.ts                  ← validateModule/Rule/Profile
-│   │   ├── user-config.ts               ← XDG-based user profile + modules dir
+│   │   ├── level.ts                     ← STRICTNESS, strictnessRank, strictLevel/safeLevel/looseLevel, levelByName, LEVEL_NAMES
+│   │   ├── validate.ts                  ← validateModule/Rule/Profile + VALID_CLASSES (single source of truth)
+│   │   ├── user-config.ts               ← XDG-based user profile + modules dir + interpreter.json (per-language whitelist)
 │   │   ├── types.ts                     ← Class, Action, Rule, Module, Profile, Level
 │   │   └── data/
-│   │       ├── _core.json               ← 15 critical patterns (always loaded)
+│   │       ├── _core.json               ← ~23 critical patterns (always loaded; cannot be disabled)
 │   │       ├── coreutils.json
 │   │       ├── git.json
 │   │       ├── gh.json
@@ -191,6 +203,9 @@ cc-shisa/
 │       └── index.ts                     ← idempotent settings.json registration with .bak
 ├── tests/
 │   ├── parser.test.ts
+│   ├── parser-recovery.test.ts          ← recovery layer (heredoc strip, line fallback)
+│   ├── interpreter-inspect.test.ts      ← multi-language inspector + per-lang whitelist
+│   ├── level.test.ts                    ← strict/safe/loose mappings + levelByName fallback
 │   ├── classifier.test.ts
 │   ├── policy.test.ts
 │   ├── e2e.test.ts                      ← end-to-end via parse → classify → decide
@@ -206,6 +221,7 @@ cc-shisa/
 │       └── full-profile/                ← profile fixture for module loading
 └── .github/
     └── workflows/
+        ├── ci.yml                       ← typecheck + bun test (default + tree-sitter backend)
         └── release.yml                  ← bun build + GH Releases + tap update
 ```
 
@@ -541,7 +557,7 @@ to the user — don't silently change direction.
 
 2. **Runtime: Bun** (not Node, not Deno). Cold start matters because hook fires per command. Bun's `--compile` also gives single-binary distribution.
 
-3. **Bash parser: bash-parser npm pkg** (not tree-sitter, not own implementation). Pure JS, established. If accuracy issues arise, can swap to tree-sitter-bash via WASM later.
+3. **Bash parser: bash-parser default + tree-sitter opt-in** (since v0.2.4). Both implement a common `ShellParser` interface in `src/parser/types.ts`. bash-parser keeps cold start small (~22ms compiled); tree-sitter handles cases bash-parser fails on (parens inside quoted heredocs etc.). Selected via `CC_SHISA_PARSER`. Both `web-tree-sitter.wasm` and `tree-sitter-bash.wasm` are vendored under `src/parser/impl/` so `bun build --compile` produces a self-contained binary; refresh with `bun run vendor:wasm`.
 
 4. **Config: JSON** (not TOML, not YAML). Mirrors Claude Code's IO. `reason` field handles "why" since JSON has no comments.
 
@@ -555,7 +571,13 @@ to the user — don't silently change direction.
 
 9. **Naming: cc-shisa** (Okinawan guardian; ペア統像で阿吽=allow/deny duality maps perfectly). Considered: komainu (rejected: passive guard only), banken (rejected: collides with Ruby auth lib), karakuri, hachi, akita, sekisho.
 
-10. **Repo is private** for now. Will go public when v0.1.0 ships and feels stable.
+10. **Repo is public** since v0.2.x. Homebrew tap (`kbryy/homebrew-tap`) is also public and live.
+
+11. **9-class hierarchy, locality-first** (since v0.2.4). Classes are split into a flat axis (`dangerous` / `dynamic` / `unknown`) plus a `<location>.<op>[.destroy]` hierarchy: `local.read` / `local.write` / `local.write.destroy` / `remote.read` / `remote.write` / `remote.write.destroy`. The hierarchy lets levels reason about "who sees this change" (local vs remote) before "what kind of change" (read vs write vs destroy). Defined in `src/rules/types.ts`; validated against the single `VALID_CLASSES` set in `src/rules/validate.ts`.
+
+12. **3-level system: strict / safe / loose** (since v0.2.4). `strict` denies all `remote.write*` (for shared-resource environments), `safe` is the default (asks on destroy / dynamic / unknown, allows routine reads + writes including remote.write), `loose` blocks only `dangerous` and lets everything else through (sandboxes / CI). Selectable via `cc-shisa level set`. Definitions in `src/rules/level.ts`.
+
+13. **Multi-language interpreter inspector** (since v0.2.4). `python|node|bun|tsx|ts-node|deno|ruby|irb|perl -c|-e <code>` content is inspected by per-language regex patterns to refine the otherwise-`dynamic` class. Per-language module whitelist at `~/.config/cc-shisa/interpreter.json`. Implementation: `src/classifier/interpreter-inspect.ts`.
 
 ## Pitfalls / gotchas
 

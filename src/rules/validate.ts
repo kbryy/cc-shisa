@@ -1,6 +1,6 @@
 import type { Action, Class, Module, Profile, Rule } from "./types.ts";
 
-const VALID_CLASSES: ReadonlySet<Class> = new Set([
+export const VALID_CLASSES: ReadonlySet<Class> = new Set([
   // Flat specials
   "dangerous",
   "dynamic",

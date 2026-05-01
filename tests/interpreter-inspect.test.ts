@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { inspectByLang, inspectDynamic, inspectPython } from "../src/classifier/interpreter-inspect.ts";
+import { inspectByLang, inspectDynamic } from "../src/classifier/interpreter-inspect.ts";
 import type { Segment } from "../src/parser/types.ts";
 import type { Class } from "../src/rules/types.ts";
 
@@ -136,7 +136,7 @@ describe("inspectDynamic — strictest match wins", () => {
   });
 });
 
-describe("inspectPython — user module whitelist", () => {
+describe("inspectByLang — Python user module whitelist", () => {
   const modules: Readonly<Record<string, Class>> = {
     openpyxl: "local.write",
     "python-pptx": "local.write",
@@ -145,39 +145,39 @@ describe("inspectPython — user module whitelist", () => {
   };
 
   test("import openpyxl picks up user-listed local.write", () => {
-    const r = inspectPython('import openpyxl; openpyxl.load_workbook("f.xlsx")', modules);
+    const r = inspectByLang("python", 'import openpyxl; openpyxl.load_workbook("f.xlsx")', modules);
     expect(r?.class).toBe("local.write");
   });
 
   test("from openpyxl import ... also matches", () => {
-    const r = inspectPython('from openpyxl import load_workbook; load_workbook("f")', modules);
+    const r = inspectByLang("python", 'from openpyxl import load_workbook; load_workbook("f")', modules);
     expect(r?.class).toBe("local.write");
   });
 
   test("dotted form 'from openpyxl.styles import ...' matches the openpyxl entry", () => {
-    const r = inspectPython("from openpyxl.styles import Font", modules);
+    const r = inspectByLang("python", "from openpyxl.styles import Font", modules);
     expect(r?.class).toBe("local.write");
   });
 
   test("user-listed import + DENY pattern → strictest (dangerous) wins", () => {
     const sysCall = "os." + 'system("ls")';
-    const r = inspectPython(`import openpyxl; import os; ${sysCall}`, modules);
+    const r = inspectByLang("python", `import openpyxl; import os; ${sysCall}`, modules);
     expect(r?.class).toBe("dangerous");
   });
 
   test("user-listed import + os.remove → local.write.destroy wins (stricter than local.write)", () => {
-    const r = inspectPython('import openpyxl; import os; os.remove("f")', modules);
+    const r = inspectByLang("python", 'import openpyxl; import os; os.remove("f")', modules);
     expect(r?.class).toBe("local.write.destroy");
   });
 
   test("unknown module not in whitelist returns null", () => {
-    const r = inspectPython("import unknownlib; foo()", modules);
+    const r = inspectByLang("python", "import unknownlib; foo()", modules);
     expect(r).toBeNull();
   });
 
   test("no user modules provided → falls back to built-in inspection", () => {
-    expect(inspectPython("print(1)")?.class).toBe("local.read");
-    expect(inspectPython("import openpyxl; foo()")).toBeNull();
+    expect(inspectByLang("python", "print(1)")?.class).toBe("local.read");
+    expect(inspectByLang("python", "import openpyxl; foo()")).toBeNull();
   });
 });
 

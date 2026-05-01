@@ -2,6 +2,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import { dirname, join } from "node:path";
 
 import type { Class } from "./types.ts";
+import { VALID_CLASSES } from "./validate.ts";
 
 export function configDir(env: NodeJS.ProcessEnv = process.env): string {
   const xdg = env["XDG_CONFIG_HOME"];
@@ -158,7 +159,7 @@ function parseLanguageConfig(
   if (typeof modulesRaw !== "object" || modulesRaw === null) return null;
   const modules: Record<string, Class> = {};
   for (const [name, cls] of Object.entries(modulesRaw as Record<string, unknown>)) {
-    if (typeof cls !== "string" || !VALID_CLASSES_FOR_MODULES.has(cls as Class)) {
+    if (typeof cls !== "string" || !VALID_CLASSES.has(cls as Class)) {
       if (env["CC_SHISA_DEBUG"] === "1") {
         process.stderr.write(
           `cc-shisa: interpreter.json ${lang}.modules["${name}"] has invalid class "${String(cls)}"; skipping\n`,
@@ -171,14 +172,3 @@ function parseLanguageConfig(
   return Object.keys(modules).length > 0 ? { modules } : null;
 }
 
-const VALID_CLASSES_FOR_MODULES: ReadonlySet<Class> = new Set([
-  "dangerous",
-  "dynamic",
-  "unknown",
-  "local.read",
-  "local.write",
-  "local.write.destroy",
-  "remote.read",
-  "remote.write",
-  "remote.write.destroy",
-]);
