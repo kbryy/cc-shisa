@@ -43,8 +43,9 @@ export function strictLevel(): Level {
 }
 
 /**
- * "safe" — the default. Ask before risky stuff (destroy, dynamic eval,
- * remote writes, unknown binaries); routine local writes and reads flow.
+ * "safe" — the default. Ask before destroy / dynamic content / unknown
+ * binaries; routine reads + writes (including remote writes like
+ * git push and npm publish) flow. Personal-use baseline.
  */
 export function safeLevel(): Level {
   return {
@@ -57,7 +58,7 @@ export function safeLevel(): Level {
       "read.remote": "allow",
       "write.local": "allow",
       "write.local.destroy": "ask",
-      "write.remote": "ask",
+      "write.remote": "allow",
       "write.remote.destroy": "ask",
     },
   };
