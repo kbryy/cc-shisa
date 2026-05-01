@@ -2,19 +2,130 @@
   "name": "cargo",
   "description": "Cargo read-only subcommands. cargo build/run/test execute build.rs and project code, so they stay at unknown→ask.",
   "rules": [
-    { "id": "cargo.check", "match": "ast", "binary": "cargo", "subcommand": "check", "class": "read", "reason": "cargo check (typecheck only, no execution)" },
-    { "id": "cargo.tree", "match": "ast", "binary": "cargo", "subcommand": "tree", "class": "read", "reason": "cargo tree" },
-    { "id": "cargo.metadata", "match": "ast", "binary": "cargo", "subcommand": "metadata", "class": "read", "reason": "cargo metadata" },
-    { "id": "cargo.search", "match": "ast", "binary": "cargo", "subcommand": "search", "class": "read", "reason": "cargo search" },
-    { "id": "cargo.version", "match": "ast", "binary": "cargo", "subcommand": "version", "class": "read", "reason": "cargo version" },
-    { "id": "cargo.help", "match": "ast", "binary": "cargo", "subcommand": "help", "class": "read", "reason": "cargo help" },
-    { "id": "cargo.fmt-check", "match": "ast", "binary": "cargo", "subcommand": "fmt", "any_flags": ["--check"], "class": "read", "reason": "cargo fmt --check" },
-    { "id": "cargo.locate-project", "match": "ast", "binary": "cargo", "subcommand": "locate-project", "class": "read", "reason": "cargo locate-project" },
-    { "id": "cargo.pkgid", "match": "ast", "binary": "cargo", "subcommand": "pkgid", "class": "read", "reason": "cargo pkgid" },
-    { "id": "cargo.version-flag", "match": "ast", "binary": "cargo", "any_flags": ["--version", "-V"], "class": "read", "reason": "cargo --version" },
-    { "id": "cargo.verify-project", "match": "ast", "binary": "cargo", "subcommand": "verify-project", "class": "read", "reason": "cargo verify-project (Cargo.toml validation)" },
-    { "id": "cargo.info", "match": "ast", "binary": "cargo", "subcommand": "info", "class": "read", "reason": "cargo info (registry metadata)" },
-    { "id": "cargo.owner.list", "match": "ast", "binary": "cargo", "subcommand": "owner", "any_flags": ["--list", "-l"], "class": "read", "reason": "cargo owner --list" },
-    { "id": "cargo.yank.list", "match": "ast", "binary": "cargo", "subcommand": "yank", "any_flags": ["--list"], "class": "read", "reason": "cargo yank --list" }
+    {
+      "id": "cargo.check",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "check",
+      "class": "read-local",
+      "reason": "cargo check (typecheck only, no execution)"
+    },
+    {
+      "id": "cargo.tree",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "tree",
+      "class": "read-local",
+      "reason": "cargo tree"
+    },
+    {
+      "id": "cargo.metadata",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "metadata",
+      "class": "read-local",
+      "reason": "cargo metadata"
+    },
+    {
+      "id": "cargo.search",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "search",
+      "class": "read-remote",
+      "reason": "cargo search"
+    },
+    {
+      "id": "cargo.version",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "version",
+      "class": "read-local",
+      "reason": "cargo version"
+    },
+    {
+      "id": "cargo.help",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "help",
+      "class": "read-local",
+      "reason": "cargo help"
+    },
+    {
+      "id": "cargo.fmt-check",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "fmt",
+      "any_flags": [
+        "--check"
+      ],
+      "class": "read-local",
+      "reason": "cargo fmt --check"
+    },
+    {
+      "id": "cargo.locate-project",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "locate-project",
+      "class": "read-local",
+      "reason": "cargo locate-project"
+    },
+    {
+      "id": "cargo.pkgid",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "pkgid",
+      "class": "read-local",
+      "reason": "cargo pkgid"
+    },
+    {
+      "id": "cargo.version-flag",
+      "match": "ast",
+      "binary": "cargo",
+      "any_flags": [
+        "--version",
+        "-V"
+      ],
+      "class": "read-local",
+      "reason": "cargo --version"
+    },
+    {
+      "id": "cargo.verify-project",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "verify-project",
+      "class": "read-local",
+      "reason": "cargo verify-project (Cargo.toml validation)"
+    },
+    {
+      "id": "cargo.info",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "info",
+      "class": "read-remote",
+      "reason": "cargo info (registry metadata)"
+    },
+    {
+      "id": "cargo.owner.list",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "owner",
+      "any_flags": [
+        "--list",
+        "-l"
+      ],
+      "class": "read-remote",
+      "reason": "cargo owner --list"
+    },
+    {
+      "id": "cargo.yank.list",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "yank",
+      "any_flags": [
+        "--list"
+      ],
+      "class": "read-remote",
+      "reason": "cargo yank --list"
+    }
   ]
 }

@@ -22,9 +22,9 @@ function tmpEnv(): { env: NodeJS.ProcessEnv; dir: string; logPath: string } {
 }
 
 const sampleEntries: LogEntry[] = [
-  { ts: "2026-04-30T10:00:00Z", command: "ls", originalAction: "allow", class: "read", reason: "directory listing", matchedRule: "coreutils.list" },
-  { ts: "2026-04-30T10:01:00Z", command: "ls -la", originalAction: "allow", class: "read", reason: "directory listing", matchedRule: "coreutils.list" },
-  { ts: "2026-04-30T10:02:00Z", command: "git status", originalAction: "allow", class: "read", reason: "git status", matchedRule: "git.status" },
+  { ts: "2026-04-30T10:00:00Z", command: "ls", originalAction: "allow", class: "read-local", reason: "directory listing", matchedRule: "coreutils.list" },
+  { ts: "2026-04-30T10:01:00Z", command: "ls -la", originalAction: "allow", class: "read-local", reason: "directory listing", matchedRule: "coreutils.list" },
+  { ts: "2026-04-30T10:02:00Z", command: "git status", originalAction: "allow", class: "read-local", reason: "git status", matchedRule: "git.status" },
   { ts: "2026-04-30T10:03:00Z", command: "rm -rf /", originalAction: "deny", class: "dangerous", reason: "rm -rf root", matchedRule: "core.rm.rf.root" },
   { ts: "2026-04-30T10:04:00Z", command: "pnpm install", originalAction: "ask", class: "unknown", reason: "no rule matched" },
 ];

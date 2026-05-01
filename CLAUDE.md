@@ -102,12 +102,14 @@ Severity ordering (most strict → least):
 | Class | Action (safe level) | Examples |
 |---|---|---|
 | `dangerous` | **deny** | `rm -rf /`, fork bomb, `dd of=/dev/disk*`, `mkfs`, `chmod -R 777 /` |
-| `irreversible` | ask | `git push --force`, `git reset --hard`, `rm -rf .git` |
-| `eval` | ask | `eval`, `bash -c`, `curl ... \| sh`, `node -e`, `python -c` (was `arbitrary-code`; old name accepted as alias) |
-| `write-remote` | ask | (Phase 2+) `git push`, `gh pr create`, `npm publish` |
-| `write-local` | allow | (Phase 2+) `git commit`, `mkdir`, `cp` |
+| `irreversible-remote` | ask | `git push --force`, `git push --delete` (rewriting / removing remote refs) |
+| `irreversible-local` | ask | `git reset --hard`, `rm -rf .git`, `shred`, `rsync --delete`, `gpg --delete-secret-keys` |
+| `eval` | ask | `eval`, `bash -c`, `curl ... \| sh`, `node -e`, `python -c` |
+| `write-remote` | ask | `git push`, `gh pr create`, `npm publish` |
+| `write-local` | allow | `git commit`, `mkdir`, `cp`, `mv`, `git stash`, `git switch` |
 | `unknown` | ask | Any binary not matched by any rule |
-| `read` | allow | (Phase 2+) `git status`, `ls`, `cat`, `pnpm typecheck` |
+| `read-remote` | allow | `gh pr list`, `kubectl get`, `npm view`, `git fetch`, `ping`, `dig` |
+| `read-local` | allow | `git status`, `ls`, `cat`, `jq`, `sha256sum`, `pnpm typecheck` |
 
 **Most-strict wins**: when multiple segments or multiple rules match, the
 strictest classification is the final one.

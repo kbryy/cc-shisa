@@ -2,34 +2,273 @@
   "name": "npm",
   "description": "npm read-only subcommands and conventional read scripts.",
   "rules": [
-    { "id": "npm.test", "match": "ast", "binary": "npm", "subcommand": "test", "class": "read", "reason": "npm test" },
-    { "id": "npm.t", "match": "ast", "binary": "npm", "subcommand": "t", "class": "read", "reason": "npm t (alias for test)" },
-    { "id": "npm.run.typecheck", "match": "ast", "binary": "npm", "subcommand": ["run", "typecheck"], "class": "read", "reason": "npm run typecheck" },
-    { "id": "npm.run.lint", "match": "ast", "binary": "npm", "subcommand": ["run", "lint"], "class": "read", "reason": "npm run lint" },
-    { "id": "npm.run.test", "match": "ast", "binary": "npm", "subcommand": ["run", "test"], "class": "read", "reason": "npm run test" },
-    { "id": "npm.run.check", "match": "ast", "binary": "npm", "subcommand": ["run", "check"], "class": "read", "reason": "npm run check" },
-    { "id": "npm.run.format-check", "match": "ast", "binary": "npm", "subcommand": ["run", "format-check"], "class": "read", "reason": "npm run format-check" },
-    { "id": "npm.list", "match": "ast", "binary": "npm", "subcommand": "list", "class": "read", "reason": "npm list" },
-    { "id": "npm.ls", "match": "ast", "binary": "npm", "subcommand": "ls", "class": "read", "reason": "npm ls" },
-    { "id": "npm.outdated", "match": "ast", "binary": "npm", "subcommand": "outdated", "class": "read", "reason": "npm outdated" },
-    { "id": "npm.audit", "match": "ast", "binary": "npm", "subcommand": "audit", "class": "read", "reason": "npm audit" },
-    { "id": "npm.view", "match": "ast", "binary": "npm", "subcommand": "view", "class": "read", "reason": "npm view" },
-    { "id": "npm.info", "match": "ast", "binary": "npm", "subcommand": "info", "class": "read", "reason": "npm info" },
-    { "id": "npm.search", "match": "ast", "binary": "npm", "subcommand": "search", "class": "read", "reason": "npm search" },
-    { "id": "npm.doctor", "match": "ast", "binary": "npm", "subcommand": "doctor", "class": "read", "reason": "npm doctor" },
-    { "id": "npm.fund", "match": "ast", "binary": "npm", "subcommand": "fund", "class": "read", "reason": "npm fund" },
-    { "id": "npm.help", "match": "ast", "binary": "npm", "subcommand": "help", "class": "read", "reason": "npm help" },
-    { "id": "npm.version-flag", "match": "ast", "binary": "npm", "any_flags": ["--version", "-v"], "class": "read", "reason": "npm --version (the positional 'version' subcommand mutates package.json and is intentionally not classified read)" },
-    { "id": "npm.whoami", "match": "ast", "binary": "npm", "subcommand": "whoami", "class": "read", "reason": "npm whoami" },
-    { "id": "npm.root", "match": "ast", "binary": "npm", "subcommand": "root", "class": "read", "reason": "npm root" },
-    { "id": "npm.prefix", "match": "ast", "binary": "npm", "subcommand": "prefix", "class": "read", "reason": "npm prefix" },
-    { "id": "npm.bin", "match": "ast", "binary": "npm", "subcommand": "bin", "class": "read", "reason": "npm bin" },
-    { "id": "npm.explain", "match": "ast", "binary": "npm", "subcommand": "explain", "class": "read", "reason": "npm explain" },
-    { "id": "npm.config.get", "match": "ast", "binary": "npm", "subcommand": ["config", "get"], "class": "read", "reason": "npm config get" },
-    { "id": "npm.config.list", "match": "ast", "binary": "npm", "subcommand": ["config", "list"], "class": "read", "reason": "npm config list" },
-    { "id": "npm.config.ls", "match": "ast", "binary": "npm", "subcommand": ["config", "ls"], "class": "read", "reason": "npm config ls" },
-    { "id": "npm.pkg.get", "match": "ast", "binary": "npm", "subcommand": ["pkg", "get"], "class": "read", "reason": "npm pkg get" },
-    { "id": "npm.dist-tag.ls", "match": "ast", "binary": "npm", "subcommand": ["dist-tag", "ls"], "class": "read", "reason": "npm dist-tag ls" },
-    { "id": "npm.token.list", "match": "ast", "binary": "npm", "subcommand": ["token", "list"], "class": "read", "reason": "npm token list (values masked)" }
+    {
+      "id": "npm.test",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "test",
+      "class": "read-local",
+      "reason": "npm test"
+    },
+    {
+      "id": "npm.t",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "t",
+      "class": "read-local",
+      "reason": "npm t (alias for test)"
+    },
+    {
+      "id": "npm.run.typecheck",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "run",
+        "typecheck"
+      ],
+      "class": "read-local",
+      "reason": "npm run typecheck"
+    },
+    {
+      "id": "npm.run.lint",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "run",
+        "lint"
+      ],
+      "class": "read-local",
+      "reason": "npm run lint"
+    },
+    {
+      "id": "npm.run.test",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "run",
+        "test"
+      ],
+      "class": "read-local",
+      "reason": "npm run test"
+    },
+    {
+      "id": "npm.run.check",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "run",
+        "check"
+      ],
+      "class": "read-local",
+      "reason": "npm run check"
+    },
+    {
+      "id": "npm.run.format-check",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "run",
+        "format-check"
+      ],
+      "class": "read-local",
+      "reason": "npm run format-check"
+    },
+    {
+      "id": "npm.list",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "list",
+      "class": "read-local",
+      "reason": "npm list"
+    },
+    {
+      "id": "npm.ls",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "ls",
+      "class": "read-local",
+      "reason": "npm ls"
+    },
+    {
+      "id": "npm.outdated",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "outdated",
+      "class": "read-remote",
+      "reason": "npm outdated"
+    },
+    {
+      "id": "npm.audit",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "audit",
+      "class": "read-remote",
+      "reason": "npm audit"
+    },
+    {
+      "id": "npm.view",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "view",
+      "class": "read-remote",
+      "reason": "npm view"
+    },
+    {
+      "id": "npm.info",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "info",
+      "class": "read-remote",
+      "reason": "npm info"
+    },
+    {
+      "id": "npm.search",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "search",
+      "class": "read-remote",
+      "reason": "npm search"
+    },
+    {
+      "id": "npm.doctor",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "doctor",
+      "class": "read-local",
+      "reason": "npm doctor"
+    },
+    {
+      "id": "npm.fund",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "fund",
+      "class": "read-local",
+      "reason": "npm fund"
+    },
+    {
+      "id": "npm.help",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "help",
+      "class": "read-local",
+      "reason": "npm help"
+    },
+    {
+      "id": "npm.version-flag",
+      "match": "ast",
+      "binary": "npm",
+      "any_flags": [
+        "--version",
+        "-v"
+      ],
+      "class": "read-local",
+      "reason": "npm --version (the positional 'version' subcommand mutates package.json and is intentionally not classified read)"
+    },
+    {
+      "id": "npm.whoami",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "whoami",
+      "class": "read-remote",
+      "reason": "npm whoami"
+    },
+    {
+      "id": "npm.root",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "root",
+      "class": "read-local",
+      "reason": "npm root"
+    },
+    {
+      "id": "npm.prefix",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "prefix",
+      "class": "read-local",
+      "reason": "npm prefix"
+    },
+    {
+      "id": "npm.bin",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "bin",
+      "class": "read-local",
+      "reason": "npm bin"
+    },
+    {
+      "id": "npm.explain",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "explain",
+      "class": "read-local",
+      "reason": "npm explain"
+    },
+    {
+      "id": "npm.config.get",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "config",
+        "get"
+      ],
+      "class": "read-local",
+      "reason": "npm config get"
+    },
+    {
+      "id": "npm.config.list",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "config",
+        "list"
+      ],
+      "class": "read-local",
+      "reason": "npm config list"
+    },
+    {
+      "id": "npm.config.ls",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "config",
+        "ls"
+      ],
+      "class": "read-local",
+      "reason": "npm config ls"
+    },
+    {
+      "id": "npm.pkg.get",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "pkg",
+        "get"
+      ],
+      "class": "read-local",
+      "reason": "npm pkg get"
+    },
+    {
+      "id": "npm.dist-tag.ls",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "dist-tag",
+        "ls"
+      ],
+      "class": "read-remote",
+      "reason": "npm dist-tag ls"
+    },
+    {
+      "id": "npm.token.list",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "token",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "npm token list (values masked)"
+    }
   ]
 }

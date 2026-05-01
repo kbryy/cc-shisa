@@ -2,34 +2,264 @@
   "name": "pnpm",
   "description": "pnpm read-only subcommands and conventional read-only scripts.",
   "rules": [
-    { "id": "pnpm.list", "match": "ast", "binary": "pnpm", "subcommand": "list", "class": "read", "reason": "pnpm list" },
-    { "id": "pnpm.ls", "match": "ast", "binary": "pnpm", "subcommand": "ls", "class": "read", "reason": "pnpm ls" },
-    { "id": "pnpm.why", "match": "ast", "binary": "pnpm", "subcommand": "why", "class": "read", "reason": "pnpm why" },
-    { "id": "pnpm.outdated", "match": "ast", "binary": "pnpm", "subcommand": "outdated", "class": "read", "reason": "pnpm outdated" },
-    { "id": "pnpm.audit", "match": "ast", "binary": "pnpm", "subcommand": "audit", "class": "read", "reason": "pnpm audit" },
-    { "id": "pnpm.info", "match": "ast", "binary": "pnpm", "subcommand": "info", "class": "read", "reason": "pnpm info" },
-    { "id": "pnpm.view", "match": "ast", "binary": "pnpm", "subcommand": "view", "class": "read", "reason": "pnpm view" },
-    { "id": "pnpm.doctor", "match": "ast", "binary": "pnpm", "subcommand": "doctor", "class": "read", "reason": "pnpm doctor" },
-    { "id": "pnpm.licenses", "match": "ast", "binary": "pnpm", "subcommand": "licenses", "class": "read", "reason": "pnpm licenses" },
-    { "id": "pnpm.test", "match": "ast", "binary": "pnpm", "subcommand": "test", "class": "read", "reason": "pnpm test (project-defined script, conventionally read-only)" },
-    { "id": "pnpm.t", "match": "ast", "binary": "pnpm", "subcommand": "t", "class": "read", "reason": "pnpm t (alias for test)" },
-    { "id": "pnpm.run.typecheck", "match": "ast", "binary": "pnpm", "subcommand": ["run", "typecheck"], "class": "read", "reason": "pnpm run typecheck" },
-    { "id": "pnpm.run.lint", "match": "ast", "binary": "pnpm", "subcommand": ["run", "lint"], "class": "read", "reason": "pnpm run lint" },
-    { "id": "pnpm.run.test", "match": "ast", "binary": "pnpm", "subcommand": ["run", "test"], "class": "read", "reason": "pnpm run test" },
-    { "id": "pnpm.run.check", "match": "ast", "binary": "pnpm", "subcommand": ["run", "check"], "class": "read", "reason": "pnpm run check" },
-    { "id": "pnpm.run.format-check", "match": "ast", "binary": "pnpm", "subcommand": ["run", "format-check"], "class": "read", "reason": "pnpm run format-check" },
-    { "id": "pnpm.typecheck", "match": "ast", "binary": "pnpm", "subcommand": "typecheck", "class": "read", "reason": "pnpm typecheck (script shortcut)" },
-    { "id": "pnpm.lint", "match": "ast", "binary": "pnpm", "subcommand": "lint", "class": "read", "reason": "pnpm lint (script shortcut)" },
-    { "id": "pnpm.format-check", "match": "ast", "binary": "pnpm", "subcommand": "format-check", "class": "read", "reason": "pnpm format-check (script shortcut)" },
-    { "id": "pnpm.check", "match": "ast", "binary": "pnpm", "subcommand": "check", "class": "read", "reason": "pnpm check (script shortcut)" },
-    { "id": "pnpm.help", "match": "ast", "binary": "pnpm", "subcommand": "help", "class": "read", "reason": "pnpm help" },
-    { "id": "pnpm.version-flag", "match": "ast", "binary": "pnpm", "any_flags": ["--version", "-v"], "class": "read", "reason": "pnpm --version" },
-    { "id": "pnpm.whoami", "match": "ast", "binary": "pnpm", "subcommand": "whoami", "class": "read", "reason": "pnpm whoami" },
-    { "id": "pnpm.root", "match": "ast", "binary": "pnpm", "subcommand": "root", "class": "read", "reason": "pnpm root" },
-    { "id": "pnpm.bin", "match": "ast", "binary": "pnpm", "subcommand": "bin", "class": "read", "reason": "pnpm bin" },
-    { "id": "pnpm.prefix", "match": "ast", "binary": "pnpm", "subcommand": "prefix", "class": "read", "reason": "pnpm prefix" },
-    { "id": "pnpm.config.get", "match": "ast", "binary": "pnpm", "subcommand": ["config", "get"], "class": "read", "reason": "pnpm config get" },
-    { "id": "pnpm.config.list", "match": "ast", "binary": "pnpm", "subcommand": ["config", "list"], "class": "read", "reason": "pnpm config list" },
-    { "id": "pnpm.env.list-remote", "match": "ast", "binary": "pnpm", "subcommand": ["env", "list-remote"], "class": "read", "reason": "pnpm env list-remote (queries Node release index)" }
+    {
+      "id": "pnpm.list",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "list",
+      "class": "read-local",
+      "reason": "pnpm list"
+    },
+    {
+      "id": "pnpm.ls",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "ls",
+      "class": "read-local",
+      "reason": "pnpm ls"
+    },
+    {
+      "id": "pnpm.why",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "why",
+      "class": "read-local",
+      "reason": "pnpm why"
+    },
+    {
+      "id": "pnpm.outdated",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "outdated",
+      "class": "read-remote",
+      "reason": "pnpm outdated"
+    },
+    {
+      "id": "pnpm.audit",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "audit",
+      "class": "read-remote",
+      "reason": "pnpm audit"
+    },
+    {
+      "id": "pnpm.info",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "info",
+      "class": "read-remote",
+      "reason": "pnpm info"
+    },
+    {
+      "id": "pnpm.view",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "view",
+      "class": "read-remote",
+      "reason": "pnpm view"
+    },
+    {
+      "id": "pnpm.doctor",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "doctor",
+      "class": "read-local",
+      "reason": "pnpm doctor"
+    },
+    {
+      "id": "pnpm.licenses",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "licenses",
+      "class": "read-local",
+      "reason": "pnpm licenses"
+    },
+    {
+      "id": "pnpm.test",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "test",
+      "class": "read-local",
+      "reason": "pnpm test (project-defined script, conventionally read-only)"
+    },
+    {
+      "id": "pnpm.t",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "t",
+      "class": "read-local",
+      "reason": "pnpm t (alias for test)"
+    },
+    {
+      "id": "pnpm.run.typecheck",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "run",
+        "typecheck"
+      ],
+      "class": "read-local",
+      "reason": "pnpm run typecheck"
+    },
+    {
+      "id": "pnpm.run.lint",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "run",
+        "lint"
+      ],
+      "class": "read-local",
+      "reason": "pnpm run lint"
+    },
+    {
+      "id": "pnpm.run.test",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "run",
+        "test"
+      ],
+      "class": "read-local",
+      "reason": "pnpm run test"
+    },
+    {
+      "id": "pnpm.run.check",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "run",
+        "check"
+      ],
+      "class": "read-local",
+      "reason": "pnpm run check"
+    },
+    {
+      "id": "pnpm.run.format-check",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "run",
+        "format-check"
+      ],
+      "class": "read-local",
+      "reason": "pnpm run format-check"
+    },
+    {
+      "id": "pnpm.typecheck",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "typecheck",
+      "class": "read-local",
+      "reason": "pnpm typecheck (script shortcut)"
+    },
+    {
+      "id": "pnpm.lint",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "lint",
+      "class": "read-local",
+      "reason": "pnpm lint (script shortcut)"
+    },
+    {
+      "id": "pnpm.format-check",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "format-check",
+      "class": "read-local",
+      "reason": "pnpm format-check (script shortcut)"
+    },
+    {
+      "id": "pnpm.check",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "check",
+      "class": "read-local",
+      "reason": "pnpm check (script shortcut)"
+    },
+    {
+      "id": "pnpm.help",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "help",
+      "class": "read-local",
+      "reason": "pnpm help"
+    },
+    {
+      "id": "pnpm.version-flag",
+      "match": "ast",
+      "binary": "pnpm",
+      "any_flags": [
+        "--version",
+        "-v"
+      ],
+      "class": "read-local",
+      "reason": "pnpm --version"
+    },
+    {
+      "id": "pnpm.whoami",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "whoami",
+      "class": "read-remote",
+      "reason": "pnpm whoami"
+    },
+    {
+      "id": "pnpm.root",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "root",
+      "class": "read-local",
+      "reason": "pnpm root"
+    },
+    {
+      "id": "pnpm.bin",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "bin",
+      "class": "read-local",
+      "reason": "pnpm bin"
+    },
+    {
+      "id": "pnpm.prefix",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "prefix",
+      "class": "read-local",
+      "reason": "pnpm prefix"
+    },
+    {
+      "id": "pnpm.config.get",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "config",
+        "get"
+      ],
+      "class": "read-local",
+      "reason": "pnpm config get"
+    },
+    {
+      "id": "pnpm.config.list",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "config",
+        "list"
+      ],
+      "class": "read-local",
+      "reason": "pnpm config list"
+    },
+    {
+      "id": "pnpm.env.list-remote",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "env",
+        "list-remote"
+      ],
+      "class": "read-remote",
+      "reason": "pnpm env list-remote (queries Node release index)"
+    }
   ]
 }

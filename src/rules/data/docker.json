@@ -2,82 +2,634 @@
   "name": "docker",
   "description": "Docker read-only subcommands. Skips run/exec/build/pull/rm and other state-changing verbs.",
   "rules": [
-    { "id": "docker.ps", "match": "ast", "binary": "docker", "subcommand": "ps", "class": "read", "reason": "docker ps" },
-    { "id": "docker.images", "match": "ast", "binary": "docker", "subcommand": "images", "class": "read", "reason": "docker images" },
-    { "id": "docker.inspect", "match": "ast", "binary": "docker", "subcommand": "inspect", "class": "read", "reason": "docker inspect" },
-    { "id": "docker.logs", "match": "ast", "binary": "docker", "subcommand": "logs", "class": "read", "reason": "docker logs" },
-    { "id": "docker.top", "match": "ast", "binary": "docker", "subcommand": "top", "class": "read", "reason": "docker top" },
-    { "id": "docker.stats", "match": "ast", "binary": "docker", "subcommand": "stats", "class": "read", "reason": "docker stats" },
-    { "id": "docker.history", "match": "ast", "binary": "docker", "subcommand": "history", "class": "read", "reason": "docker history" },
-    { "id": "docker.port", "match": "ast", "binary": "docker", "subcommand": "port", "class": "read", "reason": "docker port" },
-    { "id": "docker.diff", "match": "ast", "binary": "docker", "subcommand": "diff", "class": "read", "reason": "docker diff" },
-    { "id": "docker.events", "match": "ast", "binary": "docker", "subcommand": "events", "class": "read", "reason": "docker events" },
-    { "id": "docker.info", "match": "ast", "binary": "docker", "subcommand": "info", "class": "read", "reason": "docker info" },
-    { "id": "docker.version", "match": "ast", "binary": "docker", "subcommand": "version", "class": "read", "reason": "docker version" },
-    { "id": "docker.help", "match": "ast", "binary": "docker", "subcommand": "help", "class": "read", "reason": "docker help" },
-
-    { "id": "docker.container.ls", "match": "ast", "binary": "docker", "subcommand": ["container", "ls"], "class": "read", "reason": "docker container ls" },
-    { "id": "docker.container.inspect", "match": "ast", "binary": "docker", "subcommand": ["container", "inspect"], "class": "read", "reason": "docker container inspect" },
-    { "id": "docker.container.logs", "match": "ast", "binary": "docker", "subcommand": ["container", "logs"], "class": "read", "reason": "docker container logs" },
-    { "id": "docker.container.top", "match": "ast", "binary": "docker", "subcommand": ["container", "top"], "class": "read", "reason": "docker container top" },
-    { "id": "docker.container.stats", "match": "ast", "binary": "docker", "subcommand": ["container", "stats"], "class": "read", "reason": "docker container stats" },
-    { "id": "docker.container.diff", "match": "ast", "binary": "docker", "subcommand": ["container", "diff"], "class": "read", "reason": "docker container diff" },
-    { "id": "docker.container.port", "match": "ast", "binary": "docker", "subcommand": ["container", "port"], "class": "read", "reason": "docker container port" },
-
-    { "id": "docker.image.ls", "match": "ast", "binary": "docker", "subcommand": ["image", "ls"], "class": "read", "reason": "docker image ls" },
-    { "id": "docker.image.inspect", "match": "ast", "binary": "docker", "subcommand": ["image", "inspect"], "class": "read", "reason": "docker image inspect" },
-    { "id": "docker.image.history", "match": "ast", "binary": "docker", "subcommand": ["image", "history"], "class": "read", "reason": "docker image history" },
-
-    { "id": "docker.network.ls", "match": "ast", "binary": "docker", "subcommand": ["network", "ls"], "class": "read", "reason": "docker network ls" },
-    { "id": "docker.network.inspect", "match": "ast", "binary": "docker", "subcommand": ["network", "inspect"], "class": "read", "reason": "docker network inspect" },
-
-    { "id": "docker.volume.ls", "match": "ast", "binary": "docker", "subcommand": ["volume", "ls"], "class": "read", "reason": "docker volume ls" },
-    { "id": "docker.volume.inspect", "match": "ast", "binary": "docker", "subcommand": ["volume", "inspect"], "class": "read", "reason": "docker volume inspect" },
-
-    { "id": "docker.system.info", "match": "ast", "binary": "docker", "subcommand": ["system", "info"], "class": "read", "reason": "docker system info" },
-    { "id": "docker.system.df", "match": "ast", "binary": "docker", "subcommand": ["system", "df"], "class": "read", "reason": "docker system df" },
-    { "id": "docker.system.events", "match": "ast", "binary": "docker", "subcommand": ["system", "events"], "class": "read", "reason": "docker system events" },
-
-    { "id": "docker.compose.ps", "match": "ast", "binary": "docker", "subcommand": ["compose", "ps"], "class": "read", "reason": "docker compose ps" },
-    { "id": "docker.compose.logs", "match": "ast", "binary": "docker", "subcommand": ["compose", "logs"], "class": "read", "reason": "docker compose logs" },
-    { "id": "docker.compose.top", "match": "ast", "binary": "docker", "subcommand": ["compose", "top"], "class": "read", "reason": "docker compose top" },
-    { "id": "docker.compose.config", "match": "ast", "binary": "docker", "subcommand": ["compose", "config"], "class": "read", "reason": "docker compose config" },
-    { "id": "docker.compose.version", "match": "ast", "binary": "docker", "subcommand": ["compose", "version"], "class": "read", "reason": "docker compose version" },
-
-    { "id": "docker.search", "match": "ast", "binary": "docker", "subcommand": "search", "class": "read", "reason": "docker search" },
-    { "id": "docker.manifest.inspect", "match": "ast", "binary": "docker", "subcommand": ["manifest", "inspect"], "class": "read", "reason": "docker manifest inspect" },
-
-    { "id": "docker.context.ls", "match": "ast", "binary": "docker", "subcommand": ["context", "ls"], "class": "read", "reason": "docker context ls" },
-    { "id": "docker.context.inspect", "match": "ast", "binary": "docker", "subcommand": ["context", "inspect"], "class": "read", "reason": "docker context inspect" },
-    { "id": "docker.context.show", "match": "ast", "binary": "docker", "subcommand": ["context", "show"], "class": "read", "reason": "docker context show" },
-
-    { "id": "docker.buildx.ls", "match": "ast", "binary": "docker", "subcommand": ["buildx", "ls"], "class": "read", "reason": "docker buildx ls" },
-    { "id": "docker.buildx.inspect", "match": "ast", "binary": "docker", "subcommand": ["buildx", "inspect"], "class": "read", "reason": "docker buildx inspect" },
-    { "id": "docker.buildx.version", "match": "ast", "binary": "docker", "subcommand": ["buildx", "version"], "class": "read", "reason": "docker buildx version" },
-
-    { "id": "docker.plugin.ls", "match": "ast", "binary": "docker", "subcommand": ["plugin", "ls"], "class": "read", "reason": "docker plugin ls" },
-    { "id": "docker.plugin.inspect", "match": "ast", "binary": "docker", "subcommand": ["plugin", "inspect"], "class": "read", "reason": "docker plugin inspect" },
-
-    { "id": "docker.container.ps", "match": "ast", "binary": "docker", "subcommand": ["container", "ps"], "class": "read", "reason": "docker container ps" },
-
-    { "id": "docker.compose.images", "match": "ast", "binary": "docker", "subcommand": ["compose", "images"], "class": "read", "reason": "docker compose images" },
-    { "id": "docker.compose.ls", "match": "ast", "binary": "docker", "subcommand": ["compose", "ls"], "class": "read", "reason": "docker compose ls" },
-    { "id": "docker.compose.port", "match": "ast", "binary": "docker", "subcommand": ["compose", "port"], "class": "read", "reason": "docker compose port" },
-    { "id": "docker.compose.events", "match": "ast", "binary": "docker", "subcommand": ["compose", "events"], "class": "read", "reason": "docker compose events" },
-
-    { "id": "docker.service.ls", "match": "ast", "binary": "docker", "subcommand": ["service", "ls"], "class": "read", "reason": "docker service ls" },
-    { "id": "docker.service.inspect", "match": "ast", "binary": "docker", "subcommand": ["service", "inspect"], "class": "read", "reason": "docker service inspect" },
-    { "id": "docker.service.logs", "match": "ast", "binary": "docker", "subcommand": ["service", "logs"], "class": "read", "reason": "docker service logs" },
-    { "id": "docker.service.ps", "match": "ast", "binary": "docker", "subcommand": ["service", "ps"], "class": "read", "reason": "docker service ps" },
-
-    { "id": "docker.stack.ls", "match": "ast", "binary": "docker", "subcommand": ["stack", "ls"], "class": "read", "reason": "docker stack ls" },
-    { "id": "docker.stack.ps", "match": "ast", "binary": "docker", "subcommand": ["stack", "ps"], "class": "read", "reason": "docker stack ps" },
-    { "id": "docker.stack.services", "match": "ast", "binary": "docker", "subcommand": ["stack", "services"], "class": "read", "reason": "docker stack services" },
-
-    { "id": "docker.node.ls", "match": "ast", "binary": "docker", "subcommand": ["node", "ls"], "class": "read", "reason": "docker node ls" },
-    { "id": "docker.node.inspect", "match": "ast", "binary": "docker", "subcommand": ["node", "inspect"], "class": "read", "reason": "docker node inspect" },
-
-    { "id": "docker.secret.ls", "match": "ast", "binary": "docker", "subcommand": ["secret", "ls"], "class": "read", "reason": "docker secret ls (values not exposed)" },
-    { "id": "docker.config.ls", "match": "ast", "binary": "docker", "subcommand": ["config", "ls"], "class": "read", "reason": "docker config ls" }
+    {
+      "id": "docker.ps",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "ps",
+      "class": "read-local",
+      "reason": "docker ps"
+    },
+    {
+      "id": "docker.images",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "images",
+      "class": "read-local",
+      "reason": "docker images"
+    },
+    {
+      "id": "docker.inspect",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "inspect",
+      "class": "read-local",
+      "reason": "docker inspect"
+    },
+    {
+      "id": "docker.logs",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "logs",
+      "class": "read-local",
+      "reason": "docker logs"
+    },
+    {
+      "id": "docker.top",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "top",
+      "class": "read-local",
+      "reason": "docker top"
+    },
+    {
+      "id": "docker.stats",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "stats",
+      "class": "read-local",
+      "reason": "docker stats"
+    },
+    {
+      "id": "docker.history",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "history",
+      "class": "read-local",
+      "reason": "docker history"
+    },
+    {
+      "id": "docker.port",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "port",
+      "class": "read-local",
+      "reason": "docker port"
+    },
+    {
+      "id": "docker.diff",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "diff",
+      "class": "read-local",
+      "reason": "docker diff"
+    },
+    {
+      "id": "docker.events",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "events",
+      "class": "read-local",
+      "reason": "docker events"
+    },
+    {
+      "id": "docker.info",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "info",
+      "class": "read-local",
+      "reason": "docker info"
+    },
+    {
+      "id": "docker.version",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "version",
+      "class": "read-local",
+      "reason": "docker version"
+    },
+    {
+      "id": "docker.help",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "help",
+      "class": "read-local",
+      "reason": "docker help"
+    },
+    {
+      "id": "docker.container.ls",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "container",
+        "ls"
+      ],
+      "class": "read-local",
+      "reason": "docker container ls"
+    },
+    {
+      "id": "docker.container.inspect",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "container",
+        "inspect"
+      ],
+      "class": "read-local",
+      "reason": "docker container inspect"
+    },
+    {
+      "id": "docker.container.logs",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "container",
+        "logs"
+      ],
+      "class": "read-local",
+      "reason": "docker container logs"
+    },
+    {
+      "id": "docker.container.top",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "container",
+        "top"
+      ],
+      "class": "read-local",
+      "reason": "docker container top"
+    },
+    {
+      "id": "docker.container.stats",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "container",
+        "stats"
+      ],
+      "class": "read-local",
+      "reason": "docker container stats"
+    },
+    {
+      "id": "docker.container.diff",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "container",
+        "diff"
+      ],
+      "class": "read-local",
+      "reason": "docker container diff"
+    },
+    {
+      "id": "docker.container.port",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "container",
+        "port"
+      ],
+      "class": "read-local",
+      "reason": "docker container port"
+    },
+    {
+      "id": "docker.image.ls",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "image",
+        "ls"
+      ],
+      "class": "read-local",
+      "reason": "docker image ls"
+    },
+    {
+      "id": "docker.image.inspect",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "image",
+        "inspect"
+      ],
+      "class": "read-local",
+      "reason": "docker image inspect"
+    },
+    {
+      "id": "docker.image.history",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "image",
+        "history"
+      ],
+      "class": "read-local",
+      "reason": "docker image history"
+    },
+    {
+      "id": "docker.network.ls",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "network",
+        "ls"
+      ],
+      "class": "read-local",
+      "reason": "docker network ls"
+    },
+    {
+      "id": "docker.network.inspect",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "network",
+        "inspect"
+      ],
+      "class": "read-local",
+      "reason": "docker network inspect"
+    },
+    {
+      "id": "docker.volume.ls",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "volume",
+        "ls"
+      ],
+      "class": "read-local",
+      "reason": "docker volume ls"
+    },
+    {
+      "id": "docker.volume.inspect",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "volume",
+        "inspect"
+      ],
+      "class": "read-local",
+      "reason": "docker volume inspect"
+    },
+    {
+      "id": "docker.system.info",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "system",
+        "info"
+      ],
+      "class": "read-local",
+      "reason": "docker system info"
+    },
+    {
+      "id": "docker.system.df",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "system",
+        "df"
+      ],
+      "class": "read-local",
+      "reason": "docker system df"
+    },
+    {
+      "id": "docker.system.events",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "system",
+        "events"
+      ],
+      "class": "read-local",
+      "reason": "docker system events"
+    },
+    {
+      "id": "docker.compose.ps",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "ps"
+      ],
+      "class": "read-local",
+      "reason": "docker compose ps"
+    },
+    {
+      "id": "docker.compose.logs",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "logs"
+      ],
+      "class": "read-local",
+      "reason": "docker compose logs"
+    },
+    {
+      "id": "docker.compose.top",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "top"
+      ],
+      "class": "read-local",
+      "reason": "docker compose top"
+    },
+    {
+      "id": "docker.compose.config",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "config"
+      ],
+      "class": "read-local",
+      "reason": "docker compose config"
+    },
+    {
+      "id": "docker.compose.version",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "version"
+      ],
+      "class": "read-local",
+      "reason": "docker compose version"
+    },
+    {
+      "id": "docker.search",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": "search",
+      "class": "read-remote",
+      "reason": "docker search"
+    },
+    {
+      "id": "docker.manifest.inspect",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "manifest",
+        "inspect"
+      ],
+      "class": "read-remote",
+      "reason": "docker manifest inspect"
+    },
+    {
+      "id": "docker.context.ls",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "context",
+        "ls"
+      ],
+      "class": "read-local",
+      "reason": "docker context ls"
+    },
+    {
+      "id": "docker.context.inspect",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "context",
+        "inspect"
+      ],
+      "class": "read-local",
+      "reason": "docker context inspect"
+    },
+    {
+      "id": "docker.context.show",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "context",
+        "show"
+      ],
+      "class": "read-local",
+      "reason": "docker context show"
+    },
+    {
+      "id": "docker.buildx.ls",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "buildx",
+        "ls"
+      ],
+      "class": "read-local",
+      "reason": "docker buildx ls"
+    },
+    {
+      "id": "docker.buildx.inspect",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "buildx",
+        "inspect"
+      ],
+      "class": "read-local",
+      "reason": "docker buildx inspect"
+    },
+    {
+      "id": "docker.buildx.version",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "buildx",
+        "version"
+      ],
+      "class": "read-local",
+      "reason": "docker buildx version"
+    },
+    {
+      "id": "docker.plugin.ls",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "plugin",
+        "ls"
+      ],
+      "class": "read-local",
+      "reason": "docker plugin ls"
+    },
+    {
+      "id": "docker.plugin.inspect",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "plugin",
+        "inspect"
+      ],
+      "class": "read-local",
+      "reason": "docker plugin inspect"
+    },
+    {
+      "id": "docker.container.ps",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "container",
+        "ps"
+      ],
+      "class": "read-local",
+      "reason": "docker container ps"
+    },
+    {
+      "id": "docker.compose.images",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "images"
+      ],
+      "class": "read-local",
+      "reason": "docker compose images"
+    },
+    {
+      "id": "docker.compose.ls",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "ls"
+      ],
+      "class": "read-local",
+      "reason": "docker compose ls"
+    },
+    {
+      "id": "docker.compose.port",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "port"
+      ],
+      "class": "read-local",
+      "reason": "docker compose port"
+    },
+    {
+      "id": "docker.compose.events",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "compose",
+        "events"
+      ],
+      "class": "read-local",
+      "reason": "docker compose events"
+    },
+    {
+      "id": "docker.service.ls",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "service",
+        "ls"
+      ],
+      "class": "read-local",
+      "reason": "docker service ls"
+    },
+    {
+      "id": "docker.service.inspect",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "service",
+        "inspect"
+      ],
+      "class": "read-local",
+      "reason": "docker service inspect"
+    },
+    {
+      "id": "docker.service.logs",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "service",
+        "logs"
+      ],
+      "class": "read-local",
+      "reason": "docker service logs"
+    },
+    {
+      "id": "docker.service.ps",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "service",
+        "ps"
+      ],
+      "class": "read-local",
+      "reason": "docker service ps"
+    },
+    {
+      "id": "docker.stack.ls",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "stack",
+        "ls"
+      ],
+      "class": "read-local",
+      "reason": "docker stack ls"
+    },
+    {
+      "id": "docker.stack.ps",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "stack",
+        "ps"
+      ],
+      "class": "read-local",
+      "reason": "docker stack ps"
+    },
+    {
+      "id": "docker.stack.services",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "stack",
+        "services"
+      ],
+      "class": "read-local",
+      "reason": "docker stack services"
+    },
+    {
+      "id": "docker.node.ls",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "node",
+        "ls"
+      ],
+      "class": "read-local",
+      "reason": "docker node ls"
+    },
+    {
+      "id": "docker.node.inspect",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "node",
+        "inspect"
+      ],
+      "class": "read-local",
+      "reason": "docker node inspect"
+    },
+    {
+      "id": "docker.secret.ls",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "secret",
+        "ls"
+      ],
+      "class": "read-local",
+      "reason": "docker secret ls (values not exposed)"
+    },
+    {
+      "id": "docker.config.ls",
+      "match": "ast",
+      "binary": "docker",
+      "subcommand": [
+        "config",
+        "ls"
+      ],
+      "class": "read-local",
+      "reason": "docker config ls"
+    }
   ]
 }

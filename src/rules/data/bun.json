@@ -2,20 +2,154 @@
   "name": "bun",
   "description": "Bun read-only subcommands and conventional read scripts.",
   "rules": [
-    { "id": "bun.test", "match": "ast", "binary": "bun", "subcommand": "test", "class": "read", "reason": "bun test" },
-    { "id": "bun.run.typecheck", "match": "ast", "binary": "bun", "subcommand": ["run", "typecheck"], "class": "read", "reason": "bun run typecheck" },
-    { "id": "bun.run.lint", "match": "ast", "binary": "bun", "subcommand": ["run", "lint"], "class": "read", "reason": "bun run lint" },
-    { "id": "bun.run.test", "match": "ast", "binary": "bun", "subcommand": ["run", "test"], "class": "read", "reason": "bun run test" },
-    { "id": "bun.run.check", "match": "ast", "binary": "bun", "subcommand": ["run", "check"], "class": "read", "reason": "bun run check" },
-    { "id": "bun.run.format-check", "match": "ast", "binary": "bun", "subcommand": ["run", "format-check"], "class": "read", "reason": "bun run format-check" },
-    { "id": "bun.pm.ls", "match": "ast", "binary": "bun", "subcommand": ["pm", "ls"], "class": "read", "reason": "bun pm ls" },
-    { "id": "bun.pm.whoami", "match": "ast", "binary": "bun", "subcommand": ["pm", "whoami"], "class": "read", "reason": "bun pm whoami" },
-    { "id": "bun.outdated", "match": "ast", "binary": "bun", "subcommand": "outdated", "class": "read", "reason": "bun outdated" },
-    { "id": "bun.audit", "match": "ast", "binary": "bun", "subcommand": "audit", "class": "read", "reason": "bun audit" },
-    { "id": "bun.help", "match": "ast", "binary": "bun", "subcommand": "help", "class": "read", "reason": "bun help" },
-    { "id": "bun.version-flag", "match": "ast", "binary": "bun", "any_flags": ["--version", "-v"], "class": "read", "reason": "bun --version" },
-    { "id": "bun.pm.view", "match": "ast", "binary": "bun", "subcommand": ["pm", "view"], "class": "read", "reason": "bun pm view (registry metadata read)" },
-    { "id": "bun.revision-flag", "match": "ast", "binary": "bun", "any_flags": ["--revision"], "class": "read", "reason": "bun --revision" },
-    { "id": "bun.completions", "match": "ast", "binary": "bun", "subcommand": "completions", "class": "read", "reason": "bun completions (shell completion script)" }
+    {
+      "id": "bun.test",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "test",
+      "class": "read-local",
+      "reason": "bun test"
+    },
+    {
+      "id": "bun.run.typecheck",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "run",
+        "typecheck"
+      ],
+      "class": "read-local",
+      "reason": "bun run typecheck"
+    },
+    {
+      "id": "bun.run.lint",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "run",
+        "lint"
+      ],
+      "class": "read-local",
+      "reason": "bun run lint"
+    },
+    {
+      "id": "bun.run.test",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "run",
+        "test"
+      ],
+      "class": "read-local",
+      "reason": "bun run test"
+    },
+    {
+      "id": "bun.run.check",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "run",
+        "check"
+      ],
+      "class": "read-local",
+      "reason": "bun run check"
+    },
+    {
+      "id": "bun.run.format-check",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "run",
+        "format-check"
+      ],
+      "class": "read-local",
+      "reason": "bun run format-check"
+    },
+    {
+      "id": "bun.pm.ls",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "pm",
+        "ls"
+      ],
+      "class": "read-local",
+      "reason": "bun pm ls"
+    },
+    {
+      "id": "bun.pm.whoami",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "pm",
+        "whoami"
+      ],
+      "class": "read-remote",
+      "reason": "bun pm whoami"
+    },
+    {
+      "id": "bun.outdated",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "outdated",
+      "class": "read-remote",
+      "reason": "bun outdated"
+    },
+    {
+      "id": "bun.audit",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "audit",
+      "class": "read-remote",
+      "reason": "bun audit"
+    },
+    {
+      "id": "bun.help",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "help",
+      "class": "read-local",
+      "reason": "bun help"
+    },
+    {
+      "id": "bun.version-flag",
+      "match": "ast",
+      "binary": "bun",
+      "any_flags": [
+        "--version",
+        "-v"
+      ],
+      "class": "read-local",
+      "reason": "bun --version"
+    },
+    {
+      "id": "bun.pm.view",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "pm",
+        "view"
+      ],
+      "class": "read-remote",
+      "reason": "bun pm view (registry metadata read)"
+    },
+    {
+      "id": "bun.revision-flag",
+      "match": "ast",
+      "binary": "bun",
+      "any_flags": [
+        "--revision"
+      ],
+      "class": "read-local",
+      "reason": "bun --revision"
+    },
+    {
+      "id": "bun.completions",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "completions",
+      "class": "read-local",
+      "reason": "bun completions (shell completion script)"
+    }
   ]
 }

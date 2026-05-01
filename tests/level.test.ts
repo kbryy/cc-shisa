@@ -41,7 +41,7 @@ describe("strict level", () => {
   test("denies irreversible (git push --force)", () => {
     const d = evaluateAt(strictLevel(), "git push --force origin main");
     expect(d.action).toBe("deny");
-    expect(d.class).toBe("irreversible");
+    expect(d.class).toBe("irreversible-remote");
   });
 
   test("denies eval (bash -c)", () => {
@@ -75,7 +75,7 @@ describe("safe level (default)", () => {
   test("asks irreversible", () => {
     const d = evaluateAt(safeLevel(), "git push --force origin main");
     expect(d.action).toBe("ask");
-    expect(d.class).toBe("irreversible");
+    expect(d.class).toBe("irreversible-remote");
   });
 
   test("asks eval", () => {

@@ -71,7 +71,7 @@ describe("modules.list", () => {
               id: "team.test",
               match: "ast",
               binary: "kubectl",
-              class: "irreversible",
+              class: "irreversible-local",
               reason: "test",
             },
           ],

@@ -2,66 +2,596 @@
   "name": "git",
   "description": "Git read-only subcommands plus safe local writes (commit, add, stash, ff-only merge, switch).",
   "rules": [
-    { "id": "git.status", "match": "ast", "binary": "git", "subcommand": "status", "class": "read", "reason": "git status" },
-    { "id": "git.log", "match": "ast", "binary": "git", "subcommand": "log", "class": "read", "reason": "git log" },
-    { "id": "git.show", "match": "ast", "binary": "git", "subcommand": "show", "class": "read", "reason": "git show" },
-    { "id": "git.diff", "match": "ast", "binary": "git", "subcommand": "diff", "class": "read", "reason": "git diff" },
-    { "id": "git.blame", "match": "ast", "binary": "git", "subcommand": "blame", "class": "read", "reason": "git blame" },
-    { "id": "git.reflog", "match": "ast", "binary": "git", "subcommand": "reflog", "class": "read", "reason": "git reflog" },
-    { "id": "git.grep", "match": "ast", "binary": "git", "subcommand": "grep", "class": "read", "reason": "git grep" },
-    { "id": "git.shortlog", "match": "ast", "binary": "git", "subcommand": "shortlog", "class": "read", "reason": "git shortlog" },
-    { "id": "git.whatchanged", "match": "ast", "binary": "git", "subcommand": "whatchanged", "class": "read", "reason": "git whatchanged" },
-    { "id": "git.describe", "match": "ast", "binary": "git", "subcommand": "describe", "class": "read", "reason": "git describe" },
-    { "id": "git.ls-files", "match": "ast", "binary": "git", "subcommand": "ls-files", "class": "read", "reason": "git ls-files" },
-    { "id": "git.ls-tree", "match": "ast", "binary": "git", "subcommand": "ls-tree", "class": "read", "reason": "git ls-tree" },
-    { "id": "git.ls-remote", "match": "ast", "binary": "git", "subcommand": "ls-remote", "class": "read", "reason": "git ls-remote" },
-    { "id": "git.cat-file", "match": "ast", "binary": "git", "subcommand": "cat-file", "class": "read", "reason": "git cat-file" },
-    { "id": "git.rev-parse", "match": "ast", "binary": "git", "subcommand": "rev-parse", "class": "read", "reason": "git rev-parse" },
-    { "id": "git.rev-list", "match": "ast", "binary": "git", "subcommand": "rev-list", "class": "read", "reason": "git rev-list" },
-    { "id": "git.name-rev", "match": "ast", "binary": "git", "subcommand": "name-rev", "class": "read", "reason": "git name-rev" },
-    { "id": "git.merge-base", "match": "ast", "binary": "git", "subcommand": "merge-base", "class": "read", "reason": "git merge-base" },
-    { "id": "git.fsck", "match": "ast", "binary": "git", "subcommand": "fsck", "class": "read", "reason": "git fsck" },
-    { "id": "git.fetch", "match": "ast", "binary": "git", "subcommand": "fetch", "class": "read", "reason": "git fetch (writes only to .git refs)" },
-    { "id": "git.help", "match": "ast", "binary": "git", "subcommand": "help", "class": "read", "reason": "git help" },
-    { "id": "git.version", "match": "ast", "binary": "git", "subcommand": "version", "class": "read", "reason": "git version" },
-    { "id": "git.stash.list", "match": "ast", "binary": "git", "subcommand": ["stash", "list"], "class": "read", "reason": "git stash list" },
-    { "id": "git.stash.show", "match": "ast", "binary": "git", "subcommand": ["stash", "show"], "class": "read", "reason": "git stash show" },
-    { "id": "git.worktree.list", "match": "ast", "binary": "git", "subcommand": ["worktree", "list"], "class": "read", "reason": "git worktree list" },
-    { "id": "git.bisect.log", "match": "ast", "binary": "git", "subcommand": ["bisect", "log"], "class": "read", "reason": "git bisect log" },
-    { "id": "git.bisect.view", "match": "ast", "binary": "git", "subcommand": ["bisect", "view"], "class": "read", "reason": "git bisect view" },
-    { "id": "git.remote.show", "match": "ast", "binary": "git", "subcommand": ["remote", "show"], "class": "read", "reason": "git remote show" },
-    { "id": "git.remote.get-url", "match": "ast", "binary": "git", "subcommand": ["remote", "get-url"], "class": "read", "reason": "git remote get-url" },
-    { "id": "git.tag.list", "match": "ast", "binary": "git", "subcommand": "tag", "any_flags": ["-l", "--list"], "class": "read", "reason": "git tag --list" },
-    { "id": "git.config.get", "match": "ast", "binary": "git", "subcommand": "config", "any_flags": ["--get", "--get-all", "--get-regexp", "-l", "--list", "--show-origin"], "class": "read", "reason": "git config --get/--list" },
-    { "id": "git.branch.list", "match": "ast", "binary": "git", "subcommand": "branch", "any_flags": ["-l", "--list", "-a", "--all", "-r", "--remotes", "--show-current", "-v", "--verbose", "-vv", "--contains", "--no-contains", "--merged", "--no-merged"], "excluded_flags": ["-d", "-D", "--delete", "-m", "--move", "-M", "-c", "--copy", "-C", "--edit-description", "--set-upstream-to", "-u", "--unset-upstream"], "class": "read", "reason": "git branch listing/inspection (write flags excluded)" },
-    { "id": "git.show-branch", "match": "ast", "binary": "git", "subcommand": "show-branch", "class": "read", "reason": "git show-branch" },
-    { "id": "git.show-ref", "match": "ast", "binary": "git", "subcommand": "show-ref", "class": "read", "reason": "git show-ref" },
-    { "id": "git.for-each-ref", "match": "ast", "binary": "git", "subcommand": "for-each-ref", "class": "read", "reason": "git for-each-ref" },
-    { "id": "git.diff-tree", "match": "ast", "binary": "git", "subcommand": "diff-tree", "class": "read", "reason": "git diff-tree" },
-    { "id": "git.diff-index", "match": "ast", "binary": "git", "subcommand": "diff-index", "class": "read", "reason": "git diff-index" },
-    { "id": "git.diff-files", "match": "ast", "binary": "git", "subcommand": "diff-files", "class": "read", "reason": "git diff-files" },
-    { "id": "git.range-diff", "match": "ast", "binary": "git", "subcommand": "range-diff", "class": "read", "reason": "git range-diff" },
-    { "id": "git.check-ignore", "match": "ast", "binary": "git", "subcommand": "check-ignore", "class": "read", "reason": "git check-ignore" },
-    { "id": "git.check-attr", "match": "ast", "binary": "git", "subcommand": "check-attr", "class": "read", "reason": "git check-attr" },
-    { "id": "git.check-mailmap", "match": "ast", "binary": "git", "subcommand": "check-mailmap", "class": "read", "reason": "git check-mailmap" },
-    { "id": "git.count-objects", "match": "ast", "binary": "git", "subcommand": "count-objects", "class": "read", "reason": "git count-objects" },
-    { "id": "git.verify-commit", "match": "ast", "binary": "git", "subcommand": "verify-commit", "class": "read", "reason": "git verify-commit" },
-    { "id": "git.verify-tag", "match": "ast", "binary": "git", "subcommand": "verify-tag", "class": "read", "reason": "git verify-tag" },
-    { "id": "git.submodule.status", "match": "ast", "binary": "git", "subcommand": ["submodule", "status"], "class": "read", "reason": "git submodule status" },
-    { "id": "git.submodule.summary", "match": "ast", "binary": "git", "subcommand": ["submodule", "summary"], "class": "read", "reason": "git submodule summary" },
-    { "id": "git.annotate", "match": "ast", "binary": "git", "subcommand": "annotate", "class": "read", "reason": "git annotate (alias for blame)" },
-
-    { "id": "git.add", "match": "ast", "binary": "git", "subcommand": "add", "class": "write-local", "reason": "git add (stage changes, no remote push)" },
-    { "id": "git.commit", "match": "ast", "binary": "git", "subcommand": "commit", "excluded_flags": ["--amend"], "class": "write-local", "reason": "git commit (no --amend, history not rewritten)" },
-    { "id": "git.stash.push", "match": "ast", "binary": "git", "subcommand": ["stash", "push"], "class": "write-local", "reason": "git stash push" },
-    { "id": "git.stash.save", "match": "ast", "binary": "git", "subcommand": ["stash", "save"], "class": "write-local", "reason": "git stash save (legacy)" },
-    { "id": "git.stash.pop", "match": "ast", "binary": "git", "subcommand": ["stash", "pop"], "class": "write-local", "reason": "git stash pop" },
-    { "id": "git.stash.apply", "match": "ast", "binary": "git", "subcommand": ["stash", "apply"], "class": "write-local", "reason": "git stash apply" },
-    { "id": "git.stash.bare", "match": "regex", "pattern": "^\\s*git\\s+stash\\s*$", "class": "write-local", "reason": "git stash (bare = stash push of working tree)" },
-    { "id": "git.merge.ff-only", "match": "ast", "binary": "git", "subcommand": "merge", "any_flags": ["--ff-only"], "class": "write-local", "reason": "git merge --ff-only (no merge commit, cannot rewrite)" },
-    { "id": "git.cherry-pick.resume", "match": "ast", "binary": "git", "subcommand": "cherry-pick", "any_flags": ["--continue", "--abort", "--skip", "--quit"], "class": "write-local", "reason": "git cherry-pick resume controls (no new commits being applied)" },
-    { "id": "git.rebase.resume", "match": "ast", "binary": "git", "subcommand": "rebase", "any_flags": ["--continue", "--abort", "--skip", "--quit", "--edit-todo", "--show-current-patch"], "class": "write-local", "reason": "git rebase resume controls (no new rewriting being initiated)" },
-    { "id": "git.switch", "match": "ast", "binary": "git", "subcommand": "switch", "class": "write-local", "reason": "git switch (changes HEAD; safer than checkout, no file overwrite)" },
-    { "id": "git.tag.create-local", "match": "ast", "binary": "git", "subcommand": "tag", "excluded_flags": ["-d", "--delete", "-v", "--verify", "-f", "--force", "-l", "--list"], "class": "write-local", "reason": "git tag <name> (creates local tag; not pushed without git push)" }
+    {
+      "id": "git.status",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "status",
+      "class": "read-local",
+      "reason": "git status"
+    },
+    {
+      "id": "git.log",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "log",
+      "class": "read-local",
+      "reason": "git log"
+    },
+    {
+      "id": "git.show",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "show",
+      "class": "read-local",
+      "reason": "git show"
+    },
+    {
+      "id": "git.diff",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "diff",
+      "class": "read-local",
+      "reason": "git diff"
+    },
+    {
+      "id": "git.blame",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "blame",
+      "class": "read-local",
+      "reason": "git blame"
+    },
+    {
+      "id": "git.reflog",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "reflog",
+      "class": "read-local",
+      "reason": "git reflog"
+    },
+    {
+      "id": "git.grep",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "grep",
+      "class": "read-local",
+      "reason": "git grep"
+    },
+    {
+      "id": "git.shortlog",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "shortlog",
+      "class": "read-local",
+      "reason": "git shortlog"
+    },
+    {
+      "id": "git.whatchanged",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "whatchanged",
+      "class": "read-local",
+      "reason": "git whatchanged"
+    },
+    {
+      "id": "git.describe",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "describe",
+      "class": "read-local",
+      "reason": "git describe"
+    },
+    {
+      "id": "git.ls-files",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "ls-files",
+      "class": "read-local",
+      "reason": "git ls-files"
+    },
+    {
+      "id": "git.ls-tree",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "ls-tree",
+      "class": "read-local",
+      "reason": "git ls-tree"
+    },
+    {
+      "id": "git.ls-remote",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "ls-remote",
+      "class": "read-remote",
+      "reason": "git ls-remote"
+    },
+    {
+      "id": "git.cat-file",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "cat-file",
+      "class": "read-local",
+      "reason": "git cat-file"
+    },
+    {
+      "id": "git.rev-parse",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "rev-parse",
+      "class": "read-local",
+      "reason": "git rev-parse"
+    },
+    {
+      "id": "git.rev-list",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "rev-list",
+      "class": "read-local",
+      "reason": "git rev-list"
+    },
+    {
+      "id": "git.name-rev",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "name-rev",
+      "class": "read-local",
+      "reason": "git name-rev"
+    },
+    {
+      "id": "git.merge-base",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "merge-base",
+      "class": "read-local",
+      "reason": "git merge-base"
+    },
+    {
+      "id": "git.fsck",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "fsck",
+      "class": "read-local",
+      "reason": "git fsck"
+    },
+    {
+      "id": "git.fetch",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "fetch",
+      "class": "read-remote",
+      "reason": "git fetch (writes only to .git refs)"
+    },
+    {
+      "id": "git.help",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "help",
+      "class": "read-local",
+      "reason": "git help"
+    },
+    {
+      "id": "git.version",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "version",
+      "class": "read-local",
+      "reason": "git version"
+    },
+    {
+      "id": "git.stash.list",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "stash",
+        "list"
+      ],
+      "class": "read-local",
+      "reason": "git stash list"
+    },
+    {
+      "id": "git.stash.show",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "stash",
+        "show"
+      ],
+      "class": "read-local",
+      "reason": "git stash show"
+    },
+    {
+      "id": "git.worktree.list",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "worktree",
+        "list"
+      ],
+      "class": "read-local",
+      "reason": "git worktree list"
+    },
+    {
+      "id": "git.bisect.log",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "bisect",
+        "log"
+      ],
+      "class": "read-local",
+      "reason": "git bisect log"
+    },
+    {
+      "id": "git.bisect.view",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "bisect",
+        "view"
+      ],
+      "class": "read-local",
+      "reason": "git bisect view"
+    },
+    {
+      "id": "git.remote.show",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "remote",
+        "show"
+      ],
+      "class": "read-remote",
+      "reason": "git remote show"
+    },
+    {
+      "id": "git.remote.get-url",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "remote",
+        "get-url"
+      ],
+      "class": "read-remote",
+      "reason": "git remote get-url"
+    },
+    {
+      "id": "git.tag.list",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "tag",
+      "any_flags": [
+        "-l",
+        "--list"
+      ],
+      "class": "read-local",
+      "reason": "git tag --list"
+    },
+    {
+      "id": "git.config.get",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "config",
+      "any_flags": [
+        "--get",
+        "--get-all",
+        "--get-regexp",
+        "-l",
+        "--list",
+        "--show-origin"
+      ],
+      "class": "read-local",
+      "reason": "git config --get/--list"
+    },
+    {
+      "id": "git.branch.list",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "branch",
+      "any_flags": [
+        "-l",
+        "--list",
+        "-a",
+        "--all",
+        "-r",
+        "--remotes",
+        "--show-current",
+        "-v",
+        "--verbose",
+        "-vv",
+        "--contains",
+        "--no-contains",
+        "--merged",
+        "--no-merged"
+      ],
+      "excluded_flags": [
+        "-d",
+        "-D",
+        "--delete",
+        "-m",
+        "--move",
+        "-M",
+        "-c",
+        "--copy",
+        "-C",
+        "--edit-description",
+        "--set-upstream-to",
+        "-u",
+        "--unset-upstream"
+      ],
+      "class": "read-local",
+      "reason": "git branch listing/inspection (write flags excluded)"
+    },
+    {
+      "id": "git.show-branch",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "show-branch",
+      "class": "read-local",
+      "reason": "git show-branch"
+    },
+    {
+      "id": "git.show-ref",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "show-ref",
+      "class": "read-local",
+      "reason": "git show-ref"
+    },
+    {
+      "id": "git.for-each-ref",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "for-each-ref",
+      "class": "read-local",
+      "reason": "git for-each-ref"
+    },
+    {
+      "id": "git.diff-tree",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "diff-tree",
+      "class": "read-local",
+      "reason": "git diff-tree"
+    },
+    {
+      "id": "git.diff-index",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "diff-index",
+      "class": "read-local",
+      "reason": "git diff-index"
+    },
+    {
+      "id": "git.diff-files",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "diff-files",
+      "class": "read-local",
+      "reason": "git diff-files"
+    },
+    {
+      "id": "git.range-diff",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "range-diff",
+      "class": "read-local",
+      "reason": "git range-diff"
+    },
+    {
+      "id": "git.check-ignore",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "check-ignore",
+      "class": "read-local",
+      "reason": "git check-ignore"
+    },
+    {
+      "id": "git.check-attr",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "check-attr",
+      "class": "read-local",
+      "reason": "git check-attr"
+    },
+    {
+      "id": "git.check-mailmap",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "check-mailmap",
+      "class": "read-local",
+      "reason": "git check-mailmap"
+    },
+    {
+      "id": "git.count-objects",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "count-objects",
+      "class": "read-local",
+      "reason": "git count-objects"
+    },
+    {
+      "id": "git.verify-commit",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "verify-commit",
+      "class": "read-local",
+      "reason": "git verify-commit"
+    },
+    {
+      "id": "git.verify-tag",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "verify-tag",
+      "class": "read-local",
+      "reason": "git verify-tag"
+    },
+    {
+      "id": "git.submodule.status",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "submodule",
+        "status"
+      ],
+      "class": "read-local",
+      "reason": "git submodule status"
+    },
+    {
+      "id": "git.submodule.summary",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "submodule",
+        "summary"
+      ],
+      "class": "read-local",
+      "reason": "git submodule summary"
+    },
+    {
+      "id": "git.annotate",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "annotate",
+      "class": "read-local",
+      "reason": "git annotate (alias for blame)"
+    },
+    {
+      "id": "git.add",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "add",
+      "class": "write-local",
+      "reason": "git add (stage changes, no remote push)"
+    },
+    {
+      "id": "git.commit",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "commit",
+      "excluded_flags": [
+        "--amend"
+      ],
+      "class": "write-local",
+      "reason": "git commit (no --amend, history not rewritten)"
+    },
+    {
+      "id": "git.stash.push",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "stash",
+        "push"
+      ],
+      "class": "write-local",
+      "reason": "git stash push"
+    },
+    {
+      "id": "git.stash.save",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "stash",
+        "save"
+      ],
+      "class": "write-local",
+      "reason": "git stash save (legacy)"
+    },
+    {
+      "id": "git.stash.pop",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "stash",
+        "pop"
+      ],
+      "class": "write-local",
+      "reason": "git stash pop"
+    },
+    {
+      "id": "git.stash.apply",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "stash",
+        "apply"
+      ],
+      "class": "write-local",
+      "reason": "git stash apply"
+    },
+    {
+      "id": "git.stash.bare",
+      "match": "regex",
+      "pattern": "^\\s*git\\s+stash\\s*$",
+      "class": "write-local",
+      "reason": "git stash (bare = stash push of working tree)"
+    },
+    {
+      "id": "git.merge.ff-only",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "merge",
+      "any_flags": [
+        "--ff-only"
+      ],
+      "class": "write-local",
+      "reason": "git merge --ff-only (no merge commit, cannot rewrite)"
+    },
+    {
+      "id": "git.cherry-pick.resume",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "cherry-pick",
+      "any_flags": [
+        "--continue",
+        "--abort",
+        "--skip",
+        "--quit"
+      ],
+      "class": "write-local",
+      "reason": "git cherry-pick resume controls (no new commits being applied)"
+    },
+    {
+      "id": "git.rebase.resume",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "rebase",
+      "any_flags": [
+        "--continue",
+        "--abort",
+        "--skip",
+        "--quit",
+        "--edit-todo",
+        "--show-current-patch"
+      ],
+      "class": "write-local",
+      "reason": "git rebase resume controls (no new rewriting being initiated)"
+    },
+    {
+      "id": "git.switch",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "switch",
+      "class": "write-local",
+      "reason": "git switch (changes HEAD; safer than checkout, no file overwrite)"
+    },
+    {
+      "id": "git.tag.create-local",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "tag",
+      "excluded_flags": [
+        "-d",
+        "--delete",
+        "-v",
+        "--verify",
+        "-f",
+        "--force",
+        "-l",
+        "--list"
+      ],
+      "class": "write-local",
+      "reason": "git tag <name> (creates local tag; not pushed without git push)"
+    }
   ]
 }

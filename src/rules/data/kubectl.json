@@ -2,30 +2,205 @@
   "name": "kubectl",
   "description": "kubectl read-only verbs. Excludes apply/create/delete/patch/edit/exec/run/scale/cp.",
   "rules": [
-    { "id": "kubectl.get", "match": "ast", "binary": "kubectl", "subcommand": "get", "class": "read", "reason": "kubectl get" },
-    { "id": "kubectl.describe", "match": "ast", "binary": "kubectl", "subcommand": "describe", "class": "read", "reason": "kubectl describe" },
-    { "id": "kubectl.logs", "match": "ast", "binary": "kubectl", "subcommand": "logs", "class": "read", "reason": "kubectl logs" },
-    { "id": "kubectl.top", "match": "ast", "binary": "kubectl", "subcommand": "top", "class": "read", "reason": "kubectl top" },
-    { "id": "kubectl.events", "match": "ast", "binary": "kubectl", "subcommand": "events", "class": "read", "reason": "kubectl events" },
-    { "id": "kubectl.explain", "match": "ast", "binary": "kubectl", "subcommand": "explain", "class": "read", "reason": "kubectl explain" },
-    { "id": "kubectl.api-resources", "match": "ast", "binary": "kubectl", "subcommand": "api-resources", "class": "read", "reason": "kubectl api-resources" },
-    { "id": "kubectl.api-versions", "match": "ast", "binary": "kubectl", "subcommand": "api-versions", "class": "read", "reason": "kubectl api-versions" },
-    { "id": "kubectl.cluster-info", "match": "ast", "binary": "kubectl", "subcommand": "cluster-info", "class": "read", "reason": "kubectl cluster-info" },
-    { "id": "kubectl.version", "match": "ast", "binary": "kubectl", "subcommand": "version", "class": "read", "reason": "kubectl version" },
-    { "id": "kubectl.help", "match": "ast", "binary": "kubectl", "subcommand": "help", "class": "read", "reason": "kubectl help" },
-
-    { "id": "kubectl.config.view", "match": "ast", "binary": "kubectl", "subcommand": ["config", "view"], "class": "read", "reason": "kubectl config view" },
-    { "id": "kubectl.config.current-context", "match": "ast", "binary": "kubectl", "subcommand": ["config", "current-context"], "class": "read", "reason": "kubectl config current-context" },
-    { "id": "kubectl.config.get-contexts", "match": "ast", "binary": "kubectl", "subcommand": ["config", "get-contexts"], "class": "read", "reason": "kubectl config get-contexts" },
-    { "id": "kubectl.config.get-clusters", "match": "ast", "binary": "kubectl", "subcommand": ["config", "get-clusters"], "class": "read", "reason": "kubectl config get-clusters" },
-    { "id": "kubectl.config.get-users", "match": "ast", "binary": "kubectl", "subcommand": ["config", "get-users"], "class": "read", "reason": "kubectl config get-users" },
-
-    { "id": "kubectl.auth.can-i", "match": "ast", "binary": "kubectl", "subcommand": ["auth", "can-i"], "class": "read", "reason": "kubectl auth can-i" },
-    { "id": "kubectl.auth.whoami", "match": "ast", "binary": "kubectl", "subcommand": ["auth", "whoami"], "class": "read", "reason": "kubectl auth whoami" },
-
-    { "id": "kubectl.options", "match": "ast", "binary": "kubectl", "subcommand": "options", "class": "read", "reason": "kubectl options" },
-    { "id": "kubectl.wait", "match": "ast", "binary": "kubectl", "subcommand": "wait", "class": "read", "reason": "kubectl wait (blocks on state, no mutation)" },
-    { "id": "kubectl.diff", "match": "ast", "binary": "kubectl", "subcommand": "diff", "class": "read", "reason": "kubectl diff (computes delta, does not apply)" },
-    { "id": "kubectl.plugin.list", "match": "ast", "binary": "kubectl", "subcommand": ["plugin", "list"], "class": "read", "reason": "kubectl plugin list" }
+    {
+      "id": "kubectl.get",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "get",
+      "class": "read-remote",
+      "reason": "kubectl get"
+    },
+    {
+      "id": "kubectl.describe",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "describe",
+      "class": "read-remote",
+      "reason": "kubectl describe"
+    },
+    {
+      "id": "kubectl.logs",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "logs",
+      "class": "read-remote",
+      "reason": "kubectl logs"
+    },
+    {
+      "id": "kubectl.top",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "top",
+      "class": "read-remote",
+      "reason": "kubectl top"
+    },
+    {
+      "id": "kubectl.events",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "events",
+      "class": "read-remote",
+      "reason": "kubectl events"
+    },
+    {
+      "id": "kubectl.explain",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "explain",
+      "class": "read-remote",
+      "reason": "kubectl explain"
+    },
+    {
+      "id": "kubectl.api-resources",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "api-resources",
+      "class": "read-remote",
+      "reason": "kubectl api-resources"
+    },
+    {
+      "id": "kubectl.api-versions",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "api-versions",
+      "class": "read-remote",
+      "reason": "kubectl api-versions"
+    },
+    {
+      "id": "kubectl.cluster-info",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "cluster-info",
+      "class": "read-remote",
+      "reason": "kubectl cluster-info"
+    },
+    {
+      "id": "kubectl.version",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "version",
+      "class": "read-remote",
+      "reason": "kubectl version"
+    },
+    {
+      "id": "kubectl.help",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "help",
+      "class": "read-remote",
+      "reason": "kubectl help"
+    },
+    {
+      "id": "kubectl.config.view",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "config",
+        "view"
+      ],
+      "class": "read-remote",
+      "reason": "kubectl config view"
+    },
+    {
+      "id": "kubectl.config.current-context",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "config",
+        "current-context"
+      ],
+      "class": "read-remote",
+      "reason": "kubectl config current-context"
+    },
+    {
+      "id": "kubectl.config.get-contexts",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "config",
+        "get-contexts"
+      ],
+      "class": "read-remote",
+      "reason": "kubectl config get-contexts"
+    },
+    {
+      "id": "kubectl.config.get-clusters",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "config",
+        "get-clusters"
+      ],
+      "class": "read-remote",
+      "reason": "kubectl config get-clusters"
+    },
+    {
+      "id": "kubectl.config.get-users",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "config",
+        "get-users"
+      ],
+      "class": "read-remote",
+      "reason": "kubectl config get-users"
+    },
+    {
+      "id": "kubectl.auth.can-i",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "auth",
+        "can-i"
+      ],
+      "class": "read-remote",
+      "reason": "kubectl auth can-i"
+    },
+    {
+      "id": "kubectl.auth.whoami",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "auth",
+        "whoami"
+      ],
+      "class": "read-remote",
+      "reason": "kubectl auth whoami"
+    },
+    {
+      "id": "kubectl.options",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "options",
+      "class": "read-remote",
+      "reason": "kubectl options"
+    },
+    {
+      "id": "kubectl.wait",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "wait",
+      "class": "read-remote",
+      "reason": "kubectl wait (blocks on state, no mutation)"
+    },
+    {
+      "id": "kubectl.diff",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": "diff",
+      "class": "read-remote",
+      "reason": "kubectl diff (computes delta, does not apply)"
+    },
+    {
+      "id": "kubectl.plugin.list",
+      "match": "ast",
+      "binary": "kubectl",
+      "subcommand": [
+        "plugin",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "kubectl plugin list"
+    }
   ]
 }
