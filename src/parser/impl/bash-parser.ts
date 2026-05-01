@@ -1,11 +1,13 @@
-import type { Segment } from "./types.ts";
-import { peelPrefixes, resolveWord, type ResolvedToken } from "./normalize.ts";
+import bashParse from "bash-parser";
+
+import { peelPrefixes, type ResolvedToken } from "../normalize.ts";
+import type { ParseResult, Segment, ShellParser } from "../types.ts";
 
 /**
  * Loose AST node typing. bash-parser ships no .d.ts, so we describe just the
  * shape we read. Extra properties are tolerated.
  */
-export interface Word {
+interface Word {
   type: "Word" | "Name" | "AssignmentWord" | string;
   text: string;
   expansion?: readonly Expansion[];
@@ -73,7 +75,7 @@ interface FunctionNode {
   body: AstNode;
 }
 
-export type AstNode =
+type AstNode =
   | CommandNode
   | ListNode
   | LogicalNode
@@ -89,7 +91,43 @@ interface WalkContext {
   fromSubsh: boolean;
 }
 
-export function walk(node: AstNode, ctx: WalkContext = { fromSubsh: false }): Segment[] {
+export const BashParserBackend: ShellParser = {
+  name: "bash-parser",
+  parse(command: string): ParseResult {
+    if (command.trim() === "") return { original: command, segments: [] };
+
+    let ast: unknown;
+    try {
+      ast = bashParse(command);
+    } catch (err) {
+      return {
+        original: command,
+        segments: [],
+        parseErr: err instanceof Error ? err : new Error(String(err)),
+      };
+    }
+
+    if (!isAstNode(ast)) {
+      return {
+        original: command,
+        segments: [],
+        parseErr: new Error("bash-parser returned a non-AST value"),
+      };
+    }
+
+    return { original: command, segments: walk(ast) };
+  },
+};
+
+function isAstNode(value: unknown): value is AstNode {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    typeof (value as { type?: unknown }).type === "string"
+  );
+}
+
+function walk(node: AstNode, ctx: WalkContext = { fromSubsh: false }): Segment[] {
   switch (node.type) {
     case "Script":
     case "CompoundList":
@@ -175,7 +213,7 @@ function isWord(item: Word | RedirSuffix): item is Word {
 
 function collectInnerExpansions(cmd: CommandNode): Segment[] {
   const out: Segment[] = [];
-  const visit = (w: Word | undefined) => {
+  const visit = (w: Word | undefined): void => {
     if (!w) return;
     for (const ex of w.expansion ?? []) {
       if (ex.type === "CommandExpansion" && ex.commandAST) {
@@ -192,4 +230,16 @@ function collectInnerExpansions(cmd: CommandNode): Segment[] {
 
 function renderRaw(binary: string, args: readonly string[]): string {
   return [binary, ...args].join(" ");
+}
+
+function litString(word: Word): string | null {
+  if (word.expansion && word.expansion.length > 0) return null;
+  return word.text;
+}
+
+function resolveWord(word: Word): ResolvedToken {
+  const lit = litString(word);
+  return lit !== null
+    ? { text: lit, isLiteral: true }
+    : { text: word.text, isLiteral: false };
 }

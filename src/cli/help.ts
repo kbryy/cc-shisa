@@ -23,5 +23,6 @@ Environment:
   CC_SHISA_SHADOW=1                   Force allow on every decision and log to ~/.local/state/cc-shisa/decisions.jsonl
   CC_SHISA_LOG=1                      Keep enforcement intact and log every decision (audit trail)
   CC_SHISA_DEBUG=1                    Print debug info to stderr
+  CC_SHISA_PARSER=bash-parser|tree-sitter   Select parser backend (default: bash-parser)
   XDG_CONFIG_HOME=<path>              Override the user config root (default: ~/.config)`);
 }

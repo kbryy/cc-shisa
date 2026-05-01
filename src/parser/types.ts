@@ -1,3 +1,15 @@
+/**
+ * Backend-agnostic parser interface. Implementations live in
+ * src/parser/impl/* and convert their native AST shape into the canonical
+ * `Segment[]` representation. The active backend is selected at module
+ * load time (`CC_SHISA_PARSER` env var), so the rest of the codebase only
+ * imports `parse()` from `../parser/index.ts`.
+ */
+export interface ShellParser {
+  readonly name: string;
+  parse(command: string): ParseResult;
+}
+
 /** A single normalized "what would actually run" view of a command segment. */
 export interface Segment {
   /** Resolved command name after peeling sudo/timeout/env-style prefixes. */
