@@ -76,7 +76,7 @@
         ".git",
         "**/.git/"
       ],
-      "class": "write.local.destroy",
+      "class": "local.write.destroy",
       "reason": "removing .git directory destroys repository history"
     },
     {
@@ -166,7 +166,7 @@
         "-f",
         "--force-with-lease"
       ],
-      "class": "write.remote.destroy",
+      "class": "remote.write.destroy",
       "reason": "force push rewrites remote history"
     },
     {
@@ -177,7 +177,7 @@
       "flags": [
         "--hard"
       ],
-      "class": "write.local.destroy",
+      "class": "local.write.destroy",
       "reason": "git reset --hard discards uncommitted changes"
     },
     {
@@ -248,7 +248,7 @@
         "srm",
         "wipe"
       ],
-      "class": "write.local.destroy",
+      "class": "local.write.destroy",
       "reason": "secure-erase tools overwrite then unlink the target"
     },
     {
@@ -299,7 +299,7 @@
         "--delete-during",
         "--delete-excluded"
       ],
-      "class": "write.local.destroy",
+      "class": "local.write.destroy",
       "reason": "rsync --delete removes destination files not present in source"
     },
     {
@@ -311,7 +311,7 @@
         "--delete",
         "-d"
       ],
-      "class": "write.remote.destroy",
+      "class": "remote.write.destroy",
       "reason": "git push --delete removes a remote ref"
     },
     {
@@ -322,7 +322,7 @@
         "--delete-secret-keys",
         "--delete-secret-and-public-keys"
       ],
-      "class": "write.local.destroy",
+      "class": "local.write.destroy",
       "reason": "gpg --delete-secret-keys destroys private keys"
     },
     {

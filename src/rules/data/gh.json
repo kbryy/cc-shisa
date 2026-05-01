@@ -10,7 +10,7 @@
         "pr",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh pr list"
     },
     {
@@ -21,7 +21,7 @@
         "pr",
         "view"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh pr view"
     },
     {
@@ -32,7 +32,7 @@
         "pr",
         "status"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh pr status"
     },
     {
@@ -43,7 +43,7 @@
         "pr",
         "checks"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh pr checks"
     },
     {
@@ -54,7 +54,7 @@
         "pr",
         "diff"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh pr diff"
     },
     {
@@ -65,7 +65,7 @@
         "issue",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh issue list"
     },
     {
@@ -76,7 +76,7 @@
         "issue",
         "view"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh issue view"
     },
     {
@@ -87,7 +87,7 @@
         "issue",
         "status"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh issue status"
     },
     {
@@ -98,7 +98,7 @@
         "run",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh run list"
     },
     {
@@ -109,7 +109,7 @@
         "run",
         "view"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh run view"
     },
     {
@@ -120,7 +120,7 @@
         "run",
         "watch"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh run watch"
     },
     {
@@ -131,7 +131,7 @@
         "workflow",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh workflow list"
     },
     {
@@ -142,7 +142,7 @@
         "workflow",
         "view"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh workflow view"
     },
     {
@@ -153,7 +153,7 @@
         "release",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh release list"
     },
     {
@@ -164,7 +164,7 @@
         "release",
         "view"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh release view"
     },
     {
@@ -175,7 +175,7 @@
         "repo",
         "view"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh repo view"
     },
     {
@@ -186,7 +186,7 @@
         "repo",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh repo list"
     },
     {
@@ -197,7 +197,7 @@
         "auth",
         "status"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh auth status"
     },
     {
@@ -208,7 +208,7 @@
         "label",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh label list"
     },
     {
@@ -216,7 +216,7 @@
       "match": "ast",
       "binary": "gh",
       "subcommand": "search",
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh search"
     },
     {
@@ -224,7 +224,7 @@
       "match": "ast",
       "binary": "gh",
       "subcommand": "status",
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh status"
     },
     {
@@ -232,7 +232,7 @@
       "match": "ast",
       "binary": "gh",
       "subcommand": "browse",
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh browse (opens URL in browser, no repo side-effect)"
     },
     {
@@ -243,7 +243,7 @@
         "codespace",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh codespace list"
     },
     {
@@ -254,7 +254,7 @@
         "codespace",
         "view"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh codespace view"
     },
     {
@@ -265,7 +265,7 @@
         "codespace",
         "logs"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh codespace logs"
     },
     {
@@ -276,7 +276,7 @@
         "codespace",
         "ports"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh codespace ports"
     },
     {
@@ -287,7 +287,7 @@
         "secret",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh secret list (values are masked)"
     },
     {
@@ -298,7 +298,7 @@
         "variable",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh variable list"
     },
     {
@@ -309,7 +309,7 @@
         "ssh-key",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh ssh-key list"
     },
     {
@@ -320,7 +320,7 @@
         "gpg-key",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh gpg-key list"
     },
     {
@@ -331,7 +331,7 @@
         "extension",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh extension list"
     },
     {
@@ -342,7 +342,7 @@
         "cache",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh cache list"
     },
     {
@@ -353,7 +353,7 @@
         "ruleset",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh ruleset list"
     },
     {
@@ -364,7 +364,7 @@
         "ruleset",
         "view"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh ruleset view"
     },
     {
@@ -375,7 +375,7 @@
         "project",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh project list"
     },
     {
@@ -386,7 +386,7 @@
         "project",
         "view"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh project view"
     },
     {
@@ -397,7 +397,7 @@
         "org",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh org list"
     },
     {
@@ -408,7 +408,7 @@
         "attestation",
         "verify"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "gh attestation verify"
     }
   ]

@@ -71,7 +71,7 @@ describe("modules.list", () => {
               id: "team.test",
               match: "ast",
               binary: "kubectl",
-              class: "write.local.destroy",
+              class: "local.write.destroy",
               reason: "test",
             },
           ],

@@ -104,12 +104,12 @@ Severity ordering (most strict → least):
 | `dangerous` | **deny** | `rm -rf /`, fork bomb, `dd of=/dev/disk*`, `mkfs`, `chmod -R 777 /` |
 | `dynamic` | ask | `eval`, `bash -c`, `curl ... \| sh`, `node -e`, `python -c` (content cc-shisa cannot inspect) |
 | `unknown` | ask | Any binary not matched by any rule |
-| `read.local` | allow | `git status`, `ls`, `cat`, `jq`, `sha256sum`, `pnpm typecheck` |
-| `read.remote` | allow | `gh pr list`, `kubectl get`, `npm view`, `git fetch`, `ping`, `dig` |
-| `write.local` | allow | `git commit`, `mkdir`, `cp`, `mv`, `git stash`, `git switch` |
-| `write.local.destroy` | ask | `git reset --hard`, `rm -rf .git`, `shred`, `rsync --delete`, `gpg --delete-secret-keys` |
-| `write.remote` | ask | `git push`, `gh pr create`, `npm publish` (Phase 2+: not yet rule-classified) |
-| `write.remote.destroy` | ask | `git push --force`, `git push --delete` (rewriting / removing remote refs) |
+| `local.read` | allow | `git status`, `ls`, `cat`, `jq`, `sha256sum`, `pnpm typecheck` |
+| `local.write` | allow | `git commit`, `mkdir`, `cp`, `mv`, `git stash`, `git switch` |
+| `local.write.destroy` | ask | `git reset --hard`, `rm -rf .git`, `shred`, `rsync --delete`, `gpg --delete-secret-keys` |
+| `remote.read` | allow | `gh pr list`, `kubectl get`, `npm view`, `git fetch`, `ping`, `dig` |
+| `remote.write` | ask | `git push`, `gh pr create`, `npm publish` (Phase 2+: not yet rule-classified) |
+| `remote.write.destroy` | ask | `git push --force`, `git push --delete` (rewriting / removing remote refs) |
 
 **Most-strict wins**: when multiple segments or multiple rules match, the
 strictest classification is the final one.
@@ -215,9 +215,8 @@ cc-shisa/
 // src/rules/types.ts
 export type Class =
   | "dangerous" | "dynamic" | "unknown"
-  | "read.local" | "read.remote"
-  | "write.local" | "write.local.destroy"
-  | "write.remote" | "write.remote.destroy";
+  | "local.read" | "local.write" | "local.write.destroy"
+  | "remote.read" | "remote.write" | "remote.write.destroy";
 
 export type Action = "allow" | "ask" | "deny";
 

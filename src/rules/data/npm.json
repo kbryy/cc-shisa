@@ -7,7 +7,7 @@
       "match": "ast",
       "binary": "npm",
       "subcommand": "test",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm test"
     },
     {
@@ -15,7 +15,7 @@
       "match": "ast",
       "binary": "npm",
       "subcommand": "t",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm t (alias for test)"
     },
     {
@@ -26,7 +26,7 @@
         "run",
         "typecheck"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm run typecheck"
     },
     {
@@ -37,7 +37,7 @@
         "run",
         "lint"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm run lint"
     },
     {
@@ -48,7 +48,7 @@
         "run",
         "test"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm run test"
     },
     {
@@ -59,7 +59,7 @@
         "run",
         "check"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm run check"
     },
     {
@@ -70,7 +70,7 @@
         "run",
         "format-check"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm run format-check"
     },
     {
@@ -78,7 +78,7 @@
       "match": "ast",
       "binary": "npm",
       "subcommand": "list",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm list"
     },
     {
@@ -86,7 +86,7 @@
       "match": "ast",
       "binary": "npm",
       "subcommand": "ls",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm ls"
     },
     {
@@ -94,7 +94,7 @@
       "match": "ast",
       "binary": "npm",
       "subcommand": "outdated",
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "npm outdated"
     },
     {
@@ -102,7 +102,7 @@
       "match": "ast",
       "binary": "npm",
       "subcommand": "audit",
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "npm audit"
     },
     {
@@ -110,7 +110,7 @@
       "match": "ast",
       "binary": "npm",
       "subcommand": "view",
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "npm view"
     },
     {
@@ -118,7 +118,7 @@
       "match": "ast",
       "binary": "npm",
       "subcommand": "info",
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "npm info"
     },
     {
@@ -126,7 +126,7 @@
       "match": "ast",
       "binary": "npm",
       "subcommand": "search",
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "npm search"
     },
     {
@@ -134,7 +134,7 @@
       "match": "ast",
       "binary": "npm",
       "subcommand": "doctor",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm doctor"
     },
     {
@@ -142,7 +142,7 @@
       "match": "ast",
       "binary": "npm",
       "subcommand": "fund",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm fund"
     },
     {
@@ -150,7 +150,7 @@
       "match": "ast",
       "binary": "npm",
       "subcommand": "help",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm help"
     },
     {
@@ -161,7 +161,7 @@
         "--version",
         "-v"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm --version (the positional 'version' subcommand mutates package.json and is intentionally not classified read)"
     },
     {
@@ -169,7 +169,7 @@
       "match": "ast",
       "binary": "npm",
       "subcommand": "whoami",
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "npm whoami"
     },
     {
@@ -177,7 +177,7 @@
       "match": "ast",
       "binary": "npm",
       "subcommand": "root",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm root"
     },
     {
@@ -185,7 +185,7 @@
       "match": "ast",
       "binary": "npm",
       "subcommand": "prefix",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm prefix"
     },
     {
@@ -193,7 +193,7 @@
       "match": "ast",
       "binary": "npm",
       "subcommand": "bin",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm bin"
     },
     {
@@ -201,7 +201,7 @@
       "match": "ast",
       "binary": "npm",
       "subcommand": "explain",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm explain"
     },
     {
@@ -212,7 +212,7 @@
         "config",
         "get"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm config get"
     },
     {
@@ -223,7 +223,7 @@
         "config",
         "list"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm config list"
     },
     {
@@ -234,7 +234,7 @@
         "config",
         "ls"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm config ls"
     },
     {
@@ -245,7 +245,7 @@
         "pkg",
         "get"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "npm pkg get"
     },
     {
@@ -256,7 +256,7 @@
         "dist-tag",
         "ls"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "npm dist-tag ls"
     },
     {
@@ -267,7 +267,7 @@
         "token",
         "list"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "npm token list (values masked)"
     }
   ]

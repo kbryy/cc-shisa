@@ -7,7 +7,7 @@
       "match": "ast",
       "binary": "bun",
       "subcommand": "test",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "bun test"
     },
     {
@@ -18,7 +18,7 @@
         "run",
         "typecheck"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "bun run typecheck"
     },
     {
@@ -29,7 +29,7 @@
         "run",
         "lint"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "bun run lint"
     },
     {
@@ -40,7 +40,7 @@
         "run",
         "test"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "bun run test"
     },
     {
@@ -51,7 +51,7 @@
         "run",
         "check"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "bun run check"
     },
     {
@@ -62,7 +62,7 @@
         "run",
         "format-check"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "bun run format-check"
     },
     {
@@ -73,7 +73,7 @@
         "pm",
         "ls"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "bun pm ls"
     },
     {
@@ -84,7 +84,7 @@
         "pm",
         "whoami"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "bun pm whoami"
     },
     {
@@ -92,7 +92,7 @@
       "match": "ast",
       "binary": "bun",
       "subcommand": "outdated",
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "bun outdated"
     },
     {
@@ -100,7 +100,7 @@
       "match": "ast",
       "binary": "bun",
       "subcommand": "audit",
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "bun audit"
     },
     {
@@ -108,7 +108,7 @@
       "match": "ast",
       "binary": "bun",
       "subcommand": "help",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "bun help"
     },
     {
@@ -119,7 +119,7 @@
         "--version",
         "-v"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "bun --version"
     },
     {
@@ -130,7 +130,7 @@
         "pm",
         "view"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "bun pm view (registry metadata read)"
     },
     {
@@ -140,7 +140,7 @@
       "any_flags": [
         "--revision"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "bun --revision"
     },
     {
@@ -148,7 +148,7 @@
       "match": "ast",
       "binary": "bun",
       "subcommand": "completions",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "bun completions (shell completion script)"
     }
   ]

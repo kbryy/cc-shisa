@@ -41,11 +41,11 @@ describe("strict level", () => {
   test("denies irreversible (git push --force)", () => {
     const d = evaluateAt(strictLevel(), "git push --force origin main");
     expect(d.action).toBe("deny");
-    expect(d.class).toBe("write.remote.destroy");
+    expect(d.class).toBe("remote.write.destroy");
   });
 
-  test("write.remote → deny (mapping)", () => {
-    expect(strictLevel().mapping["write.remote"]).toBe("deny");
+  test("remote.write → deny (mapping)", () => {
+    expect(strictLevel().mapping["remote.write"]).toBe("deny");
   });
 
   test("asks dynamic (bash -c)", () => {
@@ -57,22 +57,22 @@ describe("strict level", () => {
   test("asks write.local.destroy (git reset --hard)", () => {
     const d = evaluateAt(strictLevel(), "git reset --hard HEAD~1");
     expect(d.action).toBe("ask");
-    expect(d.class).toBe("write.local.destroy");
+    expect(d.class).toBe("local.write.destroy");
   });
 
   test("allows write.local (git commit, mkdir)", () => {
     const commit = evaluateAt(strictLevel(), "git commit -m fix");
     expect(commit.action).toBe("allow");
-    expect(commit.class).toBe("write.local");
+    expect(commit.class).toBe("local.write");
     const mkdir = evaluateAt(strictLevel(), "mkdir foo");
     expect(mkdir.action).toBe("allow");
-    expect(mkdir.class).toBe("write.local");
+    expect(mkdir.class).toBe("local.write");
   });
 
   test("allows read.remote (gh pr list)", () => {
     const d = evaluateAt(strictLevel(), "gh pr list");
     expect(d.action).toBe("allow");
-    expect(d.class).toBe("read.remote");
+    expect(d.class).toBe("remote.read");
   });
 
   test("still asks unknown commands", () => {
@@ -81,7 +81,7 @@ describe("strict level", () => {
     expect(d.class).toBe("unknown");
   });
 
-  test("read.local still flows", () => {
+  test("local.read still flows", () => {
     const d = evaluateAt(strictLevel(), "ls");
     expect(d.action).toBe("allow");
   });
@@ -91,7 +91,7 @@ describe("safe level (default)", () => {
   test("asks irreversible", () => {
     const d = evaluateAt(safeLevel(), "git push --force origin main");
     expect(d.action).toBe("ask");
-    expect(d.class).toBe("write.remote.destroy");
+    expect(d.class).toBe("remote.write.destroy");
   });
 
   test("asks eval", () => {
@@ -127,6 +127,6 @@ describe("loose level", () => {
   test("allows write.remote.destroy (git push --force) — only dangerous denies", () => {
     const d = evaluateAt(looseLevel(), "git push --force origin main");
     expect(d.action).toBe("allow");
-    expect(d.class).toBe("write.remote.destroy");
+    expect(d.class).toBe("remote.write.destroy");
   });
 });
