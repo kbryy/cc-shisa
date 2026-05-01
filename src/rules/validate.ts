@@ -15,7 +15,7 @@ export const VALID_CLASSES: ReadonlySet<Class> = new Set([
   "remote.write.destroy",
 ]);
 
-const VALID_ACTIONS: ReadonlySet<Action> = new Set(["allow", "ask", "deny"]);
+export const VALID_ACTIONS: ReadonlySet<Action> = new Set(["allow", "ask", "deny"]);
 
 export function validateModule(data: unknown): Module {
   if (typeof data !== "object" || data === null) {

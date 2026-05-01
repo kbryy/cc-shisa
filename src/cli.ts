@@ -1,9 +1,11 @@
 #!/usr/bin/env bun
 import { runCheck } from "./cli/check.ts";
+import { runHere } from "./cli/here.ts";
 import { printHelp } from "./cli/help.ts";
 import { runHook } from "./cli/hook.ts";
 import { runInit } from "./cli/init.ts";
 import { runLevel } from "./cli/level.ts";
+import { runLocations } from "./cli/locations.ts";
 import { runLogs } from "./cli/logs.ts";
 import { runModules } from "./cli/modules.ts";
 import { runTest } from "./cli/test.ts";
@@ -26,6 +28,10 @@ async function main(): Promise<number> {
       return runModules(argv.slice(1));
     case "level":
       return runLevel(argv.slice(1));
+    case "here":
+      return runHere(argv.slice(1));
+    case "locations":
+      return runLocations(argv.slice(1));
     case "logs":
       return runLogs(argv.slice(1));
     case "version":

@@ -1,3 +1,4 @@
+import { applyLocation, findLocation, readLocations, safeNormalizePath } from "./locations.ts";
 import { BUILTIN_MODULES, BUILTIN_NAMES, defaultProfileData, MANDATORY_MODULE } from "./registry.ts";
 import { levelByName } from "./level.ts";
 import type { Level, Module, Profile } from "./types.ts";
@@ -74,12 +75,16 @@ export function resolveProfile(env: NodeJS.ProcessEnv = process.env): Profile {
   return profile;
 }
 
-export function loadDefaults(env: NodeJS.ProcessEnv = process.env): {
+export function loadDefaults(
+  env: NodeJS.ProcessEnv = process.env,
+  cwd?: string,
+): {
   modules: readonly Module[];
   profile: Profile;
   level: Level;
 } {
-  const profile = resolveProfile(env);
+  const baseProfile = resolveProfile(env);
+  const profile = cwd !== undefined ? applyLocationFromCwd(baseProfile, cwd, env) : baseProfile;
   const userModuleData = discoverUserModules(BUILTIN_NAMES, env);
 
   const seen = new Set<string>();
@@ -107,4 +112,15 @@ export function loadDefaults(env: NodeJS.ProcessEnv = process.env): {
     modules.push(validateModule(data));
   }
   return { modules, profile, level: levelByName(profile.level, env) };
+}
+
+function applyLocationFromCwd(
+  profile: Profile,
+  cwd: string,
+  env: NodeJS.ProcessEnv,
+): Profile {
+  const normalized = safeNormalizePath(cwd, env);
+  if (normalized === null) return profile;
+  const match = findLocation(normalized, readLocations(env));
+  return match ? applyLocation(profile, match.entry) : profile;
 }
