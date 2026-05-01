@@ -126,6 +126,279 @@
       ],
       "class": "remote.read",
       "reason": "cargo yank --list"
+    },
+    {
+      "id": "cargo.build",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "build",
+      "class": "local.write",
+      "reason": "cargo build (writes target/)"
+    },
+    {
+      "id": "cargo.b",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "b",
+      "class": "local.write",
+      "reason": "cargo b (alias of build)"
+    },
+    {
+      "id": "cargo.test",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "test",
+      "class": "local.write",
+      "reason": "cargo test (compiles + runs tests; writes target/)"
+    },
+    {
+      "id": "cargo.t",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "t",
+      "class": "local.write",
+      "reason": "cargo t (alias of test)"
+    },
+    {
+      "id": "cargo.bench",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "bench",
+      "class": "local.write",
+      "reason": "cargo bench"
+    },
+    {
+      "id": "cargo.run",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "run",
+      "class": "dynamic",
+      "reason": "cargo run executes the project binary (effects unknown)"
+    },
+    {
+      "id": "cargo.r",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "r",
+      "class": "dynamic",
+      "reason": "cargo r (alias of run)"
+    },
+    {
+      "id": "cargo.add",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "add",
+      "class": "local.write",
+      "reason": "cargo add (modifies Cargo.toml)"
+    },
+    {
+      "id": "cargo.remove",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "remove",
+      "class": "local.write",
+      "reason": "cargo remove (modifies Cargo.toml)"
+    },
+    {
+      "id": "cargo.update",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "update",
+      "class": "local.write",
+      "reason": "cargo update (refreshes Cargo.lock)"
+    },
+    {
+      "id": "cargo.fetch",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "fetch",
+      "class": "local.write",
+      "reason": "cargo fetch (downloads deps to local cache)"
+    },
+    {
+      "id": "cargo.vendor",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "vendor",
+      "class": "local.write",
+      "reason": "cargo vendor"
+    },
+    {
+      "id": "cargo.fix",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "fix",
+      "class": "local.write",
+      "reason": "cargo fix (rewrites source)"
+    },
+    {
+      "id": "cargo.clippy.fix",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "clippy",
+      "any_flags": [
+        "--fix"
+      ],
+      "class": "local.write",
+      "reason": "cargo clippy --fix (rewrites source)"
+    },
+    {
+      "id": "cargo.clippy",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "clippy",
+      "excluded_flags": [
+        "--fix"
+      ],
+      "class": "local.read",
+      "reason": "cargo clippy (lint, no source rewrite)"
+    },
+    {
+      "id": "cargo.fmt",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "fmt",
+      "excluded_flags": [
+        "--check",
+        "-c"
+      ],
+      "class": "local.write",
+      "reason": "cargo fmt (rewrites source)"
+    },
+    {
+      "id": "cargo.doc",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "doc",
+      "class": "local.write",
+      "reason": "cargo doc (writes target/doc/)"
+    },
+    {
+      "id": "cargo.install",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "install",
+      "class": "local.write",
+      "reason": "cargo install (writes a binary into ~/.cargo/bin)"
+    },
+    {
+      "id": "cargo.uninstall",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "uninstall",
+      "class": "local.write",
+      "reason": "cargo uninstall"
+    },
+    {
+      "id": "cargo.new",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "new",
+      "class": "local.write",
+      "reason": "cargo new (scaffolds a project)"
+    },
+    {
+      "id": "cargo.init",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "init",
+      "class": "local.write",
+      "reason": "cargo init (scaffolds in current dir)"
+    },
+    {
+      "id": "cargo.generate-lockfile",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "generate-lockfile",
+      "class": "local.write",
+      "reason": "cargo generate-lockfile"
+    },
+    {
+      "id": "cargo.clean",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "clean",
+      "class": "local.write.destroy",
+      "reason": "cargo clean (drops target/)"
+    },
+    {
+      "id": "cargo.publish",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "publish",
+      "class": "remote.write",
+      "reason": "cargo publish (uploads crate to crates.io)"
+    },
+    {
+      "id": "cargo.package",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "package",
+      "class": "local.write",
+      "reason": "cargo package (creates a local .crate)"
+    },
+    {
+      "id": "cargo.login",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "login",
+      "class": "local.write",
+      "reason": "cargo login (writes API token)"
+    },
+    {
+      "id": "cargo.logout",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "logout",
+      "class": "local.write",
+      "reason": "cargo logout"
+    },
+    {
+      "id": "cargo.owner.add",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "owner",
+      "any_flags": [
+        "-a",
+        "--add"
+      ],
+      "class": "remote.write",
+      "reason": "cargo owner --add"
+    },
+    {
+      "id": "cargo.owner.remove",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "owner",
+      "any_flags": [
+        "-r",
+        "--remove"
+      ],
+      "class": "remote.write",
+      "reason": "cargo owner --remove"
+    },
+    {
+      "id": "cargo.yank.add",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "yank",
+      "excluded_flags": [
+        "--undo",
+        "--list"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "cargo yank (removes a published version from the index)"
+    },
+    {
+      "id": "cargo.yank.undo",
+      "match": "ast",
+      "binary": "cargo",
+      "subcommand": "yank",
+      "any_flags": [
+        "--undo"
+      ],
+      "class": "remote.write",
+      "reason": "cargo yank --undo"
     }
   ]
 }

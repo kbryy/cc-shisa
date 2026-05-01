@@ -355,6 +355,449 @@
       ],
       "class": "local.write",
       "reason": "ln -s (create symlink)"
+    },
+    {
+      "id": "coreutils.rm",
+      "match": "ast",
+      "binary": "rm",
+      "excluded_flags": [
+        "-r",
+        "-R",
+        "--recursive",
+        "-rf",
+        "-fr",
+        "-rfv",
+        "-Rf"
+      ],
+      "class": "local.write.destroy",
+      "reason": "rm (single-path delete)"
+    },
+    {
+      "id": "coreutils.rm.recursive",
+      "match": "ast",
+      "binary": "rm",
+      "any_flags": [
+        "-r",
+        "-R",
+        "--recursive",
+        "-rf",
+        "-fr",
+        "-rfv",
+        "-Rf"
+      ],
+      "class": "local.write.destroy",
+      "reason": "rm -r (recursive delete)"
+    },
+    {
+      "id": "coreutils.rmdir",
+      "match": "ast",
+      "binary": "rmdir",
+      "class": "local.write.destroy",
+      "reason": "rmdir (delete empty directory)"
+    },
+    {
+      "id": "coreutils.unlink",
+      "match": "ast",
+      "binary": "unlink",
+      "class": "local.write.destroy",
+      "reason": "unlink (single-file delete)"
+    },
+    {
+      "id": "coreutils.chmod",
+      "match": "ast",
+      "binary": "chmod",
+      "excluded_flags": [
+        "-R",
+        "--recursive"
+      ],
+      "class": "local.write",
+      "reason": "chmod (single-path mode change)"
+    },
+    {
+      "id": "coreutils.chmod.recursive",
+      "match": "ast",
+      "binary": "chmod",
+      "any_flags": [
+        "-R",
+        "--recursive"
+      ],
+      "class": "local.write.destroy",
+      "reason": "chmod -R (recursive permission change)"
+    },
+    {
+      "id": "coreutils.chown",
+      "match": "ast",
+      "binary": "chown",
+      "excluded_flags": [
+        "-R",
+        "--recursive"
+      ],
+      "class": "local.write",
+      "reason": "chown (single-path ownership change)"
+    },
+    {
+      "id": "coreutils.chgrp",
+      "match": "ast",
+      "binary": "chgrp",
+      "excluded_flags": [
+        "-R",
+        "--recursive"
+      ],
+      "class": "local.write",
+      "reason": "chgrp (single-path group change)"
+    },
+    {
+      "id": "coreutils.chgrp.recursive",
+      "match": "ast",
+      "binary": "chgrp",
+      "any_flags": [
+        "-R",
+        "--recursive"
+      ],
+      "class": "local.write.destroy",
+      "reason": "chgrp -R (recursive group change)"
+    },
+    {
+      "id": "coreutils.ln-hard",
+      "match": "ast",
+      "binary": "ln",
+      "excluded_flags": [
+        "-s",
+        "--symbolic"
+      ],
+      "class": "local.write",
+      "reason": "ln (hard link)"
+    },
+    {
+      "id": "coreutils.install-bin",
+      "match": "ast",
+      "binary": "install",
+      "class": "local.write",
+      "reason": "install (copy + permissions)"
+    },
+    {
+      "id": "coreutils.dd",
+      "match": "ast",
+      "binary": "dd",
+      "class": "local.write.destroy",
+      "reason": "dd (block-level copy; raw-device targets caught by _core)"
+    },
+    {
+      "id": "coreutils.tar.write",
+      "match": "ast",
+      "binary": "tar",
+      "any_flags": [
+        "-c",
+        "--create",
+        "-x",
+        "--extract",
+        "-r",
+        "--append",
+        "-u",
+        "--update",
+        "-cf",
+        "-xf",
+        "-cz",
+        "-cj",
+        "-cJ",
+        "-czf",
+        "-cjf",
+        "-cJf",
+        "-xz",
+        "-xj",
+        "-xJ",
+        "-xzf",
+        "-xjf",
+        "-xJf"
+      ],
+      "class": "local.write",
+      "reason": "tar create / extract / append"
+    },
+    {
+      "id": "coreutils.tar.list",
+      "match": "ast",
+      "binary": "tar",
+      "any_flags": [
+        "-t",
+        "--list",
+        "-tf",
+        "-tz",
+        "-tj",
+        "-tJ",
+        "-tzf",
+        "-tjf",
+        "-tJf"
+      ],
+      "class": "local.read",
+      "reason": "tar list (inspect archive)"
+    },
+    {
+      "id": "coreutils.zip",
+      "match": "ast",
+      "binary": "zip",
+      "class": "local.write",
+      "reason": "zip (writes an archive)"
+    },
+    {
+      "id": "coreutils.unzip",
+      "match": "ast",
+      "binary": "unzip",
+      "excluded_flags": [
+        "-l",
+        "-Z",
+        "-t"
+      ],
+      "class": "local.write",
+      "reason": "unzip (extracts; -l/-Z/-t are listings)"
+    },
+    {
+      "id": "coreutils.unzip.list",
+      "match": "ast",
+      "binary": "unzip",
+      "any_flags": [
+        "-l",
+        "-Z"
+      ],
+      "class": "local.read",
+      "reason": "unzip -l / -Z (list)"
+    },
+    {
+      "id": "coreutils.gzip",
+      "match": "ast",
+      "binaries": [
+        "gzip",
+        "bzip2",
+        "xz",
+        "zstd",
+        "lz4",
+        "compress"
+      ],
+      "excluded_flags": [
+        "-d",
+        "--decompress",
+        "-l",
+        "--list",
+        "-t",
+        "--test"
+      ],
+      "class": "local.write",
+      "reason": "compressor write (creates .gz / .bz2 / etc.)"
+    },
+    {
+      "id": "coreutils.gunzip",
+      "match": "ast",
+      "binaries": [
+        "gunzip",
+        "bunzip2",
+        "unxz",
+        "unzstd",
+        "uncompress",
+        "lz4cat"
+      ],
+      "class": "local.write",
+      "reason": "decompressor (writes uncompressed file)"
+    },
+    {
+      "id": "coreutils.openssl.write",
+      "match": "ast",
+      "binary": "openssl",
+      "subcommand": [
+        "genrsa",
+        "genpkey",
+        "ecparam",
+        "req",
+        "x509"
+      ],
+      "class": "local.write",
+      "reason": "openssl key/cert generation"
+    },
+    {
+      "id": "coreutils.ssh-keygen",
+      "match": "ast",
+      "binary": "ssh-keygen",
+      "class": "local.write",
+      "reason": "ssh-keygen (generates / removes keys)"
+    },
+    {
+      "id": "coreutils.gpg-sign",
+      "match": "ast",
+      "binary": "gpg",
+      "any_flags": [
+        "--gen-key",
+        "--full-generate-key",
+        "--quick-generate-key",
+        "--import"
+      ],
+      "class": "local.write",
+      "reason": "gpg key import / generation"
+    },
+    {
+      "id": "coreutils.gpg-encrypt",
+      "match": "ast",
+      "binary": "gpg",
+      "any_flags": [
+        "-e",
+        "--encrypt",
+        "--symmetric",
+        "-c",
+        "--sign",
+        "-s"
+      ],
+      "class": "local.write",
+      "reason": "gpg encrypt / sign (writes .asc/.gpg)"
+    },
+    {
+      "id": "coreutils.curl.upload",
+      "match": "ast",
+      "binary": "curl",
+      "any_flags": [
+        "-T",
+        "--upload-file",
+        "-X",
+        "--request"
+      ],
+      "class": "remote.write",
+      "reason": "curl with upload / mutation method"
+    },
+    {
+      "id": "coreutils.wget",
+      "match": "ast",
+      "binary": "wget",
+      "class": "local.write",
+      "reason": "wget (downloads to local file)"
+    },
+    {
+      "id": "coreutils.curl.download",
+      "match": "ast",
+      "binary": "curl",
+      "any_flags": [
+        "-o",
+        "--output",
+        "-O",
+        "--remote-name",
+        "-J",
+        "--remote-header-name"
+      ],
+      "class": "local.write",
+      "reason": "curl with output (saves to local file)"
+    },
+    {
+      "id": "coreutils.curl.read",
+      "match": "ast",
+      "binary": "curl",
+      "excluded_flags": [
+        "-T",
+        "--upload-file",
+        "-o",
+        "--output",
+        "-O",
+        "--remote-name",
+        "-X",
+        "--request",
+        "-J",
+        "--remote-header-name"
+      ],
+      "class": "remote.read",
+      "reason": "curl GET (default; output goes to stdout)"
+    },
+    {
+      "id": "coreutils.scp",
+      "match": "ast",
+      "binary": "scp",
+      "class": "remote.write",
+      "reason": "scp (transfers files to a remote host)"
+    },
+    {
+      "id": "coreutils.rsync",
+      "match": "ast",
+      "binary": "rsync",
+      "excluded_flags": [
+        "--delete",
+        "--del",
+        "--delete-after",
+        "--delete-before",
+        "--delete-during",
+        "--delete-excluded"
+      ],
+      "class": "local.write",
+      "reason": "rsync (sync; --delete variants caught by _core)"
+    },
+    {
+      "id": "coreutils.kill",
+      "match": "ast",
+      "binary": "kill",
+      "class": "local.write",
+      "reason": "kill (signals a process; SIGKILL to PID 1 caught by _core)"
+    },
+    {
+      "id": "coreutils.killall",
+      "match": "ast",
+      "binary": "killall",
+      "class": "local.write",
+      "reason": "killall (signals processes by name)"
+    },
+    {
+      "id": "coreutils.pkill",
+      "match": "ast",
+      "binary": "pkill",
+      "class": "local.write",
+      "reason": "pkill (signals processes by pattern)"
+    },
+    {
+      "id": "coreutils.xargs",
+      "match": "ast",
+      "binary": "xargs",
+      "class": "dynamic",
+      "reason": "xargs runs an arbitrary command per line"
+    },
+    {
+      "id": "coreutils.parallel",
+      "match": "ast",
+      "binary": "parallel",
+      "class": "dynamic",
+      "reason": "GNU parallel runs an arbitrary command per input"
+    },
+    {
+      "id": "coreutils.entr",
+      "match": "ast",
+      "binary": "entr",
+      "class": "dynamic",
+      "reason": "entr runs an arbitrary command on file change"
+    },
+    {
+      "id": "coreutils.watch",
+      "match": "ast",
+      "binary": "watch",
+      "class": "dynamic",
+      "reason": "watch repeatedly runs an arbitrary command"
+    },
+    {
+      "id": "coreutils.tee",
+      "match": "ast",
+      "binary": "tee",
+      "class": "local.write",
+      "reason": "tee (writes stdin to file)"
+    },
+    {
+      "id": "coreutils.split",
+      "match": "ast",
+      "binary": "split",
+      "class": "local.write",
+      "reason": "split (writes chunked output files)"
+    },
+    {
+      "id": "coreutils.truncate",
+      "match": "ast",
+      "binary": "truncate",
+      "class": "local.write.destroy",
+      "reason": "truncate (resizes file, may discard data)"
+    },
+    {
+      "id": "coreutils.shred",
+      "match": "ast",
+      "binary": "shred",
+      "class": "local.write.destroy",
+      "reason": "shred (overwrites a file securely; _core also catches this)"
     }
   ]
 }

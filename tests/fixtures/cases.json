@@ -583,19 +583,21 @@
     }
   },
   {
-    "name": "cargo build asks (executes build.rs)",
+    "name": "cargo build allows (writes target/)",
     "command": "cargo build",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "cargo.build"
     }
   },
   {
-    "name": "cargo test asks (executes user code)",
+    "name": "cargo test allows (compiles + runs tests)",
     "command": "cargo test",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "cargo.test"
     }
   },
   {
@@ -617,27 +619,30 @@
     }
   },
   {
-    "name": "brew install asks",
+    "name": "brew install allows",
     "command": "brew install ripgrep",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "brew.install"
     }
   },
   {
-    "name": "brew upgrade asks",
+    "name": "brew upgrade allows",
     "command": "brew upgrade",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "brew.upgrade"
     }
   },
   {
-    "name": "brew tap (write side) asks",
+    "name": "brew tap with arg allows (adds a tap)",
     "command": "brew tap kbryy/tap",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "brew.tap.write"
     }
   },
   {
@@ -659,11 +664,12 @@
     }
   },
   {
-    "name": "rm -rf /tmp/build asks (unmatched path)",
+    "name": "rm -rf /tmp/build asks (recursive delete, unmatched-path)",
     "command": "rm -rf /tmp/build",
     "expect": {
       "action": "ask",
-      "class": "unknown"
+      "class": "local.write.destroy",
+      "ruleId": "coreutils.rm.recursive"
     }
   },
   {
@@ -683,11 +689,12 @@
     }
   },
   {
-    "name": "chmod 644 asks (no -R)",
+    "name": "chmod 644 allows (no -R)",
     "command": "chmod 644 README.md",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.chmod"
     }
   },
   {
@@ -752,11 +759,12 @@
     }
   },
   {
-    "name": "chown without -R asks",
+    "name": "chown allows (no -R)",
     "command": "chown alice:alice file.txt",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.chown"
     }
   },
   {
@@ -778,11 +786,12 @@
     }
   },
   {
-    "name": "kill -9 1234 asks (not init)",
+    "name": "kill -9 1234 allows (not init; _core only catches PID 1)",
     "command": "kill -9 1234",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.kill"
     }
   },
   {
@@ -795,11 +804,12 @@
     }
   },
   {
-    "name": "rsync without --delete asks (unknown, no rule)",
+    "name": "rsync (no --delete) allows",
     "command": "rsync src dst",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.rsync"
     }
   },
   {
@@ -1450,11 +1460,12 @@
     }
   },
   {
-    "name": "brew tap with arg asks",
+    "name": "brew tap with arg allows (regex match)",
     "command": "brew tap kbryy/tap",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "brew.tap.write"
     }
   },
   {
@@ -1844,11 +1855,12 @@
     }
   },
   {
-    "name": "ln (hard link) asks",
+    "name": "ln (hard link) allows",
     "command": "ln target link",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.ln-hard"
     }
   },
   {
@@ -2803,6 +2815,348 @@
       "action": "allow",
       "class": "remote.write",
       "ruleId": "kubectl.debug"
+    }
+  },
+  {
+    "name": "rm single path allows",
+    "command": "rm tmp.txt",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "coreutils.rm"
+    }
+  },
+  {
+    "name": "rmdir asks",
+    "command": "rmdir empty/",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "coreutils.rmdir"
+    }
+  },
+  {
+    "name": "chmod -R asks (recursive)",
+    "command": "chmod -R 644 docs",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "coreutils.chmod.recursive"
+    }
+  },
+  {
+    "name": "tar create allows",
+    "command": "tar -czf out.tgz src",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.tar.write"
+    }
+  },
+  {
+    "name": "tar list (read)",
+    "command": "tar -tf archive.tgz",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "coreutils.tar.list"
+    }
+  },
+  {
+    "name": "zip allows",
+    "command": "zip -r out.zip src/",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.zip"
+    }
+  },
+  {
+    "name": "unzip extract allows",
+    "command": "unzip pkg.zip",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.unzip"
+    }
+  },
+  {
+    "name": "unzip -l (list)",
+    "command": "unzip -l pkg.zip",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "coreutils.unzip.list"
+    }
+  },
+  {
+    "name": "gzip allows",
+    "command": "gzip log.txt",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.gzip"
+    }
+  },
+  {
+    "name": "gunzip allows",
+    "command": "gunzip log.txt.gz",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.gunzip"
+    }
+  },
+  {
+    "name": "ssh-keygen allows",
+    "command": "ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.ssh-keygen"
+    }
+  },
+  {
+    "name": "wget allows (downloads to file)",
+    "command": "wget https://example.com/file.tar.gz",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.wget"
+    }
+  },
+  {
+    "name": "curl GET (default) allows",
+    "command": "curl https://api.example.com/items",
+    "expect": {
+      "action": "allow",
+      "class": "remote.read",
+      "ruleId": "coreutils.curl.read"
+    }
+  },
+  {
+    "name": "curl -O download allows",
+    "command": "curl -O https://example.com/file",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.curl.download"
+    }
+  },
+  {
+    "name": "curl -X POST asks (safe → allow remote.write)",
+    "command": "curl -X POST https://api.example.com/items -d foo",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "coreutils.curl.upload"
+    }
+  },
+  {
+    "name": "scp allows (safe)",
+    "command": "scp local.tar host:/tmp/",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "coreutils.scp"
+    }
+  },
+  {
+    "name": "killall allows (not init)",
+    "command": "killall -9 java",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.killall"
+    }
+  },
+  {
+    "name": "xargs asks (dynamic, runs arbitrary cmd)",
+    "command": "xargs -n1 echo",
+    "expect": {
+      "action": "ask",
+      "class": "dynamic",
+      "ruleId": "coreutils.xargs"
+    }
+  },
+  {
+    "name": "watch asks (dynamic)",
+    "command": "watch -n 1 ls",
+    "expect": {
+      "action": "ask",
+      "class": "dynamic",
+      "ruleId": "coreutils.watch"
+    }
+  },
+  {
+    "name": "tee allows",
+    "command": "echo hello | tee out.txt",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.tee"
+    }
+  },
+  {
+    "name": "truncate asks",
+    "command": "truncate -s 0 log.txt",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "coreutils.truncate"
+    }
+  },
+  {
+    "name": "cargo run asks (dynamic)",
+    "command": "cargo run --bin app",
+    "expect": {
+      "action": "ask",
+      "class": "dynamic",
+      "ruleId": "cargo.run"
+    }
+  },
+  {
+    "name": "cargo add allows",
+    "command": "cargo add serde",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "cargo.add"
+    }
+  },
+  {
+    "name": "cargo update allows",
+    "command": "cargo update",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "cargo.update"
+    }
+  },
+  {
+    "name": "cargo fmt allows (rewrites)",
+    "command": "cargo fmt",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "cargo.fmt"
+    }
+  },
+  {
+    "name": "cargo fmt --check allows (read)",
+    "command": "cargo fmt --check",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "cargo.fmt-check"
+    }
+  },
+  {
+    "name": "cargo clippy --fix allows",
+    "command": "cargo clippy --fix",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "cargo.clippy.fix"
+    }
+  },
+  {
+    "name": "cargo clippy (read) allows",
+    "command": "cargo clippy",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "cargo.clippy"
+    }
+  },
+  {
+    "name": "cargo install allows",
+    "command": "cargo install ripgrep",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "cargo.install"
+    }
+  },
+  {
+    "name": "cargo clean asks",
+    "command": "cargo clean",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "cargo.clean"
+    }
+  },
+  {
+    "name": "cargo publish allows (safe)",
+    "command": "cargo publish",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "cargo.publish"
+    }
+  },
+  {
+    "name": "cargo yank asks (destructive)",
+    "command": "cargo yank --version 0.1.0 mycrate",
+    "expect": {
+      "action": "ask",
+      "class": "remote.write.destroy",
+      "ruleId": "cargo.yank.add"
+    }
+  },
+  {
+    "name": "cargo yank --undo allows",
+    "command": "cargo yank --undo --version 0.1.0 mycrate",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "cargo.yank.undo"
+    }
+  },
+  {
+    "name": "brew uninstall allows",
+    "command": "brew uninstall ripgrep",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "brew.uninstall"
+    }
+  },
+  {
+    "name": "brew cleanup asks",
+    "command": "brew cleanup",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "brew.cleanup"
+    }
+  },
+  {
+    "name": "brew autoremove asks",
+    "command": "brew autoremove",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "brew.autoremove"
+    }
+  },
+  {
+    "name": "brew services start allows",
+    "command": "brew services start postgresql",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "brew.services.start"
+    }
+  },
+  {
+    "name": "brew bundle dump allows",
+    "command": "brew bundle dump",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "brew.bundle.dump"
     }
   }
 ]
