@@ -150,6 +150,201 @@
       "subcommand": "completions",
       "class": "local.read",
       "reason": "bun completions (shell completion script)"
+    },
+    {
+      "id": "bun.install",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "install",
+      "class": "local.write",
+      "reason": "bun install"
+    },
+    {
+      "id": "bun.i",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "i",
+      "class": "local.write",
+      "reason": "bun i (alias of install)"
+    },
+    {
+      "id": "bun.add",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "add",
+      "class": "local.write",
+      "reason": "bun add"
+    },
+    {
+      "id": "bun.a",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "a",
+      "class": "local.write",
+      "reason": "bun a (alias of add)"
+    },
+    {
+      "id": "bun.remove",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "remove",
+      "class": "local.write",
+      "reason": "bun remove"
+    },
+    {
+      "id": "bun.rm",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "rm",
+      "class": "local.write",
+      "reason": "bun rm (alias of remove)"
+    },
+    {
+      "id": "bun.update",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "update",
+      "class": "local.write",
+      "reason": "bun update"
+    },
+    {
+      "id": "bun.upgrade",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "upgrade",
+      "class": "local.write",
+      "reason": "bun upgrade (upgrades bun runtime)"
+    },
+    {
+      "id": "bun.init",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "init",
+      "class": "local.write",
+      "reason": "bun init (scaffolds a project)"
+    },
+    {
+      "id": "bun.build",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "build",
+      "class": "local.write",
+      "reason": "bun build (writes bundle output)"
+    },
+    {
+      "id": "bun.link",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "link",
+      "class": "local.write",
+      "reason": "bun link"
+    },
+    {
+      "id": "bun.unlink",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "unlink",
+      "class": "local.write",
+      "reason": "bun unlink"
+    },
+    {
+      "id": "bun.lock",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "lock",
+      "class": "local.write",
+      "reason": "bun lock (writes lockfile only)"
+    },
+    {
+      "id": "bun.pm.trust",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "pm",
+        "trust"
+      ],
+      "class": "local.write",
+      "reason": "bun pm trust (allow postinstall scripts for a package)"
+    },
+    {
+      "id": "bun.pm.untrusted",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "pm",
+        "untrusted"
+      ],
+      "class": "local.read",
+      "reason": "bun pm untrusted (list)"
+    },
+    {
+      "id": "bun.pm.migrate",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "pm",
+        "migrate"
+      ],
+      "class": "local.write",
+      "reason": "bun pm migrate (import npm/yarn lock)"
+    },
+    {
+      "id": "bun.pm.cache.rm",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "pm",
+        "cache",
+        "rm"
+      ],
+      "class": "local.write.destroy",
+      "reason": "bun pm cache rm"
+    },
+    {
+      "id": "bun.pm.hash",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "pm",
+        "hash"
+      ],
+      "class": "local.read",
+      "reason": "bun pm hash"
+    },
+    {
+      "id": "bun.pm.publish",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "pm",
+        "publish"
+      ],
+      "class": "remote.write",
+      "reason": "bun pm publish"
+    },
+    {
+      "id": "bun.publish",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "publish",
+      "class": "remote.write",
+      "reason": "bun publish"
+    },
+    {
+      "id": "bun.x",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "x",
+      "class": "dynamic",
+      "reason": "bun x fetches and runs an arbitrary package (alias of bunx)"
+    },
+    {
+      "id": "bun.create",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "create",
+      "class": "dynamic",
+      "reason": "bun create runs a create-* template"
     }
   ]
 }

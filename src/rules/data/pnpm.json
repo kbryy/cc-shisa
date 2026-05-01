@@ -260,6 +260,361 @@
       ],
       "class": "remote.read",
       "reason": "pnpm env list-remote (queries Node release index)"
+    },
+    {
+      "id": "pnpm.install",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "install",
+      "class": "local.write",
+      "reason": "pnpm install"
+    },
+    {
+      "id": "pnpm.i",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "i",
+      "class": "local.write",
+      "reason": "pnpm i (alias of install)"
+    },
+    {
+      "id": "pnpm.add",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "add",
+      "class": "local.write",
+      "reason": "pnpm add"
+    },
+    {
+      "id": "pnpm.remove",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "remove",
+      "class": "local.write",
+      "reason": "pnpm remove"
+    },
+    {
+      "id": "pnpm.rm",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "rm",
+      "class": "local.write",
+      "reason": "pnpm rm (alias of remove)"
+    },
+    {
+      "id": "pnpm.uninstall",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "uninstall",
+      "class": "local.write",
+      "reason": "pnpm uninstall"
+    },
+    {
+      "id": "pnpm.un",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "un",
+      "class": "local.write",
+      "reason": "pnpm un (alias of uninstall)"
+    },
+    {
+      "id": "pnpm.update",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "update",
+      "class": "local.write",
+      "reason": "pnpm update"
+    },
+    {
+      "id": "pnpm.up",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "up",
+      "class": "local.write",
+      "reason": "pnpm up (alias of update)"
+    },
+    {
+      "id": "pnpm.upgrade",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "upgrade",
+      "class": "local.write",
+      "reason": "pnpm upgrade"
+    },
+    {
+      "id": "pnpm.dedupe",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "dedupe",
+      "class": "local.write",
+      "reason": "pnpm dedupe"
+    },
+    {
+      "id": "pnpm.rebuild",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "rebuild",
+      "class": "local.write",
+      "reason": "pnpm rebuild"
+    },
+    {
+      "id": "pnpm.fetch",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "fetch",
+      "class": "local.write",
+      "reason": "pnpm fetch (pre-installs to store)"
+    },
+    {
+      "id": "pnpm.import",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "import",
+      "class": "local.write",
+      "reason": "pnpm import (creates pnpm-lock.yaml from npm/yarn lock)"
+    },
+    {
+      "id": "pnpm.link",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "link",
+      "class": "local.write",
+      "reason": "pnpm link"
+    },
+    {
+      "id": "pnpm.unlink",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "unlink",
+      "class": "local.write",
+      "reason": "pnpm unlink"
+    },
+    {
+      "id": "pnpm.init",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "init",
+      "class": "local.write",
+      "reason": "pnpm init (writes package.json)"
+    },
+    {
+      "id": "pnpm.pack",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "pack",
+      "class": "local.write",
+      "reason": "pnpm pack"
+    },
+    {
+      "id": "pnpm.deploy",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "deploy",
+      "class": "local.write",
+      "reason": "pnpm deploy"
+    },
+    {
+      "id": "pnpm.patch",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "patch",
+      "class": "local.write",
+      "reason": "pnpm patch (creates a temporary patch dir)"
+    },
+    {
+      "id": "pnpm.patch-commit",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "patch-commit",
+      "class": "local.write",
+      "reason": "pnpm patch-commit"
+    },
+    {
+      "id": "pnpm.patch-remove",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "patch-remove",
+      "class": "local.write",
+      "reason": "pnpm patch-remove"
+    },
+    {
+      "id": "pnpm.config.set",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "config",
+        "set"
+      ],
+      "class": "local.write",
+      "reason": "pnpm config set"
+    },
+    {
+      "id": "pnpm.config.delete",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "config",
+        "delete"
+      ],
+      "class": "local.write",
+      "reason": "pnpm config delete"
+    },
+    {
+      "id": "pnpm.set",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "set",
+      "class": "local.write",
+      "reason": "pnpm set (alias)"
+    },
+    {
+      "id": "pnpm.adduser",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "adduser",
+      "class": "local.write",
+      "reason": "pnpm adduser"
+    },
+    {
+      "id": "pnpm.login",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "login",
+      "class": "local.write",
+      "reason": "pnpm login"
+    },
+    {
+      "id": "pnpm.logout",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "logout",
+      "class": "local.write",
+      "reason": "pnpm logout"
+    },
+    {
+      "id": "pnpm.store.add",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "store",
+        "add"
+      ],
+      "class": "local.write",
+      "reason": "pnpm store add"
+    },
+    {
+      "id": "pnpm.store.prune",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "store",
+        "prune"
+      ],
+      "class": "local.write.destroy",
+      "reason": "pnpm store prune (drops unreferenced store entries)"
+    },
+    {
+      "id": "pnpm.store.path",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "store",
+        "path"
+      ],
+      "class": "local.read",
+      "reason": "pnpm store path"
+    },
+    {
+      "id": "pnpm.store.status",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "store",
+        "status"
+      ],
+      "class": "local.read",
+      "reason": "pnpm store status"
+    },
+    {
+      "id": "pnpm.prune",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "prune",
+      "class": "local.write.destroy",
+      "reason": "pnpm prune (removes extraneous packages)"
+    },
+    {
+      "id": "pnpm.env.use",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "env",
+        "use"
+      ],
+      "class": "local.write",
+      "reason": "pnpm env use (switch node version)"
+    },
+    {
+      "id": "pnpm.env.add",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "env",
+        "add"
+      ],
+      "class": "local.write",
+      "reason": "pnpm env add"
+    },
+    {
+      "id": "pnpm.env.remove",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "env",
+        "remove"
+      ],
+      "class": "local.write.destroy",
+      "reason": "pnpm env remove"
+    },
+    {
+      "id": "pnpm.publish",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "publish",
+      "class": "remote.write",
+      "reason": "pnpm publish"
+    },
+    {
+      "id": "pnpm.unpublish",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "unpublish",
+      "class": "remote.write.destroy",
+      "reason": "pnpm unpublish"
+    },
+    {
+      "id": "pnpm.exec",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "exec",
+      "class": "dynamic",
+      "reason": "pnpm exec runs an installed binary (opaque)"
+    },
+    {
+      "id": "pnpm.dlx",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "dlx",
+      "class": "dynamic",
+      "reason": "pnpm dlx fetches and runs an arbitrary package"
+    },
+    {
+      "id": "pnpm.create",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "create",
+      "class": "dynamic",
+      "reason": "pnpm create runs a create-* package"
     }
   ]
 }

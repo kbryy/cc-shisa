@@ -385,11 +385,12 @@
     }
   },
   {
-    "name": "pnpm install asks (writes node_modules)",
+    "name": "pnpm install allows (writes node_modules)",
     "command": "pnpm install",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "pnpm.install"
     }
   },
   {
@@ -420,11 +421,12 @@
     }
   },
   {
-    "name": "bun install asks",
+    "name": "bun install allows",
     "command": "bun install",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "bun.install"
     }
   },
   {
@@ -437,19 +439,21 @@
     }
   },
   {
-    "name": "npm install asks",
+    "name": "npm install allows",
     "command": "npm install foo",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "npm.install"
     }
   },
   {
-    "name": "npm version (positional, write) asks",
+    "name": "npm version allows (writes package.json)",
     "command": "npm version 1.0.0",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "npm.version"
     }
   },
   {
@@ -462,11 +466,12 @@
     }
   },
   {
-    "name": "yarn add asks",
+    "name": "yarn add allows",
     "command": "yarn add lodash",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "yarn.add"
     }
   },
   {
@@ -2308,6 +2313,267 @@
       "action": "ask",
       "class": "remote.write.destroy",
       "ruleId": "gh.api.delete.method"
+    }
+  },
+  {
+    "name": "npm uninstall allows",
+    "command": "npm uninstall foo",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "npm.uninstall"
+    }
+  },
+  {
+    "name": "npm ci allows",
+    "command": "npm ci",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "npm.ci"
+    }
+  },
+  {
+    "name": "npm publish allows (safe level)",
+    "command": "npm publish",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "npm.publish"
+    }
+  },
+  {
+    "name": "npm unpublish asks",
+    "command": "npm unpublish my-pkg@1.0.0",
+    "expect": {
+      "action": "ask",
+      "class": "remote.write.destroy",
+      "ruleId": "npm.unpublish"
+    }
+  },
+  {
+    "name": "npm cache clean asks",
+    "command": "npm cache clean --force",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "npm.cache.clean"
+    }
+  },
+  {
+    "name": "npm prune asks (drops extraneous)",
+    "command": "npm prune",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "npm.prune"
+    }
+  },
+  {
+    "name": "npm exec asks (dynamic)",
+    "command": "npm exec foo",
+    "expect": {
+      "action": "ask",
+      "class": "dynamic",
+      "ruleId": "npm.exec"
+    }
+  },
+  {
+    "name": "npm create asks (dynamic)",
+    "command": "npm create vite@latest myapp",
+    "expect": {
+      "action": "ask",
+      "class": "dynamic",
+      "ruleId": "npm.create"
+    }
+  },
+  {
+    "name": "npm token revoke asks",
+    "command": "npm token revoke abc",
+    "expect": {
+      "action": "ask",
+      "class": "remote.write.destroy",
+      "ruleId": "npm.token.revoke"
+    }
+  },
+  {
+    "name": "pnpm add allows",
+    "command": "pnpm add lodash",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "pnpm.add"
+    }
+  },
+  {
+    "name": "pnpm remove allows",
+    "command": "pnpm remove lodash",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "pnpm.remove"
+    }
+  },
+  {
+    "name": "pnpm publish allows (safe)",
+    "command": "pnpm publish",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "pnpm.publish"
+    }
+  },
+  {
+    "name": "pnpm store prune asks",
+    "command": "pnpm store prune",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "pnpm.store.prune"
+    }
+  },
+  {
+    "name": "pnpm dlx asks (dynamic)",
+    "command": "pnpm dlx some-pkg",
+    "expect": {
+      "action": "ask",
+      "class": "dynamic",
+      "ruleId": "pnpm.dlx"
+    }
+  },
+  {
+    "name": "pnpm patch allows",
+    "command": "pnpm patch is-odd@3.0.1",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "pnpm.patch"
+    }
+  },
+  {
+    "name": "yarn install allows",
+    "command": "yarn install",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "yarn.install"
+    }
+  },
+  {
+    "name": "yarn remove allows",
+    "command": "yarn remove lodash",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "yarn.remove"
+    }
+  },
+  {
+    "name": "yarn upgrade allows (classic)",
+    "command": "yarn upgrade",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "yarn.upgrade"
+    }
+  },
+  {
+    "name": "yarn up allows (berry)",
+    "command": "yarn up",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "yarn.up"
+    }
+  },
+  {
+    "name": "yarn npm publish allows (berry, safe)",
+    "command": "yarn npm publish",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "yarn.npm.publish"
+    }
+  },
+  {
+    "name": "yarn cache clean asks",
+    "command": "yarn cache clean",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "yarn.cache.clean"
+    }
+  },
+  {
+    "name": "yarn dlx asks (dynamic)",
+    "command": "yarn dlx prettier --check .",
+    "expect": {
+      "action": "ask",
+      "class": "dynamic",
+      "ruleId": "yarn.dlx"
+    }
+  },
+  {
+    "name": "bun add allows",
+    "command": "bun add lodash",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "bun.add"
+    }
+  },
+  {
+    "name": "bun remove allows",
+    "command": "bun remove lodash",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "bun.remove"
+    }
+  },
+  {
+    "name": "bun build allows",
+    "command": "bun build src/index.ts --outdir dist",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "bun.build"
+    }
+  },
+  {
+    "name": "bun upgrade allows",
+    "command": "bun upgrade",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "bun.upgrade"
+    }
+  },
+  {
+    "name": "bun publish allows (safe)",
+    "command": "bun publish",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "bun.publish"
+    }
+  },
+  {
+    "name": "bun pm cache rm asks",
+    "command": "bun pm cache rm",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "bun.pm.cache.rm"
+    }
+  },
+  {
+    "name": "bun x asks (dynamic)",
+    "command": "bun x prettier --check .",
+    "expect": {
+      "action": "ask",
+      "class": "dynamic",
+      "ruleId": "bun.x"
     }
   }
 ]
