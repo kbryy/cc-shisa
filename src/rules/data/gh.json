@@ -2,43 +2,414 @@
   "name": "gh",
   "description": "GitHub CLI read-only subcommands.",
   "rules": [
-    { "id": "gh.pr.list", "match": "ast", "binary": "gh", "subcommand": ["pr", "list"], "class": "read", "reason": "gh pr list" },
-    { "id": "gh.pr.view", "match": "ast", "binary": "gh", "subcommand": ["pr", "view"], "class": "read", "reason": "gh pr view" },
-    { "id": "gh.pr.status", "match": "ast", "binary": "gh", "subcommand": ["pr", "status"], "class": "read", "reason": "gh pr status" },
-    { "id": "gh.pr.checks", "match": "ast", "binary": "gh", "subcommand": ["pr", "checks"], "class": "read", "reason": "gh pr checks" },
-    { "id": "gh.pr.diff", "match": "ast", "binary": "gh", "subcommand": ["pr", "diff"], "class": "read", "reason": "gh pr diff" },
-    { "id": "gh.issue.list", "match": "ast", "binary": "gh", "subcommand": ["issue", "list"], "class": "read", "reason": "gh issue list" },
-    { "id": "gh.issue.view", "match": "ast", "binary": "gh", "subcommand": ["issue", "view"], "class": "read", "reason": "gh issue view" },
-    { "id": "gh.issue.status", "match": "ast", "binary": "gh", "subcommand": ["issue", "status"], "class": "read", "reason": "gh issue status" },
-    { "id": "gh.run.list", "match": "ast", "binary": "gh", "subcommand": ["run", "list"], "class": "read", "reason": "gh run list" },
-    { "id": "gh.run.view", "match": "ast", "binary": "gh", "subcommand": ["run", "view"], "class": "read", "reason": "gh run view" },
-    { "id": "gh.run.watch", "match": "ast", "binary": "gh", "subcommand": ["run", "watch"], "class": "read", "reason": "gh run watch" },
-    { "id": "gh.workflow.list", "match": "ast", "binary": "gh", "subcommand": ["workflow", "list"], "class": "read", "reason": "gh workflow list" },
-    { "id": "gh.workflow.view", "match": "ast", "binary": "gh", "subcommand": ["workflow", "view"], "class": "read", "reason": "gh workflow view" },
-    { "id": "gh.release.list", "match": "ast", "binary": "gh", "subcommand": ["release", "list"], "class": "read", "reason": "gh release list" },
-    { "id": "gh.release.view", "match": "ast", "binary": "gh", "subcommand": ["release", "view"], "class": "read", "reason": "gh release view" },
-    { "id": "gh.repo.view", "match": "ast", "binary": "gh", "subcommand": ["repo", "view"], "class": "read", "reason": "gh repo view" },
-    { "id": "gh.repo.list", "match": "ast", "binary": "gh", "subcommand": ["repo", "list"], "class": "read", "reason": "gh repo list" },
-    { "id": "gh.auth.status", "match": "ast", "binary": "gh", "subcommand": ["auth", "status"], "class": "read", "reason": "gh auth status" },
-    { "id": "gh.label.list", "match": "ast", "binary": "gh", "subcommand": ["label", "list"], "class": "read", "reason": "gh label list" },
-    { "id": "gh.search", "match": "ast", "binary": "gh", "subcommand": "search", "class": "read", "reason": "gh search" },
-    { "id": "gh.status", "match": "ast", "binary": "gh", "subcommand": "status", "class": "read", "reason": "gh status" },
-    { "id": "gh.browse", "match": "ast", "binary": "gh", "subcommand": "browse", "class": "read", "reason": "gh browse (opens URL in browser, no repo side-effect)" },
-    { "id": "gh.codespace.list", "match": "ast", "binary": "gh", "subcommand": ["codespace", "list"], "class": "read", "reason": "gh codespace list" },
-    { "id": "gh.codespace.view", "match": "ast", "binary": "gh", "subcommand": ["codespace", "view"], "class": "read", "reason": "gh codespace view" },
-    { "id": "gh.codespace.logs", "match": "ast", "binary": "gh", "subcommand": ["codespace", "logs"], "class": "read", "reason": "gh codespace logs" },
-    { "id": "gh.codespace.ports", "match": "ast", "binary": "gh", "subcommand": ["codespace", "ports"], "class": "read", "reason": "gh codespace ports" },
-    { "id": "gh.secret.list", "match": "ast", "binary": "gh", "subcommand": ["secret", "list"], "class": "read", "reason": "gh secret list (values are masked)" },
-    { "id": "gh.variable.list", "match": "ast", "binary": "gh", "subcommand": ["variable", "list"], "class": "read", "reason": "gh variable list" },
-    { "id": "gh.ssh-key.list", "match": "ast", "binary": "gh", "subcommand": ["ssh-key", "list"], "class": "read", "reason": "gh ssh-key list" },
-    { "id": "gh.gpg-key.list", "match": "ast", "binary": "gh", "subcommand": ["gpg-key", "list"], "class": "read", "reason": "gh gpg-key list" },
-    { "id": "gh.extension.list", "match": "ast", "binary": "gh", "subcommand": ["extension", "list"], "class": "read", "reason": "gh extension list" },
-    { "id": "gh.cache.list", "match": "ast", "binary": "gh", "subcommand": ["cache", "list"], "class": "read", "reason": "gh cache list" },
-    { "id": "gh.ruleset.list", "match": "ast", "binary": "gh", "subcommand": ["ruleset", "list"], "class": "read", "reason": "gh ruleset list" },
-    { "id": "gh.ruleset.view", "match": "ast", "binary": "gh", "subcommand": ["ruleset", "view"], "class": "read", "reason": "gh ruleset view" },
-    { "id": "gh.project.list", "match": "ast", "binary": "gh", "subcommand": ["project", "list"], "class": "read", "reason": "gh project list" },
-    { "id": "gh.project.view", "match": "ast", "binary": "gh", "subcommand": ["project", "view"], "class": "read", "reason": "gh project view" },
-    { "id": "gh.org.list", "match": "ast", "binary": "gh", "subcommand": ["org", "list"], "class": "read", "reason": "gh org list" },
-    { "id": "gh.attestation.verify", "match": "ast", "binary": "gh", "subcommand": ["attestation", "verify"], "class": "read", "reason": "gh attestation verify" }
+    {
+      "id": "gh.pr.list",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "pr",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "gh pr list"
+    },
+    {
+      "id": "gh.pr.view",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "pr",
+        "view"
+      ],
+      "class": "read-remote",
+      "reason": "gh pr view"
+    },
+    {
+      "id": "gh.pr.status",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "pr",
+        "status"
+      ],
+      "class": "read-remote",
+      "reason": "gh pr status"
+    },
+    {
+      "id": "gh.pr.checks",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "pr",
+        "checks"
+      ],
+      "class": "read-remote",
+      "reason": "gh pr checks"
+    },
+    {
+      "id": "gh.pr.diff",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "pr",
+        "diff"
+      ],
+      "class": "read-remote",
+      "reason": "gh pr diff"
+    },
+    {
+      "id": "gh.issue.list",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "issue",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "gh issue list"
+    },
+    {
+      "id": "gh.issue.view",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "issue",
+        "view"
+      ],
+      "class": "read-remote",
+      "reason": "gh issue view"
+    },
+    {
+      "id": "gh.issue.status",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "issue",
+        "status"
+      ],
+      "class": "read-remote",
+      "reason": "gh issue status"
+    },
+    {
+      "id": "gh.run.list",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "run",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "gh run list"
+    },
+    {
+      "id": "gh.run.view",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "run",
+        "view"
+      ],
+      "class": "read-remote",
+      "reason": "gh run view"
+    },
+    {
+      "id": "gh.run.watch",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "run",
+        "watch"
+      ],
+      "class": "read-remote",
+      "reason": "gh run watch"
+    },
+    {
+      "id": "gh.workflow.list",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "workflow",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "gh workflow list"
+    },
+    {
+      "id": "gh.workflow.view",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "workflow",
+        "view"
+      ],
+      "class": "read-remote",
+      "reason": "gh workflow view"
+    },
+    {
+      "id": "gh.release.list",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "release",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "gh release list"
+    },
+    {
+      "id": "gh.release.view",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "release",
+        "view"
+      ],
+      "class": "read-remote",
+      "reason": "gh release view"
+    },
+    {
+      "id": "gh.repo.view",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "repo",
+        "view"
+      ],
+      "class": "read-remote",
+      "reason": "gh repo view"
+    },
+    {
+      "id": "gh.repo.list",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "repo",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "gh repo list"
+    },
+    {
+      "id": "gh.auth.status",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "auth",
+        "status"
+      ],
+      "class": "read-remote",
+      "reason": "gh auth status"
+    },
+    {
+      "id": "gh.label.list",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "label",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "gh label list"
+    },
+    {
+      "id": "gh.search",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": "search",
+      "class": "read-remote",
+      "reason": "gh search"
+    },
+    {
+      "id": "gh.status",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": "status",
+      "class": "read-remote",
+      "reason": "gh status"
+    },
+    {
+      "id": "gh.browse",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": "browse",
+      "class": "read-remote",
+      "reason": "gh browse (opens URL in browser, no repo side-effect)"
+    },
+    {
+      "id": "gh.codespace.list",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "codespace",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "gh codespace list"
+    },
+    {
+      "id": "gh.codespace.view",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "codespace",
+        "view"
+      ],
+      "class": "read-remote",
+      "reason": "gh codespace view"
+    },
+    {
+      "id": "gh.codespace.logs",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "codespace",
+        "logs"
+      ],
+      "class": "read-remote",
+      "reason": "gh codespace logs"
+    },
+    {
+      "id": "gh.codespace.ports",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "codespace",
+        "ports"
+      ],
+      "class": "read-remote",
+      "reason": "gh codespace ports"
+    },
+    {
+      "id": "gh.secret.list",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "secret",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "gh secret list (values are masked)"
+    },
+    {
+      "id": "gh.variable.list",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "variable",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "gh variable list"
+    },
+    {
+      "id": "gh.ssh-key.list",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "ssh-key",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "gh ssh-key list"
+    },
+    {
+      "id": "gh.gpg-key.list",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "gpg-key",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "gh gpg-key list"
+    },
+    {
+      "id": "gh.extension.list",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "extension",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "gh extension list"
+    },
+    {
+      "id": "gh.cache.list",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "cache",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "gh cache list"
+    },
+    {
+      "id": "gh.ruleset.list",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "ruleset",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "gh ruleset list"
+    },
+    {
+      "id": "gh.ruleset.view",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "ruleset",
+        "view"
+      ],
+      "class": "read-remote",
+      "reason": "gh ruleset view"
+    },
+    {
+      "id": "gh.project.list",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "project",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "gh project list"
+    },
+    {
+      "id": "gh.project.view",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "project",
+        "view"
+      ],
+      "class": "read-remote",
+      "reason": "gh project view"
+    },
+    {
+      "id": "gh.org.list",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "org",
+        "list"
+      ],
+      "class": "read-remote",
+      "reason": "gh org list"
+    },
+    {
+      "id": "gh.attestation.verify",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "attestation",
+        "verify"
+      ],
+      "class": "read-remote",
+      "reason": "gh attestation verify"
+    }
   ]
 }

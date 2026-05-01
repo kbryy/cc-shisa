@@ -6,8 +6,13 @@
       "id": "core.rm.rf.root",
       "match": "ast",
       "binary": "rm",
-      "flags": ["-r", "-f"],
-      "path_globs": ["/"],
+      "flags": [
+        "-r",
+        "-f"
+      ],
+      "path_globs": [
+        "/"
+      ],
       "class": "dangerous",
       "reason": "rm -rf against filesystem root"
     },
@@ -15,8 +20,17 @@
       "id": "core.rm.rf.home",
       "match": "ast",
       "binary": "rm",
-      "flags": ["-r", "-f"],
-      "path_globs": ["$HOME", "~", "~/", "$HOME/", "/Users/*"],
+      "flags": [
+        "-r",
+        "-f"
+      ],
+      "path_globs": [
+        "$HOME",
+        "~",
+        "~/",
+        "$HOME/",
+        "/Users/*"
+      ],
       "class": "dangerous",
       "reason": "rm -rf against home directory"
     },
@@ -24,7 +38,10 @@
       "id": "core.rm.rf.system",
       "match": "ast",
       "binary": "rm",
-      "flags": ["-r", "-f"],
+      "flags": [
+        "-r",
+        "-f"
+      ],
       "path_globs": [
         "/etc",
         "/etc/**",
@@ -50,9 +67,16 @@
       "id": "core.rm.rf.dotgit",
       "match": "ast",
       "binary": "rm",
-      "flags": ["-r", "-f"],
-      "path_globs": ["**/.git", ".git", "**/.git/"],
-      "class": "irreversible",
+      "flags": [
+        "-r",
+        "-f"
+      ],
+      "path_globs": [
+        "**/.git",
+        ".git",
+        "**/.git/"
+      ],
+      "class": "irreversible-local",
       "reason": "removing .git directory destroys repository history"
     },
     {
@@ -94,7 +118,11 @@
     {
       "id": "core.partition.tools",
       "match": "ast",
-      "binaries": ["fdisk", "gdisk", "parted"],
+      "binaries": [
+        "fdisk",
+        "gdisk",
+        "parted"
+      ],
       "class": "dangerous",
       "reason": "partition tools default to interactive write mode"
     },
@@ -133,8 +161,12 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "push",
-      "any_flags": ["--force", "-f", "--force-with-lease"],
-      "class": "irreversible",
+      "any_flags": [
+        "--force",
+        "-f",
+        "--force-with-lease"
+      ],
+      "class": "irreversible-remote",
       "reason": "force push rewrites remote history"
     },
     {
@@ -142,16 +174,24 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "reset",
-      "flags": ["--hard"],
-      "class": "irreversible",
+      "flags": [
+        "--hard"
+      ],
+      "class": "irreversible-local",
       "reason": "git reset --hard discards uncommitted changes"
     },
     {
       "id": "core.chmod.777.recursive",
       "match": "ast",
       "binary": "chmod",
-      "flags": ["-R"],
-      "any_flags": ["777", "a+rwx", "a=rwx"],
+      "flags": [
+        "-R"
+      ],
+      "any_flags": [
+        "777",
+        "a+rwx",
+        "a=rwx"
+      ],
       "class": "dangerous",
       "reason": "recursive world-writable permission change"
     },
@@ -165,31 +205,59 @@
     {
       "id": "core.shell.dash-c",
       "match": "ast",
-      "binaries": ["bash", "sh", "zsh", "ksh", "dash"],
-      "any_flags": ["-c"],
+      "binaries": [
+        "bash",
+        "sh",
+        "zsh",
+        "ksh",
+        "dash"
+      ],
+      "any_flags": [
+        "-c"
+      ],
       "class": "eval",
       "reason": "shell -c executes a constructed string"
     },
     {
       "id": "core.eval.flag",
       "match": "ast",
-      "binaries": ["bun", "node", "deno", "perl", "python", "python3", "ruby", "php"],
-      "any_flags": ["-e", "--eval", "--print", "-c"],
+      "binaries": [
+        "bun",
+        "node",
+        "deno",
+        "perl",
+        "python",
+        "python3",
+        "ruby",
+        "php"
+      ],
+      "any_flags": [
+        "-e",
+        "--eval",
+        "--print",
+        "-c"
+      ],
       "class": "eval",
       "reason": "language runtime -e/--eval/--print/-c executes a constructed string"
     },
     {
       "id": "core.shred",
       "match": "ast",
-      "binaries": ["shred", "srm", "wipe"],
-      "class": "irreversible",
+      "binaries": [
+        "shred",
+        "srm",
+        "wipe"
+      ],
+      "class": "irreversible-local",
       "reason": "secure-erase tools overwrite then unlink the target"
     },
     {
       "id": "core.chown.system",
       "match": "ast",
       "binary": "chown",
-      "flags": ["-R"],
+      "flags": [
+        "-R"
+      ],
       "path_globs": [
         "/",
         "/etc",
@@ -223,8 +291,15 @@
       "id": "core.rsync.delete",
       "match": "ast",
       "binary": "rsync",
-      "any_flags": ["--delete", "--del", "--delete-after", "--delete-before", "--delete-during", "--delete-excluded"],
-      "class": "irreversible",
+      "any_flags": [
+        "--delete",
+        "--del",
+        "--delete-after",
+        "--delete-before",
+        "--delete-during",
+        "--delete-excluded"
+      ],
+      "class": "irreversible-local",
       "reason": "rsync --delete removes destination files not present in source"
     },
     {
@@ -232,16 +307,22 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "push",
-      "any_flags": ["--delete", "-d"],
-      "class": "irreversible",
+      "any_flags": [
+        "--delete",
+        "-d"
+      ],
+      "class": "irreversible-remote",
       "reason": "git push --delete removes a remote ref"
     },
     {
       "id": "core.gpg.delete-secret",
       "match": "ast",
       "binary": "gpg",
-      "any_flags": ["--delete-secret-keys", "--delete-secret-and-public-keys"],
-      "class": "irreversible",
+      "any_flags": [
+        "--delete-secret-keys",
+        "--delete-secret-and-public-keys"
+      ],
+      "class": "irreversible-local",
       "reason": "gpg --delete-secret-keys destroys private keys"
     },
     {

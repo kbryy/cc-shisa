@@ -1,18 +1,29 @@
 /**
  * Static-analysis severity bucket assigned to a parsed segment.
- * Strictness ordering: dangerous > irreversible > eval > write-remote > unknown > write-local > read.
+ * Strictness ordering (high → low):
+ *   dangerous
+ *   > irreversible-remote > irreversible-local
+ *   > eval
+ *   > write-remote
+ *   > unknown
+ *   > write-local
+ *   > read-remote > read-local
  *
- * `eval` covers commands that execute a constructed string whose content
- * cc-shisa cannot statically inspect (eval, bash -c, curl|sh, node -e, etc.).
- * Old name "arbitrary-code" is accepted as an alias by validateRule/validateProfile.
+ * Mutating / reading and remote / local are split orthogonally so the user
+ * can dial each axis independently per profile.
+ *
+ * `eval` is its own bucket: commands that execute a constructed string whose
+ * content cc-shisa cannot statically inspect (eval, bash -c, curl|sh, node -e).
  */
 export type Class =
   | "dangerous"
-  | "irreversible"
+  | "irreversible-remote"
+  | "irreversible-local"
   | "eval"
   | "write-remote"
   | "write-local"
-  | "read"
+  | "read-remote"
+  | "read-local"
   | "unknown";
 
 /** Final decision returned to Claude Code. */

@@ -2,28 +2,15 @@ import type { Action, Class, Module, Profile, Rule } from "./types.ts";
 
 const VALID_CLASSES: ReadonlySet<Class> = new Set([
   "dangerous",
-  "irreversible",
+  "irreversible-remote",
+  "irreversible-local",
   "eval",
   "write-remote",
   "write-local",
-  "read",
+  "read-remote",
+  "read-local",
   "unknown",
 ]);
-
-/**
- * Backward-compatible aliases for class names that used to exist.
- * Old user profiles and custom modules may still write the old name.
- */
-const CLASS_ALIASES: Readonly<Record<string, Class>> = {
-  "arbitrary-code": "eval",
-};
-
-function normalizeClass(raw: unknown): Class | null {
-  if (typeof raw !== "string") return null;
-  const aliased = CLASS_ALIASES[raw];
-  if (aliased !== undefined) return aliased;
-  return VALID_CLASSES.has(raw as Class) ? (raw as Class) : null;
-}
 
 const VALID_ACTIONS: ReadonlySet<Action> = new Set(["allow", "ask", "deny"]);
 
@@ -55,10 +42,11 @@ export function validateRule(data: unknown, index: number, moduleName: string): 
   if (id === null) {
     throw new Error(`${moduleName}.rules[${index}]: missing id`);
   }
-  const cls = normalizeClass(r["class"]);
-  if (cls === null) {
-    throw new Error(`rule ${id}: invalid class`);
+  const rawCls = r["class"];
+  if (typeof rawCls !== "string" || !VALID_CLASSES.has(rawCls as Class)) {
+    throw new Error(`rule ${id}: invalid class "${String(rawCls)}"`);
   }
+  const cls = rawCls as Class;
   const reason = r["reason"];
   if (typeof reason !== "string" || reason.length === 0) {
     throw new Error(`rule ${id}: missing reason`);
@@ -137,14 +125,13 @@ export function validateProfile(data: unknown): Profile {
       throw new Error("profile: overrides must be an object");
     }
     for (const [k, v] of Object.entries(overrides)) {
-      const cls = normalizeClass(k);
-      if (cls === null) {
-        throw new Error(`profile: unknown override class ${k}`);
+      if (!VALID_CLASSES.has(k as Class)) {
+        throw new Error(`profile: unknown override class "${k}"`);
       }
       if (typeof v !== "string" || !VALID_ACTIONS.has(v as Action)) {
         throw new Error(`profile: invalid override action ${String(v)}`);
       }
-      overridesValid[cls] = v as Action;
+      overridesValid[k as Class] = v as Action;
     }
   }
 

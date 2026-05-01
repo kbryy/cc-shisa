@@ -16,12 +16,14 @@ const baseClassification = (cls: Class, ruleId?: string): Classification => ({
 
 const expectations: ReadonlyArray<readonly [Class, Action]> = [
   ["dangerous", "deny"],
-  ["irreversible", "ask"],
+  ["irreversible-remote", "ask"],
+  ["irreversible-local", "ask"],
   ["eval", "ask"],
   ["write-remote", "ask"],
   ["write-local", "allow"],
   ["unknown", "ask"],
-  ["read", "allow"],
+  ["read-remote", "allow"],
+  ["read-local", "allow"],
 ];
 
 describe("policy — safe level mapping", () => {
@@ -49,7 +51,7 @@ describe("policy — overrides", () => {
       ...baseProfile,
       overrides: { dangerous: "ask" },
     };
-    const d = decide(baseClassification("read"), profile, level);
+    const d = decide(baseClassification("read-local"), profile, level);
     expect(d.action).toBe("allow");
   });
 });

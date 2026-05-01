@@ -20,20 +20,23 @@ export function runLevel(args: readonly string[]): number {
   }
 }
 
+const CLASS_COLUMNS = [
+  "dangerous",
+  "irreversible-remote",
+  "irreversible-local",
+  "eval",
+  "write-remote",
+  "write-local",
+  "unknown",
+  "read-remote",
+  "read-local",
+] as const;
+
 function runLevelList(): number {
-  const headers = ["NAME", "DANGEROUS", "IRREVERSIBLE", "EVAL", "WRITE-REMOTE", "UNKNOWN", "WRITE-LOCAL", "READ"];
+  const headers = ["NAME", ...CLASS_COLUMNS];
   const rows = LEVEL_NAMES.map((name) => {
     const lvl = levelByName(name);
-    return [
-      name,
-      lvl.mapping.dangerous,
-      lvl.mapping.irreversible,
-      lvl.mapping.eval,
-      lvl.mapping["write-remote"],
-      lvl.mapping.unknown,
-      lvl.mapping["write-local"],
-      lvl.mapping.read,
-    ];
+    return [name, ...CLASS_COLUMNS.map((c) => lvl.mapping[c])];
   });
   const widths = headers.map((h, i) =>
     Math.max(h.length, ...rows.map((r) => (r[i] ?? "").length)),
@@ -49,13 +52,14 @@ function runLevelGet(): number {
   const lvl = levelByName(profile.level);
   console.log(`Level:   ${lvl.name}${profile.level !== lvl.name ? ` (requested "${profile.level}", fell back)` : ""}`);
   console.log("");
-  console.log("Class           Action");
-  console.log("--------------  ------");
-  for (const [cls, action] of Object.entries(lvl.mapping)) {
-    const overridden = profile.overrides?.[cls as keyof typeof lvl.mapping];
+  console.log("Class                 Action");
+  console.log("--------------------  ------");
+  for (const cls of CLASS_COLUMNS) {
+    const action = lvl.mapping[cls];
+    const overridden = profile.overrides?.[cls];
     const effective = overridden ?? action;
     const note = overridden !== undefined ? `  (override: ${overridden})` : "";
-    console.log(`${cls.padEnd(14)}  ${effective}${note}`);
+    console.log(`${cls.padEnd(20)}  ${effective}${note}`);
   }
   return 0;
 }

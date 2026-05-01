@@ -5,94 +5,177 @@
     {
       "id": "coreutils.list",
       "match": "ast",
-      "binaries": ["ls", "dir", "vdir", "tree", "exa", "eza", "lsd"],
-      "class": "read",
+      "binaries": [
+        "ls",
+        "dir",
+        "vdir",
+        "tree",
+        "exa",
+        "eza",
+        "lsd"
+      ],
+      "class": "read-local",
       "reason": "directory listing"
     },
     {
       "id": "coreutils.read-file",
       "match": "ast",
-      "binaries": ["cat", "tac", "head", "tail", "less", "more", "bat"],
-      "class": "read",
+      "binaries": [
+        "cat",
+        "tac",
+        "head",
+        "tail",
+        "less",
+        "more",
+        "bat"
+      ],
+      "class": "read-local",
       "reason": "file content read"
     },
     {
       "id": "coreutils.grep",
       "match": "ast",
-      "binaries": ["grep", "egrep", "fgrep", "rg", "ack", "ag"],
-      "class": "read",
+      "binaries": [
+        "grep",
+        "egrep",
+        "fgrep",
+        "rg",
+        "ack",
+        "ag"
+      ],
+      "class": "read-local",
       "reason": "text search"
     },
     {
       "id": "coreutils.text-process",
       "match": "ast",
-      "binaries": ["wc", "sort", "uniq", "cut", "paste", "join", "comm", "diff", "cmp", "tr", "rev", "fold"],
-      "class": "read",
+      "binaries": [
+        "wc",
+        "sort",
+        "uniq",
+        "cut",
+        "paste",
+        "join",
+        "comm",
+        "diff",
+        "cmp",
+        "tr",
+        "rev",
+        "fold"
+      ],
+      "class": "read-local",
       "reason": "text processing"
     },
     {
       "id": "coreutils.path",
       "match": "ast",
-      "binaries": ["pwd", "dirname", "basename", "readlink", "realpath", "file", "stat"],
-      "class": "read",
+      "binaries": [
+        "pwd",
+        "dirname",
+        "basename",
+        "readlink",
+        "realpath",
+        "file",
+        "stat"
+      ],
+      "class": "read-local",
       "reason": "path/file inspection"
     },
     {
       "id": "coreutils.identity",
       "match": "ast",
-      "binaries": ["whoami", "id", "hostname", "uname", "uptime", "date", "tty", "groups", "logname"],
-      "class": "read",
+      "binaries": [
+        "whoami",
+        "id",
+        "hostname",
+        "uname",
+        "uptime",
+        "date",
+        "tty",
+        "groups",
+        "logname"
+      ],
+      "class": "read-local",
       "reason": "identity/system info"
     },
     {
       "id": "coreutils.disk",
       "match": "ast",
-      "binaries": ["df", "du", "free", "vm_stat"],
-      "class": "read",
+      "binaries": [
+        "df",
+        "du",
+        "free",
+        "vm_stat"
+      ],
+      "class": "read-local",
       "reason": "disk/memory inspection"
     },
     {
       "id": "coreutils.process",
       "match": "ast",
-      "binaries": ["ps", "pgrep"],
-      "class": "read",
+      "binaries": [
+        "ps",
+        "pgrep"
+      ],
+      "class": "read-local",
       "reason": "process inspection"
     },
     {
       "id": "coreutils.lookup",
       "match": "ast",
-      "binaries": ["which", "whereis", "type"],
-      "class": "read",
+      "binaries": [
+        "which",
+        "whereis",
+        "type"
+      ],
+      "class": "read-local",
       "reason": "command lookup"
     },
     {
       "id": "coreutils.print",
       "match": "ast",
-      "binaries": ["echo", "printf", "true", "false", "yes", "seq"],
-      "class": "read",
+      "binaries": [
+        "echo",
+        "printf",
+        "true",
+        "false",
+        "yes",
+        "seq"
+      ],
+      "class": "read-local",
       "reason": "trivial output"
     },
     {
       "id": "coreutils.printenv",
       "match": "ast",
       "binary": "printenv",
-      "class": "read",
+      "class": "read-local",
       "reason": "environment listing"
     },
     {
       "id": "coreutils.fd",
       "match": "ast",
       "binary": "fd",
-      "excluded_flags": ["-x", "-X", "--exec", "--exec-batch"],
-      "class": "read",
+      "excluded_flags": [
+        "-x",
+        "-X",
+        "--exec",
+        "--exec-batch"
+      ],
+      "class": "read-local",
       "reason": "fd file search (no -x/--exec)"
     },
     {
       "id": "coreutils.fdfind",
       "match": "ast",
       "binary": "fdfind",
-      "excluded_flags": ["-x", "-X", "--exec", "--exec-batch"],
-      "class": "read",
+      "excluded_flags": [
+        "-x",
+        "-X",
+        "--exec",
+        "--exec-batch"
+      ],
+      "class": "read-local",
       "reason": "fdfind file search (no -x/--exec)"
     },
     {
@@ -109,77 +192,129 @@
         "-fprintf",
         "-fls"
       ],
-      "class": "read",
+      "class": "read-local",
       "reason": "find traversal (no -delete/-exec/-ok variants)"
     },
     {
       "id": "coreutils.env-list",
       "match": "regex",
       "pattern": "^\\s*env\\s*$",
-      "class": "read",
+      "class": "read-local",
       "reason": "env (no args = list environment)"
     },
     {
       "id": "coreutils.dump",
       "match": "ast",
-      "binaries": ["xxd", "od", "hexdump"],
-      "class": "read",
+      "binaries": [
+        "xxd",
+        "od",
+        "hexdump"
+      ],
+      "class": "read-local",
       "reason": "binary dump"
     },
     {
       "id": "coreutils.format",
       "match": "ast",
-      "binaries": ["column", "nl", "expand", "unexpand"],
-      "class": "read",
+      "binaries": [
+        "column",
+        "nl",
+        "expand",
+        "unexpand"
+      ],
+      "class": "read-local",
       "reason": "text formatting"
     },
     {
       "id": "coreutils.awk",
       "match": "ast",
-      "binaries": ["awk", "gawk", "mawk", "nawk"],
-      "class": "read",
+      "binaries": [
+        "awk",
+        "gawk",
+        "mawk",
+        "nawk"
+      ],
+      "class": "read-local",
       "reason": "awk text processing (note: awk system() can exec arbitrary code; disable this module to opt out)"
     },
     {
       "id": "coreutils.json-yaml",
       "match": "ast",
-      "binaries": ["jq", "yq", "fx"],
-      "class": "read",
+      "binaries": [
+        "jq",
+        "yq",
+        "fx"
+      ],
+      "class": "read-local",
       "reason": "JSON/YAML filter"
     },
     {
       "id": "coreutils.docs",
       "match": "ast",
-      "binaries": ["man", "info", "apropos", "whatis", "tldr"],
-      "class": "read",
+      "binaries": [
+        "man",
+        "info",
+        "apropos",
+        "whatis",
+        "tldr"
+      ],
+      "class": "read-local",
       "reason": "documentation lookup"
     },
     {
       "id": "coreutils.locate",
       "match": "ast",
-      "binaries": ["locate", "mlocate", "plocate"],
-      "class": "read",
+      "binaries": [
+        "locate",
+        "mlocate",
+        "plocate"
+      ],
+      "class": "read-local",
       "reason": "filename index search"
     },
     {
       "id": "coreutils.network-diag",
       "match": "ast",
-      "binaries": ["ping", "ping6", "dig", "nslookup", "host", "traceroute", "traceroute6", "tracepath"],
-      "class": "read",
+      "binaries": [
+        "ping",
+        "ping6",
+        "dig",
+        "nslookup",
+        "host",
+        "traceroute",
+        "traceroute6",
+        "tracepath"
+      ],
+      "class": "read-remote",
       "reason": "network diagnostic"
     },
     {
       "id": "coreutils.hash",
       "match": "ast",
-      "binaries": ["md5", "md5sum", "sha1sum", "sha224sum", "sha256sum", "sha384sum", "sha512sum", "shasum", "cksum", "sum", "b2sum"],
-      "class": "read",
+      "binaries": [
+        "md5",
+        "md5sum",
+        "sha1sum",
+        "sha224sum",
+        "sha256sum",
+        "sha384sum",
+        "sha512sum",
+        "shasum",
+        "cksum",
+        "sum",
+        "b2sum"
+      ],
+      "class": "read-local",
       "reason": "hash computation"
     },
     {
       "id": "coreutils.encode",
       "match": "ast",
-      "binaries": ["base64", "base32"],
-      "class": "read",
+      "binaries": [
+        "base64",
+        "base32"
+      ],
+      "class": "read-local",
       "reason": "base64/base32 encode/decode (note: -o file writes to disk)"
     },
     {
@@ -214,7 +349,10 @@
       "id": "coreutils.ln-symbolic",
       "match": "ast",
       "binary": "ln",
-      "any_flags": ["-s", "--symbolic"],
+      "any_flags": [
+        "-s",
+        "--symbolic"
+      ],
       "class": "write-local",
       "reason": "ln -s (create symlink)"
     }
