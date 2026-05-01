@@ -1,13 +1,26 @@
-const PREFIX_WRAPPERS = new Set([
-  "sudo",
-  "timeout",
-  "nice",
-  "ionice",
-  "env",
-  "exec",
-  "command",
-  "time",
+/**
+ * Per-prefix table of flags that take a value (so the next token must be
+ * consumed too). Empty set means the prefix accepts only valueless flags.
+ */
+const PREFIX_FLAG_TAKES_VALUE: ReadonlyMap<string, ReadonlySet<string>> = new Map([
+  ["sudo", new Set(["-u", "-g", "-p", "-h", "-C", "-D", "-r", "-t", "-T"])],
+  ["timeout", new Set(["-s", "-k", "--signal", "--kill-after"])],
+  ["nice", new Set(["-n", "-c", "-p"])],
+  ["ionice", new Set(["-n", "-c", "-p"])],
+  ["env", new Set(["-u", "-C", "-S"])],
+  ["exec", new Set(["-a"])],
+  ["command", new Set()],
+  ["time", new Set()],
 ]);
+
+/**
+ * Prefixes that, after their flags, take a single mandatory positional
+ * argument (e.g. `timeout 30 ...`, `nice 10 ...`). The next token after
+ * the flag list belongs to the prefix, not the wrapped command.
+ */
+const PREFIX_TAKES_POSITIONAL: ReadonlySet<string> = new Set(["timeout", "nice", "ionice"]);
+
+const PREFIX_WRAPPERS: ReadonlySet<string> = new Set(PREFIX_FLAG_TAKES_VALUE.keys());
 
 const MAX_PREFIX_DEPTH = 2;
 
@@ -36,84 +49,25 @@ export function consumePrefixArgs(
   prefix: string,
   rest: readonly ResolvedToken[],
 ): number {
-  let i = 0;
+  const flagsTakingValue = PREFIX_FLAG_TAKES_VALUE.get(prefix);
+  if (!flagsTakingValue) return 0;
 
+  let i = 0;
   while (i < rest.length) {
     const tok = rest[i];
-    if (!tok) break;
-    const t = tok.text;
-
-    if (!t.startsWith("-")) break;
-
-    if (prefix === "sudo") {
-      if (t === "--") {
-        i += 1;
-        break;
-      }
-      if (t === "-u" || t === "-g" || t === "-p" || t === "-h" || t === "-C" || t === "-D" || t === "-r" || t === "-t" || t === "-T") {
-        i += 2;
-        continue;
-      }
+    if (!tok || !tok.text.startsWith("-")) break;
+    if (tok.text === "--") {
       i += 1;
+      break;
+    }
+    if (flagsTakingValue.has(tok.text)) {
+      i += 2;
       continue;
     }
-
-    if (prefix === "timeout") {
-      if (t === "--") {
-        i += 1;
-        break;
-      }
-      if (t === "-s" || t === "-k" || t === "--signal" || t === "--kill-after") {
-        i += 2;
-        continue;
-      }
-      i += 1;
-      continue;
-    }
-
-    if (prefix === "nice" || prefix === "ionice") {
-      if (t === "--") {
-        i += 1;
-        break;
-      }
-      if (t === "-n" || t === "-c" || t === "-p") {
-        i += 2;
-        continue;
-      }
-      i += 1;
-      continue;
-    }
-
-    if (prefix === "env") {
-      if (t === "--") {
-        i += 1;
-        break;
-      }
-      if (t === "-u" || t === "-C" || t === "-S") {
-        i += 2;
-        continue;
-      }
-      i += 1;
-      continue;
-    }
-
-    if (prefix === "exec" || prefix === "command" || prefix === "time") {
-      if (t === "--") {
-        i += 1;
-        break;
-      }
-      if (prefix === "exec" && t === "-a") {
-        i += 2;
-        continue;
-      }
-      i += 1;
-      continue;
-    }
-
-    break;
+    i += 1;
   }
 
-  if (prefix === "timeout" || prefix === "nice" || prefix === "ionice") {
+  if (PREFIX_TAKES_POSITIONAL.has(prefix)) {
     const next = rest[i];
     if (next && !next.text.startsWith("-")) {
       i += 1;

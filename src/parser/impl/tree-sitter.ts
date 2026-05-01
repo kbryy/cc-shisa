@@ -4,7 +4,7 @@ import { peelPrefixes, type ResolvedToken } from "../normalize.ts";
 import type { ParseResult, Segment, ShellParser } from "../types.ts";
 
 import bashWasmPath from "./tree-sitter-bash.wasm" with { type: "file" };
-import runtimeWasmPath from "../../../node_modules/web-tree-sitter/web-tree-sitter.wasm" with { type: "file" };
+import runtimeWasmPath from "./web-tree-sitter-runtime.wasm" with { type: "file" };
 
 let initialized: { parser: Parser } | null = null;
 

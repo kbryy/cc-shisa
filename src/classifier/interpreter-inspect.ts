@@ -243,14 +243,6 @@ export function inspectByLang(
   return null;
 }
 
-/** Back-compat alias: existing tests call inspectPython directly. */
-export function inspectPython(
-  content: string,
-  userModules?: Readonly<Record<string, Class>>,
-): InspectResult | null {
-  return inspectByLang("python", content, userModules);
-}
-
 // ---------- Helpers ----------
 
 function takeStricter(cur: InspectResult | null, next: InspectResult): InspectResult {
