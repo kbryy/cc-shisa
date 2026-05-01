@@ -1,6 +1,6 @@
 {
   "name": "git",
-  "description": "Git read-only subcommands. Allowed silently.",
+  "description": "Git read-only subcommands plus safe local writes (commit, add, stash, ff-only merge, switch).",
   "rules": [
     { "id": "git.status", "match": "ast", "binary": "git", "subcommand": "status", "class": "read", "reason": "git status" },
     { "id": "git.log", "match": "ast", "binary": "git", "subcommand": "log", "class": "read", "reason": "git log" },
@@ -49,6 +49,19 @@
     { "id": "git.verify-tag", "match": "ast", "binary": "git", "subcommand": "verify-tag", "class": "read", "reason": "git verify-tag" },
     { "id": "git.submodule.status", "match": "ast", "binary": "git", "subcommand": ["submodule", "status"], "class": "read", "reason": "git submodule status" },
     { "id": "git.submodule.summary", "match": "ast", "binary": "git", "subcommand": ["submodule", "summary"], "class": "read", "reason": "git submodule summary" },
-    { "id": "git.annotate", "match": "ast", "binary": "git", "subcommand": "annotate", "class": "read", "reason": "git annotate (alias for blame)" }
+    { "id": "git.annotate", "match": "ast", "binary": "git", "subcommand": "annotate", "class": "read", "reason": "git annotate (alias for blame)" },
+
+    { "id": "git.add", "match": "ast", "binary": "git", "subcommand": "add", "class": "write-local", "reason": "git add (stage changes, no remote push)" },
+    { "id": "git.commit", "match": "ast", "binary": "git", "subcommand": "commit", "excluded_flags": ["--amend"], "class": "write-local", "reason": "git commit (no --amend, history not rewritten)" },
+    { "id": "git.stash.push", "match": "ast", "binary": "git", "subcommand": ["stash", "push"], "class": "write-local", "reason": "git stash push" },
+    { "id": "git.stash.save", "match": "ast", "binary": "git", "subcommand": ["stash", "save"], "class": "write-local", "reason": "git stash save (legacy)" },
+    { "id": "git.stash.pop", "match": "ast", "binary": "git", "subcommand": ["stash", "pop"], "class": "write-local", "reason": "git stash pop" },
+    { "id": "git.stash.apply", "match": "ast", "binary": "git", "subcommand": ["stash", "apply"], "class": "write-local", "reason": "git stash apply" },
+    { "id": "git.stash.bare", "match": "regex", "pattern": "^\\s*git\\s+stash\\s*$", "class": "write-local", "reason": "git stash (bare = stash push of working tree)" },
+    { "id": "git.merge.ff-only", "match": "ast", "binary": "git", "subcommand": "merge", "any_flags": ["--ff-only"], "class": "write-local", "reason": "git merge --ff-only (no merge commit, cannot rewrite)" },
+    { "id": "git.cherry-pick.resume", "match": "ast", "binary": "git", "subcommand": "cherry-pick", "any_flags": ["--continue", "--abort", "--skip", "--quit"], "class": "write-local", "reason": "git cherry-pick resume controls (no new commits being applied)" },
+    { "id": "git.rebase.resume", "match": "ast", "binary": "git", "subcommand": "rebase", "any_flags": ["--continue", "--abort", "--skip", "--quit", "--edit-todo", "--show-current-patch"], "class": "write-local", "reason": "git rebase resume controls (no new rewriting being initiated)" },
+    { "id": "git.switch", "match": "ast", "binary": "git", "subcommand": "switch", "class": "write-local", "reason": "git switch (changes HEAD; safer than checkout, no file overwrite)" },
+    { "id": "git.tag.create-local", "match": "ast", "binary": "git", "subcommand": "tag", "excluded_flags": ["-d", "--delete", "-v", "--verify", "-f", "--force", "-l", "--list"], "class": "write-local", "reason": "git tag <name> (creates local tag; not pushed without git push)" }
   ]
 }

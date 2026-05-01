@@ -1,6 +1,6 @@
 {
   "name": "coreutils",
-  "description": "Read-only file, text, and system inspection commands. Allowed silently.",
+  "description": "Read-only file/text/system inspection plus safe local writes (mkdir, touch, cp, mv, ln -s).",
   "rules": [
     {
       "id": "coreutils.list",
@@ -181,6 +181,42 @@
       "binaries": ["base64", "base32"],
       "class": "read",
       "reason": "base64/base32 encode/decode (note: -o file writes to disk)"
+    },
+    {
+      "id": "coreutils.mkdir",
+      "match": "ast",
+      "binary": "mkdir",
+      "class": "write-local",
+      "reason": "mkdir (creates directory; no impact on existing files)"
+    },
+    {
+      "id": "coreutils.touch",
+      "match": "ast",
+      "binary": "touch",
+      "class": "write-local",
+      "reason": "touch (creates empty file or bumps mtime)"
+    },
+    {
+      "id": "coreutils.cp",
+      "match": "ast",
+      "binary": "cp",
+      "class": "write-local",
+      "reason": "cp (copy files; existing destinations are overwritten)"
+    },
+    {
+      "id": "coreutils.mv",
+      "match": "ast",
+      "binary": "mv",
+      "class": "write-local",
+      "reason": "mv (move/rename files; existing destinations are overwritten)"
+    },
+    {
+      "id": "coreutils.ln-symbolic",
+      "match": "ast",
+      "binary": "ln",
+      "any_flags": ["-s", "--symbolic"],
+      "class": "write-local",
+      "reason": "ln -s (create symlink)"
     }
   ]
 }
