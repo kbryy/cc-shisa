@@ -3158,5 +3158,149 @@
       "class": "local.write",
       "ruleId": "brew.bundle.dump"
     }
+  },
+  {
+    "name": "pnpm preview allows",
+    "command": "pnpm preview",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "pnpm.preview"
+    }
+  },
+  {
+    "name": "pnpm run preview allows",
+    "command": "pnpm run preview",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "pnpm.run.preview"
+    }
+  },
+  {
+    "name": "pnpm dev allows",
+    "command": "pnpm dev",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "pnpm.dev"
+    }
+  },
+  {
+    "name": "pnpm start allows",
+    "command": "pnpm start",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "pnpm.start"
+    }
+  },
+  {
+    "name": "pnpm build allows (writes dist/)",
+    "command": "pnpm build",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "pnpm.build"
+    }
+  },
+  {
+    "name": "pnpm run build allows",
+    "command": "pnpm run build",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "pnpm.run.build"
+    }
+  },
+  {
+    "name": "npm run dev allows",
+    "command": "npm run dev",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "npm.run.dev"
+    }
+  },
+  {
+    "name": "npm start allows",
+    "command": "npm start",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "npm.start"
+    }
+  },
+  {
+    "name": "npm run preview allows",
+    "command": "npm run preview",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "npm.run.preview"
+    }
+  },
+  {
+    "name": "npm run build allows",
+    "command": "npm run build",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "npm.run.build"
+    }
+  },
+  {
+    "name": "yarn dev allows",
+    "command": "yarn dev",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "yarn.dev"
+    }
+  },
+  {
+    "name": "yarn preview allows",
+    "command": "yarn preview",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "yarn.preview"
+    }
+  },
+  {
+    "name": "yarn build allows",
+    "command": "yarn build",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "yarn.build"
+    }
+  },
+  {
+    "name": "bun dev allows",
+    "command": "bun dev",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "bun.dev"
+    }
+  },
+  {
+    "name": "bun preview allows",
+    "command": "bun preview",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "bun.preview"
+    }
+  },
+  {
+    "name": "bun run build allows",
+    "command": "bun run build",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "bun.run.build"
+    }
   }
 ]
