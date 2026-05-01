@@ -920,11 +920,11 @@
     }
   },
   {
-    "name": "git branch -D asks (force delete is destructive)",
+    "name": "git branch -D allowed (HEAD reflog preserves commits 90 days)",
     "command": "git branch -D feature",
     "expect": {
-      "action": "ask",
-      "class": "local.write.destroy",
+      "action": "allow",
+      "class": "local.write",
       "ruleId": "git.branch.delete.force"
     }
   },
