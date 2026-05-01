@@ -792,6 +792,58 @@
       "subcommand": "create",
       "class": "dynamic",
       "reason": "npm create runs a create-* package, arbitrary code"
+    },
+    {
+      "id": "npm.run.dev",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "run",
+        "dev"
+      ],
+      "class": "local.read",
+      "reason": "npm run dev (local dev server)"
+    },
+    {
+      "id": "npm.run.start",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "run",
+        "start"
+      ],
+      "class": "local.read",
+      "reason": "npm run start (local server)"
+    },
+    {
+      "id": "npm.start",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "start",
+      "class": "local.read",
+      "reason": "npm start (built-in alias of run start)"
+    },
+    {
+      "id": "npm.run.preview",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "run",
+        "preview"
+      ],
+      "class": "local.read",
+      "reason": "npm run preview (serve production build locally)"
+    },
+    {
+      "id": "npm.run.build",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "run",
+        "build"
+      ],
+      "class": "local.write",
+      "reason": "npm run build (writes dist/build output)"
     }
   ]
 }

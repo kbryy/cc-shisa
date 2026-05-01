@@ -615,6 +615,82 @@
       "subcommand": "create",
       "class": "dynamic",
       "reason": "pnpm create runs a create-* package"
+    },
+    {
+      "id": "pnpm.run.dev",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "run",
+        "dev"
+      ],
+      "class": "local.read",
+      "reason": "pnpm run dev"
+    },
+    {
+      "id": "pnpm.dev",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "dev",
+      "class": "local.read",
+      "reason": "pnpm dev (shorthand for run dev)"
+    },
+    {
+      "id": "pnpm.run.start",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "run",
+        "start"
+      ],
+      "class": "local.read",
+      "reason": "pnpm run start"
+    },
+    {
+      "id": "pnpm.start",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "start",
+      "class": "local.read",
+      "reason": "pnpm start (shorthand)"
+    },
+    {
+      "id": "pnpm.run.preview",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "run",
+        "preview"
+      ],
+      "class": "local.read",
+      "reason": "pnpm run preview"
+    },
+    {
+      "id": "pnpm.preview",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "preview",
+      "class": "local.read",
+      "reason": "pnpm preview (shorthand)"
+    },
+    {
+      "id": "pnpm.run.build",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "run",
+        "build"
+      ],
+      "class": "local.write",
+      "reason": "pnpm run build"
+    },
+    {
+      "id": "pnpm.build",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "build",
+      "class": "local.write",
+      "reason": "pnpm build (shorthand)"
     }
   ]
 }

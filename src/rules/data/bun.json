@@ -345,6 +345,74 @@
       "subcommand": "create",
       "class": "dynamic",
       "reason": "bun create runs a create-* template"
+    },
+    {
+      "id": "bun.run.dev",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "run",
+        "dev"
+      ],
+      "class": "local.read",
+      "reason": "bun run dev"
+    },
+    {
+      "id": "bun.dev",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "dev",
+      "class": "local.read",
+      "reason": "bun dev (shorthand for run dev)"
+    },
+    {
+      "id": "bun.run.start",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "run",
+        "start"
+      ],
+      "class": "local.read",
+      "reason": "bun run start"
+    },
+    {
+      "id": "bun.start",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "start",
+      "class": "local.read",
+      "reason": "bun start (shorthand)"
+    },
+    {
+      "id": "bun.run.preview",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "run",
+        "preview"
+      ],
+      "class": "local.read",
+      "reason": "bun run preview"
+    },
+    {
+      "id": "bun.preview",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": "preview",
+      "class": "local.read",
+      "reason": "bun preview (shorthand)"
+    },
+    {
+      "id": "bun.run.build",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "run",
+        "build"
+      ],
+      "class": "local.write",
+      "reason": "bun run build (package.json script)"
     }
   ]
 }

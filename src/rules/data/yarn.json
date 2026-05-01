@@ -538,6 +538,82 @@
       "subcommand": "create",
       "class": "dynamic",
       "reason": "yarn create runs a create-* package"
+    },
+    {
+      "id": "yarn.run.dev",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "run",
+        "dev"
+      ],
+      "class": "local.read",
+      "reason": "yarn run dev"
+    },
+    {
+      "id": "yarn.dev",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "dev",
+      "class": "local.read",
+      "reason": "yarn dev (shorthand)"
+    },
+    {
+      "id": "yarn.run.start",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "run",
+        "start"
+      ],
+      "class": "local.read",
+      "reason": "yarn run start"
+    },
+    {
+      "id": "yarn.start",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "start",
+      "class": "local.read",
+      "reason": "yarn start (shorthand)"
+    },
+    {
+      "id": "yarn.run.preview",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "run",
+        "preview"
+      ],
+      "class": "local.read",
+      "reason": "yarn run preview"
+    },
+    {
+      "id": "yarn.preview",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "preview",
+      "class": "local.read",
+      "reason": "yarn preview (shorthand)"
+    },
+    {
+      "id": "yarn.run.build",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "run",
+        "build"
+      ],
+      "class": "local.write",
+      "reason": "yarn run build"
+    },
+    {
+      "id": "yarn.build",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "build",
+      "class": "local.write",
+      "reason": "yarn build (shorthand)"
     }
   ]
 }
