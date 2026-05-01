@@ -413,6 +413,61 @@
       ],
       "class": "local.write",
       "reason": "bun run build (package.json script)"
+    },
+    {
+      "id": "bun.run.format",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "run",
+        "format"
+      ],
+      "class": "local.write",
+      "reason": "bun run format"
+    },
+    {
+      "id": "bun.run.fmt",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "run",
+        "fmt"
+      ],
+      "class": "local.write",
+      "reason": "bun run fmt"
+    },
+    {
+      "id": "bun.run.clean",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "run",
+        "clean"
+      ],
+      "class": "local.write.destroy",
+      "reason": "bun run clean"
+    },
+    {
+      "id": "bun.run.release",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "run",
+        "release"
+      ],
+      "class": "dynamic",
+      "reason": "bun run release"
+    },
+    {
+      "id": "bun.run.migrate",
+      "match": "ast",
+      "binary": "bun",
+      "subcommand": [
+        "run",
+        "migrate"
+      ],
+      "class": "dynamic",
+      "reason": "bun run migrate"
     }
   ]
 }

@@ -798,6 +798,49 @@
       "binary": "shred",
       "class": "local.write.destroy",
       "reason": "shred (overwrites a file securely; _core also catches this)"
+    },
+    {
+      "id": "coreutils.sed.inplace",
+      "match": "ast",
+      "binary": "sed",
+      "any_flags": [
+        "-i",
+        "--in-place"
+      ],
+      "class": "local.write",
+      "reason": "sed -i (in-place edit)"
+    },
+    {
+      "id": "coreutils.sed",
+      "match": "ast",
+      "binary": "sed",
+      "excluded_flags": [
+        "-i",
+        "--in-place"
+      ],
+      "class": "local.read",
+      "reason": "sed (stream edit, no in-place)"
+    },
+    {
+      "id": "coreutils.awk-inplace",
+      "match": "regex",
+      "pattern": "^\\s*g?awk\\s+(-[a-zA-Z]*\\s+|--[a-z-]+\\s+)*-i\\s+inplace\\b",
+      "class": "local.write",
+      "reason": "awk -i inplace (in-place edit via inplace extension)"
+    },
+    {
+      "id": "coreutils.mktemp",
+      "match": "ast",
+      "binary": "mktemp",
+      "class": "local.write",
+      "reason": "mktemp (creates a temporary file or directory)"
+    },
+    {
+      "id": "coreutils.perl.inplace",
+      "match": "regex",
+      "pattern": "^\\s*perl\\s+(-[a-zA-Z]+\\s*)*-i",
+      "class": "local.write",
+      "reason": "perl -i (in-place edit)"
     }
   ]
 }

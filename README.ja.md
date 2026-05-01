@@ -188,6 +188,66 @@ JSON を置けば追加できます:
 判定は最も厳しいものが勝つので、`pandas` を import しつつシェルアウト
 するスクリプトは引き続き `dangerous` のままです。
 
+## トラブルシューティング
+
+> 「このコマンドはなぜ ask / 拒否されたのか?」
+
+```bash
+cc-shisa check 'gh pr create --title foo'
+# → Action / Class / Reason / Rule / Segment
+```
+
+> 「最近よく ask されてるコマンドは?」
+
+```bash
+export CC_SHISA_LOG=1            # 監査ログをまだ有効にしていなければ
+# … 後で:
+cc-shisa logs summary            # クラス・ルール・理由ごとの集計
+cc-shisa logs tail -n 50         # 直近 50 件の判定
+cc-shisa logs path               # JSONL ファイルのパス
+```
+
+> 「使いたいモジュールはちゃんと有効になっている?」
+
+```bash
+cc-shisa modules list
+# 新しくインストールした version で追加されたモジュールは
+# `cc-shisa modules enable <name>` で有効化が必要
+```
+
+> 「一時的に緩めにしたい」
+
+```bash
+cc-shisa level                   # 現在のレベルとマッピングを表示
+cc-shisa level set loose         # 致命的パターンだけブロック
+cc-shisa level set safe          # デフォルトに戻す
+```
+
+> 「特定のクラスだけ挙動を変えたい」
+
+`~/.config/cc-shisa/profile.json` の `overrides` で個別にクラスを
+上書きできます:
+
+```jsonc
+{
+  "level": "safe",
+  "modules": ["coreutils", "git", "gh"],
+  "overrides": {
+    "remote.write": "ask",          // リモート書き込みは必ず確認
+    "local.write.destroy": "deny"   // ローカル破壊系は問答無用で拒否
+  }
+}
+```
+
+> 「別のパーサーを試したい (再インストールせず)」
+
+```bash
+CC_SHISA_PARSER=tree-sitter cc-shisa check '<コマンド>'
+```
+
+cc-shisa の分類が誤っていると感じたら (厳しすぎる / 緩すぎる)、
+`cc-shisa check '<cmd>'` の出力を添えて issue を立ててください。
+
 ## もっと知りたい場合
 
 - [`CONTRIBUTING.ja.md`](./CONTRIBUTING.ja.md) — 内部の仕組み、

@@ -3302,5 +3302,104 @@
       "class": "local.write",
       "ruleId": "bun.run.build"
     }
+  },
+  {
+    "name": "pnpm format allows",
+    "command": "pnpm format",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "pnpm.format"
+    }
+  },
+  {
+    "name": "npm run fmt allows",
+    "command": "npm run fmt",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "npm.run.fmt"
+    }
+  },
+  {
+    "name": "yarn format allows",
+    "command": "yarn format",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "yarn.format"
+    }
+  },
+  {
+    "name": "pnpm clean asks (drops build output)",
+    "command": "pnpm clean",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "pnpm.clean"
+    }
+  },
+  {
+    "name": "npm run clean asks",
+    "command": "npm run clean",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "npm.run.clean"
+    }
+  },
+  {
+    "name": "pnpm run release asks (dynamic, may publish)",
+    "command": "pnpm run release",
+    "expect": {
+      "action": "ask",
+      "class": "dynamic",
+      "ruleId": "pnpm.run.release"
+    }
+  },
+  {
+    "name": "npm run migrate asks (dynamic, DB state)",
+    "command": "npm run migrate",
+    "expect": {
+      "action": "ask",
+      "class": "dynamic",
+      "ruleId": "npm.run.migrate"
+    }
+  },
+  {
+    "name": "sed -i allows (in-place edit)",
+    "command": "sed -i s/foo/bar/ file.txt",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.sed.inplace"
+    }
+  },
+  {
+    "name": "sed (no -i) allows",
+    "command": "sed s/foo/bar/ file.txt",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "coreutils.sed"
+    }
+  },
+  {
+    "name": "awk -i inplace allows",
+    "command": "awk -i inplace 1 file.txt",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.awk-inplace"
+    }
+  },
+  {
+    "name": "mktemp allows",
+    "command": "mktemp -d",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "coreutils.mktemp"
+    }
   }
 ]
