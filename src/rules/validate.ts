@@ -1,15 +1,18 @@
 import type { Action, Class, Module, Profile, Rule } from "./types.ts";
 
 const VALID_CLASSES: ReadonlySet<Class> = new Set([
+  // Flat specials
   "dangerous",
-  "irreversible-remote",
-  "irreversible-local",
-  "eval",
-  "write-remote",
-  "write-local",
-  "read-remote",
-  "read-local",
+  "dynamic",
   "unknown",
+  // Read hierarchy
+  "read.local",
+  "read.remote",
+  // Write hierarchy
+  "write.local",
+  "write.local.destroy",
+  "write.remote",
+  "write.remote.destroy",
 ]);
 
 const VALID_ACTIONS: ReadonlySet<Action> = new Set(["allow", "ask", "deny"]);

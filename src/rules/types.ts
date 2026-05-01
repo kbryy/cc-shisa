@@ -1,30 +1,36 @@
 /**
  * Static-analysis severity bucket assigned to a parsed segment.
+ * Hierarchical names use `.` to nest sub-kinds:
+ *   read.{local,remote}
+ *   write.{local,remote}[.destroy]
+ *
+ * Three special flat classes sit outside the read/write hierarchy:
+ *   - `dangerous` — visible-and-known catastrophic patterns (rm -rf /, dd, mkfs, ...)
+ *   - `dynamic`   — content cc-shisa cannot inspect (bash -c, eval, curl|sh, node -e)
+ *   - `unknown`   — no rule matched the binary
+ *
  * Strictness ordering (high → low):
  *   dangerous
- *   > irreversible-remote > irreversible-local
- *   > eval
- *   > write-remote
+ *   > write.remote.destroy > write.local.destroy
+ *   > dynamic
+ *   > write.remote
  *   > unknown
- *   > write-local
- *   > read-remote > read-local
- *
- * Mutating / reading and remote / local are split orthogonally so the user
- * can dial each axis independently per profile.
- *
- * `eval` is its own bucket: commands that execute a constructed string whose
- * content cc-shisa cannot statically inspect (eval, bash -c, curl|sh, node -e).
+ *   > write.local
+ *   > read.remote > read.local
  */
 export type Class =
+  // Flat specials
   | "dangerous"
-  | "irreversible-remote"
-  | "irreversible-local"
-  | "eval"
-  | "write-remote"
-  | "write-local"
-  | "read-remote"
-  | "read-local"
-  | "unknown";
+  | "dynamic"
+  | "unknown"
+  // Read hierarchy
+  | "read.local"
+  | "read.remote"
+  // Write hierarchy
+  | "write.local"
+  | "write.local.destroy"
+  | "write.remote"
+  | "write.remote.destroy";
 
 /** Final decision returned to Claude Code. */
 export type Action = "allow" | "ask" | "deny";

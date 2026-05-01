@@ -7,7 +7,7 @@
       "match": "ast",
       "binary": "docker",
       "subcommand": "ps",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker ps"
     },
     {
@@ -15,7 +15,7 @@
       "match": "ast",
       "binary": "docker",
       "subcommand": "images",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker images"
     },
     {
@@ -23,7 +23,7 @@
       "match": "ast",
       "binary": "docker",
       "subcommand": "inspect",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker inspect"
     },
     {
@@ -31,7 +31,7 @@
       "match": "ast",
       "binary": "docker",
       "subcommand": "logs",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker logs"
     },
     {
@@ -39,7 +39,7 @@
       "match": "ast",
       "binary": "docker",
       "subcommand": "top",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker top"
     },
     {
@@ -47,7 +47,7 @@
       "match": "ast",
       "binary": "docker",
       "subcommand": "stats",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker stats"
     },
     {
@@ -55,7 +55,7 @@
       "match": "ast",
       "binary": "docker",
       "subcommand": "history",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker history"
     },
     {
@@ -63,7 +63,7 @@
       "match": "ast",
       "binary": "docker",
       "subcommand": "port",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker port"
     },
     {
@@ -71,7 +71,7 @@
       "match": "ast",
       "binary": "docker",
       "subcommand": "diff",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker diff"
     },
     {
@@ -79,7 +79,7 @@
       "match": "ast",
       "binary": "docker",
       "subcommand": "events",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker events"
     },
     {
@@ -87,7 +87,7 @@
       "match": "ast",
       "binary": "docker",
       "subcommand": "info",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker info"
     },
     {
@@ -95,7 +95,7 @@
       "match": "ast",
       "binary": "docker",
       "subcommand": "version",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker version"
     },
     {
@@ -103,7 +103,7 @@
       "match": "ast",
       "binary": "docker",
       "subcommand": "help",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker help"
     },
     {
@@ -114,7 +114,7 @@
         "container",
         "ls"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker container ls"
     },
     {
@@ -125,7 +125,7 @@
         "container",
         "inspect"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker container inspect"
     },
     {
@@ -136,7 +136,7 @@
         "container",
         "logs"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker container logs"
     },
     {
@@ -147,7 +147,7 @@
         "container",
         "top"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker container top"
     },
     {
@@ -158,7 +158,7 @@
         "container",
         "stats"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker container stats"
     },
     {
@@ -169,7 +169,7 @@
         "container",
         "diff"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker container diff"
     },
     {
@@ -180,7 +180,7 @@
         "container",
         "port"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker container port"
     },
     {
@@ -191,7 +191,7 @@
         "image",
         "ls"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker image ls"
     },
     {
@@ -202,7 +202,7 @@
         "image",
         "inspect"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker image inspect"
     },
     {
@@ -213,7 +213,7 @@
         "image",
         "history"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker image history"
     },
     {
@@ -224,7 +224,7 @@
         "network",
         "ls"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker network ls"
     },
     {
@@ -235,7 +235,7 @@
         "network",
         "inspect"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker network inspect"
     },
     {
@@ -246,7 +246,7 @@
         "volume",
         "ls"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker volume ls"
     },
     {
@@ -257,7 +257,7 @@
         "volume",
         "inspect"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker volume inspect"
     },
     {
@@ -268,7 +268,7 @@
         "system",
         "info"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker system info"
     },
     {
@@ -279,7 +279,7 @@
         "system",
         "df"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker system df"
     },
     {
@@ -290,7 +290,7 @@
         "system",
         "events"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker system events"
     },
     {
@@ -301,7 +301,7 @@
         "compose",
         "ps"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker compose ps"
     },
     {
@@ -312,7 +312,7 @@
         "compose",
         "logs"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker compose logs"
     },
     {
@@ -323,7 +323,7 @@
         "compose",
         "top"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker compose top"
     },
     {
@@ -334,7 +334,7 @@
         "compose",
         "config"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker compose config"
     },
     {
@@ -345,7 +345,7 @@
         "compose",
         "version"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker compose version"
     },
     {
@@ -353,7 +353,7 @@
       "match": "ast",
       "binary": "docker",
       "subcommand": "search",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "docker search"
     },
     {
@@ -364,7 +364,7 @@
         "manifest",
         "inspect"
       ],
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "docker manifest inspect"
     },
     {
@@ -375,7 +375,7 @@
         "context",
         "ls"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker context ls"
     },
     {
@@ -386,7 +386,7 @@
         "context",
         "inspect"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker context inspect"
     },
     {
@@ -397,7 +397,7 @@
         "context",
         "show"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker context show"
     },
     {
@@ -408,7 +408,7 @@
         "buildx",
         "ls"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker buildx ls"
     },
     {
@@ -419,7 +419,7 @@
         "buildx",
         "inspect"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker buildx inspect"
     },
     {
@@ -430,7 +430,7 @@
         "buildx",
         "version"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker buildx version"
     },
     {
@@ -441,7 +441,7 @@
         "plugin",
         "ls"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker plugin ls"
     },
     {
@@ -452,7 +452,7 @@
         "plugin",
         "inspect"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker plugin inspect"
     },
     {
@@ -463,7 +463,7 @@
         "container",
         "ps"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker container ps"
     },
     {
@@ -474,7 +474,7 @@
         "compose",
         "images"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker compose images"
     },
     {
@@ -485,7 +485,7 @@
         "compose",
         "ls"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker compose ls"
     },
     {
@@ -496,7 +496,7 @@
         "compose",
         "port"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker compose port"
     },
     {
@@ -507,7 +507,7 @@
         "compose",
         "events"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker compose events"
     },
     {
@@ -518,7 +518,7 @@
         "service",
         "ls"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker service ls"
     },
     {
@@ -529,7 +529,7 @@
         "service",
         "inspect"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker service inspect"
     },
     {
@@ -540,7 +540,7 @@
         "service",
         "logs"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker service logs"
     },
     {
@@ -551,7 +551,7 @@
         "service",
         "ps"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker service ps"
     },
     {
@@ -562,7 +562,7 @@
         "stack",
         "ls"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker stack ls"
     },
     {
@@ -573,7 +573,7 @@
         "stack",
         "ps"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker stack ps"
     },
     {
@@ -584,7 +584,7 @@
         "stack",
         "services"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker stack services"
     },
     {
@@ -595,7 +595,7 @@
         "node",
         "ls"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker node ls"
     },
     {
@@ -606,7 +606,7 @@
         "node",
         "inspect"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker node inspect"
     },
     {
@@ -617,7 +617,7 @@
         "secret",
         "ls"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker secret ls (values not exposed)"
     },
     {
@@ -628,7 +628,7 @@
         "config",
         "ls"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "docker config ls"
     }
   ]

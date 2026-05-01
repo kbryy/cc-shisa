@@ -1,15 +1,18 @@
 import type { Class, Level } from "./types.ts";
 
 const STRICTNESS: Readonly<Record<Class, number>> = {
+  // Flat specials
   dangerous: 8,
-  "irreversible-remote": 7,
-  "irreversible-local": 6,
-  eval: 5,
-  "write-remote": 4,
+  dynamic: 5,
   unknown: 3,
-  "write-local": 2,
-  "read-remote": 1,
-  "read-local": 0,
+  // Read hierarchy
+  "read.local": 0,
+  "read.remote": 1,
+  // Write hierarchy
+  "write.local": 2,
+  "write.local.destroy": 6,
+  "write.remote": 4,
+  "write.remote.destroy": 7,
 };
 
 export function strictnessRank(c: Class): number {
@@ -17,67 +20,68 @@ export function strictnessRank(c: Class): number {
 }
 
 /**
- * "strict" — ask before anything that mutates or hits the network;
- * deny anything that touches remote state irrecoverably or evaluates
- * a constructed string. Only local read commands flow silently.
+ * "strict" — for shared-resource environments (work / corp). Block any
+ * remote write outright (push, publish, gh pr create) so the agent
+ * cannot silently mutate something other people see. Local destructive
+ * ops still ask. Routine local writes flow.
  */
 export function strictLevel(): Level {
   return {
     name: "strict",
     mapping: {
       dangerous: "deny",
-      "irreversible-remote": "deny",
-      "irreversible-local": "deny",
-      eval: "deny",
-      "write-remote": "deny",
-      "write-local": "ask",
+      dynamic: "ask",
       unknown: "ask",
-      "read-remote": "ask",
-      "read-local": "allow",
+      "read.local": "allow",
+      "read.remote": "allow",
+      "write.local": "allow",
+      "write.local.destroy": "ask",
+      "write.remote": "deny",
+      "write.remote.destroy": "deny",
     },
   };
 }
 
 /**
- * "safe" — the default. Only dangerous deny; irreversible (remote+local) /
- * eval / write-remote / unknown ask; everything else flows.
+ * "safe" — the default. Ask before risky stuff (destroy, dynamic eval,
+ * remote writes, unknown binaries); routine local writes and reads flow.
  */
 export function safeLevel(): Level {
   return {
     name: "safe",
     mapping: {
       dangerous: "deny",
-      "irreversible-remote": "ask",
-      "irreversible-local": "ask",
-      eval: "ask",
-      "write-remote": "ask",
-      "write-local": "allow",
+      dynamic: "ask",
       unknown: "ask",
-      "read-remote": "allow",
-      "read-local": "allow",
+      "read.local": "allow",
+      "read.remote": "allow",
+      "write.local": "allow",
+      "write.local.destroy": "ask",
+      "write.remote": "ask",
+      "write.remote.destroy": "ask",
     },
   };
 }
 
 /**
- * "loose" — dangerous still denied, irreversible-remote still asks
- * (force-push / push --delete / publish-style remote destruction is
- * always worth confirming), but local irreversible ops, eval, and
- * unknown auto-allow. For trusted laptops / sandboxes / CI agents.
+ * "loose" — sandbox / CI / trusted laptop. Only the catastrophic
+ * `dangerous` patterns are blocked; everything else flows without
+ * prompting. Use this when cc-shisa should be a "stop the truly
+ * disastrous, get out of the way otherwise" guard.
  */
 export function looseLevel(): Level {
   return {
     name: "loose",
     mapping: {
       dangerous: "deny",
-      "irreversible-remote": "ask",
-      "irreversible-local": "allow",
-      eval: "allow",
-      "write-remote": "allow",
-      "write-local": "allow",
+      dynamic: "allow",
       unknown: "allow",
-      "read-remote": "allow",
-      "read-local": "allow",
+      "read.local": "allow",
+      "read.remote": "allow",
+      "write.local": "allow",
+      "write.local.destroy": "allow",
+      "write.remote": "allow",
+      "write.remote.destroy": "allow",
     },
   };
 }

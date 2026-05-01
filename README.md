@@ -210,24 +210,32 @@ cc-shisa level set strict       # write level to ~/.config/cc-shisa/profile.json
 
 Mapping per class:
 
-| Class                 | `strict` | `safe` (default) | `loose` |
-|-----------------------|----------|------------------|---------|
-| `dangerous`           | deny     | deny             | deny    |
-| `irreversible-remote` | **deny** | ask              | ask     |
-| `irreversible-local`  | **deny** | ask              | **allow** |
-| `eval`                | **deny** | ask              | **allow** |
-| `write-remote`        | **deny** | ask              | **allow** |
-| `unknown`             | ask      | ask              | **allow** |
-| `write-local`         | **ask**  | allow            | allow   |
-| `read-remote`         | **ask**  | allow            | allow   |
-| `read-local`          | allow    | allow            | allow   |
+| Class                  | `strict` | `safe` (default) | `loose` |
+|------------------------|----------|------------------|---------|
+| `dangerous`            | deny     | deny             | deny    |
+| `dynamic`              | ask      | ask              | allow   |
+| `unknown`              | ask      | ask              | allow   |
+| `read.local`           | allow    | allow            | allow   |
+| `read.remote`          | allow    | allow            | allow   |
+| `write.local`          | allow    | allow            | allow   |
+| `write.local.destroy`  | ask      | ask              | allow   |
+| `write.remote`         | **deny** | ask              | allow   |
+| `write.remote.destroy` | **deny** | ask              | allow   |
 
-Mutating / reading and remote / local are split orthogonally so each
-axis can be dialed independently. `irreversible-remote` (`git push
---force`, `git push --delete`) and `read-remote` (`gh pr list`,
-`kubectl get`, `npm view`) become asks under `strict` so an agent
-cannot silently destroy remote state or leak environment info via
-outbound queries.
+Hierarchy: read/write split by locality (`.local` / `.remote`);
+write has a `.destroy` sub-bucket for irreversible operations
+(`git reset --hard`, `git push --force`, `shred`, `rsync --delete`).
+Three flat specials sit outside: `dangerous` (visible catastrophic
+patterns), `dynamic` (content cc-shisa cannot inspect — eval, bash -c,
+curl|sh, node -e), `unknown` (no rule matched).
+
+- `strict` is for shared-resource environments (work / corp). Block
+  any remote write outright so the agent cannot silently mutate
+  something other people see.
+- `safe` is the everyday default — ask on risky stuff, let routine
+  flow.
+- `loose` blocks only `dangerous`. Use on trusted laptops, sandboxes,
+  or CI agents.
 
 `safe` is the right default for everyday use. Switch to `strict` if you want
 `git push --force` / `eval` / `npm publish` to outright deny instead of ask;

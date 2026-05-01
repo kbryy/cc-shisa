@@ -7,7 +7,7 @@
       "match": "ast",
       "binary": "cargo",
       "subcommand": "check",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "cargo check (typecheck only, no execution)"
     },
     {
@@ -15,7 +15,7 @@
       "match": "ast",
       "binary": "cargo",
       "subcommand": "tree",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "cargo tree"
     },
     {
@@ -23,7 +23,7 @@
       "match": "ast",
       "binary": "cargo",
       "subcommand": "metadata",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "cargo metadata"
     },
     {
@@ -31,7 +31,7 @@
       "match": "ast",
       "binary": "cargo",
       "subcommand": "search",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "cargo search"
     },
     {
@@ -39,7 +39,7 @@
       "match": "ast",
       "binary": "cargo",
       "subcommand": "version",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "cargo version"
     },
     {
@@ -47,7 +47,7 @@
       "match": "ast",
       "binary": "cargo",
       "subcommand": "help",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "cargo help"
     },
     {
@@ -58,7 +58,7 @@
       "any_flags": [
         "--check"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "cargo fmt --check"
     },
     {
@@ -66,7 +66,7 @@
       "match": "ast",
       "binary": "cargo",
       "subcommand": "locate-project",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "cargo locate-project"
     },
     {
@@ -74,7 +74,7 @@
       "match": "ast",
       "binary": "cargo",
       "subcommand": "pkgid",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "cargo pkgid"
     },
     {
@@ -85,7 +85,7 @@
         "--version",
         "-V"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "cargo --version"
     },
     {
@@ -93,7 +93,7 @@
       "match": "ast",
       "binary": "cargo",
       "subcommand": "verify-project",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "cargo verify-project (Cargo.toml validation)"
     },
     {
@@ -101,7 +101,7 @@
       "match": "ast",
       "binary": "cargo",
       "subcommand": "info",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "cargo info (registry metadata)"
     },
     {
@@ -113,7 +113,7 @@
         "--list",
         "-l"
       ],
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "cargo owner --list"
     },
     {
@@ -124,7 +124,7 @@
       "any_flags": [
         "--list"
       ],
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "cargo yank --list"
     }
   ]

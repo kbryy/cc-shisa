@@ -14,7 +14,7 @@
         "eza",
         "lsd"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "directory listing"
     },
     {
@@ -29,7 +29,7 @@
         "more",
         "bat"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "file content read"
     },
     {
@@ -43,7 +43,7 @@
         "ack",
         "ag"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "text search"
     },
     {
@@ -63,7 +63,7 @@
         "rev",
         "fold"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "text processing"
     },
     {
@@ -78,7 +78,7 @@
         "file",
         "stat"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "path/file inspection"
     },
     {
@@ -95,7 +95,7 @@
         "groups",
         "logname"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "identity/system info"
     },
     {
@@ -107,7 +107,7 @@
         "free",
         "vm_stat"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "disk/memory inspection"
     },
     {
@@ -117,7 +117,7 @@
         "ps",
         "pgrep"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "process inspection"
     },
     {
@@ -128,7 +128,7 @@
         "whereis",
         "type"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "command lookup"
     },
     {
@@ -142,14 +142,14 @@
         "yes",
         "seq"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "trivial output"
     },
     {
       "id": "coreutils.printenv",
       "match": "ast",
       "binary": "printenv",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "environment listing"
     },
     {
@@ -162,7 +162,7 @@
         "--exec",
         "--exec-batch"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "fd file search (no -x/--exec)"
     },
     {
@@ -175,7 +175,7 @@
         "--exec",
         "--exec-batch"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "fdfind file search (no -x/--exec)"
     },
     {
@@ -192,14 +192,14 @@
         "-fprintf",
         "-fls"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "find traversal (no -delete/-exec/-ok variants)"
     },
     {
       "id": "coreutils.env-list",
       "match": "regex",
       "pattern": "^\\s*env\\s*$",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "env (no args = list environment)"
     },
     {
@@ -210,7 +210,7 @@
         "od",
         "hexdump"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "binary dump"
     },
     {
@@ -222,7 +222,7 @@
         "expand",
         "unexpand"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "text formatting"
     },
     {
@@ -234,7 +234,7 @@
         "mawk",
         "nawk"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "awk text processing (note: awk system() can exec arbitrary code; disable this module to opt out)"
     },
     {
@@ -245,7 +245,7 @@
         "yq",
         "fx"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "JSON/YAML filter"
     },
     {
@@ -258,7 +258,7 @@
         "whatis",
         "tldr"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "documentation lookup"
     },
     {
@@ -269,7 +269,7 @@
         "mlocate",
         "plocate"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "filename index search"
     },
     {
@@ -285,7 +285,7 @@
         "traceroute6",
         "tracepath"
       ],
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "network diagnostic"
     },
     {
@@ -304,7 +304,7 @@
         "sum",
         "b2sum"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "hash computation"
     },
     {
@@ -314,35 +314,35 @@
         "base64",
         "base32"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "base64/base32 encode/decode (note: -o file writes to disk)"
     },
     {
       "id": "coreutils.mkdir",
       "match": "ast",
       "binary": "mkdir",
-      "class": "write-local",
+      "class": "write.local",
       "reason": "mkdir (creates directory; no impact on existing files)"
     },
     {
       "id": "coreutils.touch",
       "match": "ast",
       "binary": "touch",
-      "class": "write-local",
+      "class": "write.local",
       "reason": "touch (creates empty file or bumps mtime)"
     },
     {
       "id": "coreutils.cp",
       "match": "ast",
       "binary": "cp",
-      "class": "write-local",
+      "class": "write.local",
       "reason": "cp (copy files; existing destinations are overwritten)"
     },
     {
       "id": "coreutils.mv",
       "match": "ast",
       "binary": "mv",
-      "class": "write-local",
+      "class": "write.local",
       "reason": "mv (move/rename files; existing destinations are overwritten)"
     },
     {
@@ -353,7 +353,7 @@
         "-s",
         "--symbolic"
       ],
-      "class": "write-local",
+      "class": "write.local",
       "reason": "ln -s (create symlink)"
     }
   ]

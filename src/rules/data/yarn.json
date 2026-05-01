@@ -7,7 +7,7 @@
       "match": "ast",
       "binary": "yarn",
       "subcommand": "test",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "yarn test"
     },
     {
@@ -18,7 +18,7 @@
         "run",
         "typecheck"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "yarn run typecheck"
     },
     {
@@ -29,7 +29,7 @@
         "run",
         "lint"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "yarn run lint"
     },
     {
@@ -40,7 +40,7 @@
         "run",
         "test"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "yarn run test"
     },
     {
@@ -51,7 +51,7 @@
         "run",
         "check"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "yarn run check"
     },
     {
@@ -62,7 +62,7 @@
         "run",
         "format-check"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "yarn run format-check"
     },
     {
@@ -70,7 +70,7 @@
       "match": "ast",
       "binary": "yarn",
       "subcommand": "list",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "yarn list"
     },
     {
@@ -78,7 +78,7 @@
       "match": "ast",
       "binary": "yarn",
       "subcommand": "outdated",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "yarn outdated"
     },
     {
@@ -86,7 +86,7 @@
       "match": "ast",
       "binary": "yarn",
       "subcommand": "audit",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "yarn audit"
     },
     {
@@ -94,7 +94,7 @@
       "match": "ast",
       "binary": "yarn",
       "subcommand": "info",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "yarn info"
     },
     {
@@ -102,7 +102,7 @@
       "match": "ast",
       "binary": "yarn",
       "subcommand": "why",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "yarn why"
     },
     {
@@ -110,7 +110,7 @@
       "match": "ast",
       "binary": "yarn",
       "subcommand": "help",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "yarn help"
     },
     {
@@ -121,7 +121,7 @@
         "--version",
         "-v"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "yarn --version"
     },
     {
@@ -132,7 +132,7 @@
         "config",
         "get"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "yarn config get"
     },
     {
@@ -143,7 +143,7 @@
         "config",
         "list"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "yarn config list"
     },
     {
@@ -154,7 +154,7 @@
         "workspaces",
         "list"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "yarn workspaces list (Berry)"
     },
     {
@@ -165,7 +165,7 @@
         "workspaces",
         "info"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "yarn workspaces info (1.x)"
     },
     {
@@ -176,7 +176,7 @@
         "licenses",
         "list"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "yarn licenses list"
     },
     {
@@ -187,7 +187,7 @@
         "licenses",
         "generate-disclaimer"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "yarn licenses generate-disclaimer"
     },
     {
@@ -198,7 +198,7 @@
         "cache",
         "list"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "yarn cache list (1.x)"
     },
     {
@@ -209,7 +209,7 @@
         "npm",
         "whoami"
       ],
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "yarn npm whoami (Berry)"
     }
   ]

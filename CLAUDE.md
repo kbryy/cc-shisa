@@ -102,14 +102,14 @@ Severity ordering (most strict → least):
 | Class | Action (safe level) | Examples |
 |---|---|---|
 | `dangerous` | **deny** | `rm -rf /`, fork bomb, `dd of=/dev/disk*`, `mkfs`, `chmod -R 777 /` |
-| `irreversible-remote` | ask | `git push --force`, `git push --delete` (rewriting / removing remote refs) |
-| `irreversible-local` | ask | `git reset --hard`, `rm -rf .git`, `shred`, `rsync --delete`, `gpg --delete-secret-keys` |
-| `eval` | ask | `eval`, `bash -c`, `curl ... \| sh`, `node -e`, `python -c` |
-| `write-remote` | ask | `git push`, `gh pr create`, `npm publish` |
-| `write-local` | allow | `git commit`, `mkdir`, `cp`, `mv`, `git stash`, `git switch` |
+| `dynamic` | ask | `eval`, `bash -c`, `curl ... \| sh`, `node -e`, `python -c` (content cc-shisa cannot inspect) |
 | `unknown` | ask | Any binary not matched by any rule |
-| `read-remote` | allow | `gh pr list`, `kubectl get`, `npm view`, `git fetch`, `ping`, `dig` |
-| `read-local` | allow | `git status`, `ls`, `cat`, `jq`, `sha256sum`, `pnpm typecheck` |
+| `read.local` | allow | `git status`, `ls`, `cat`, `jq`, `sha256sum`, `pnpm typecheck` |
+| `read.remote` | allow | `gh pr list`, `kubectl get`, `npm view`, `git fetch`, `ping`, `dig` |
+| `write.local` | allow | `git commit`, `mkdir`, `cp`, `mv`, `git stash`, `git switch` |
+| `write.local.destroy` | ask | `git reset --hard`, `rm -rf .git`, `shred`, `rsync --delete`, `gpg --delete-secret-keys` |
+| `write.remote` | ask | `git push`, `gh pr create`, `npm publish` (Phase 2+: not yet rule-classified) |
+| `write.remote.destroy` | ask | `git push --force`, `git push --delete` (rewriting / removing remote refs) |
 
 **Most-strict wins**: when multiple segments or multiple rules match, the
 strictest classification is the final one.
@@ -214,8 +214,10 @@ cc-shisa/
 ```ts
 // src/rules/types.ts
 export type Class =
-  | "dangerous" | "irreversible" | "eval"
-  | "write-remote" | "write-local" | "read" | "unknown";
+  | "dangerous" | "dynamic" | "unknown"
+  | "read.local" | "read.remote"
+  | "write.local" | "write.local.destroy"
+  | "write.remote" | "write.remote.destroy";
 
 export type Action = "allow" | "ask" | "deny";
 
