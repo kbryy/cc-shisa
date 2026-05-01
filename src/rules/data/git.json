@@ -1074,8 +1074,8 @@
       "any_flags": [
         "-D"
       ],
-      "class": "local.write.destroy",
-      "reason": "git branch -D (force delete; throws away unmerged commits)"
+      "class": "local.write",
+      "reason": "git branch -D (force delete branch ref; commits remain in HEAD reflog for 90 days)"
     },
     {
       "id": "git.update-ref.delete",
