@@ -7,7 +7,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "list",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew list"
     },
     {
@@ -15,7 +15,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "ls",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew ls"
     },
     {
@@ -23,7 +23,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "info",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew info"
     },
     {
@@ -31,7 +31,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "abv",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew abv"
     },
     {
@@ -39,7 +39,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "search",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "brew search"
     },
     {
@@ -47,7 +47,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "deps",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew deps"
     },
     {
@@ -55,7 +55,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "uses",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew uses"
     },
     {
@@ -63,7 +63,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "leaves",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew leaves"
     },
     {
@@ -71,7 +71,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "outdated",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "brew outdated"
     },
     {
@@ -79,7 +79,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "config",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew config"
     },
     {
@@ -87,7 +87,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "doctor",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew doctor"
     },
     {
@@ -95,7 +95,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "formulae",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew formulae"
     },
     {
@@ -103,7 +103,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "casks",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew casks"
     },
     {
@@ -111,7 +111,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "log",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew log <formula>"
     },
     {
@@ -119,7 +119,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "commands",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew commands"
     },
     {
@@ -127,7 +127,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "help",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew help"
     },
     {
@@ -138,7 +138,7 @@
         "analytics",
         "state"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew analytics state"
     },
     {
@@ -149,7 +149,7 @@
         "--version",
         "-v"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew --version"
     },
     {
@@ -159,7 +159,7 @@
       "any_flags": [
         "--prefix"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew --prefix"
     },
     {
@@ -169,7 +169,7 @@
       "any_flags": [
         "--cellar"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew --cellar"
     },
     {
@@ -179,7 +179,7 @@
       "any_flags": [
         "--cache"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew --cache"
     },
     {
@@ -190,7 +190,7 @@
         "--repository",
         "--repo"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew --repository"
     },
     {
@@ -200,7 +200,7 @@
       "any_flags": [
         "--env"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew --env"
     },
     {
@@ -210,14 +210,14 @@
       "any_flags": [
         "--caskroom"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew --caskroom"
     },
     {
       "id": "brew.tap.list",
       "match": "regex",
       "pattern": "^\\s*brew\\s+tap(\\s+--[a-z-]+)*\\s*$",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew tap (no args = list installed taps)"
     },
     {
@@ -225,7 +225,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "livecheck",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "brew livecheck (version check, no install)"
     },
     {
@@ -233,7 +233,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "options",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew options (build options for a formula)"
     },
     {
@@ -241,7 +241,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "style",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew style (formula linting)"
     },
     {
@@ -256,7 +256,7 @@
         "--online",
         "--new"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew audit (static analysis, no install)"
     },
     {
@@ -264,7 +264,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "which-formula",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew which-formula"
     },
     {
@@ -272,7 +272,7 @@
       "match": "ast",
       "binary": "brew",
       "subcommand": "home",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "brew home (opens homepage in browser, no install)"
     }
   ]

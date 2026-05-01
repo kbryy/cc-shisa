@@ -7,7 +7,7 @@
       "match": "ast",
       "binary": "kubectl",
       "subcommand": "get",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl get"
     },
     {
@@ -15,7 +15,7 @@
       "match": "ast",
       "binary": "kubectl",
       "subcommand": "describe",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl describe"
     },
     {
@@ -23,7 +23,7 @@
       "match": "ast",
       "binary": "kubectl",
       "subcommand": "logs",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl logs"
     },
     {
@@ -31,7 +31,7 @@
       "match": "ast",
       "binary": "kubectl",
       "subcommand": "top",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl top"
     },
     {
@@ -39,7 +39,7 @@
       "match": "ast",
       "binary": "kubectl",
       "subcommand": "events",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl events"
     },
     {
@@ -47,7 +47,7 @@
       "match": "ast",
       "binary": "kubectl",
       "subcommand": "explain",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl explain"
     },
     {
@@ -55,7 +55,7 @@
       "match": "ast",
       "binary": "kubectl",
       "subcommand": "api-resources",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl api-resources"
     },
     {
@@ -63,7 +63,7 @@
       "match": "ast",
       "binary": "kubectl",
       "subcommand": "api-versions",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl api-versions"
     },
     {
@@ -71,7 +71,7 @@
       "match": "ast",
       "binary": "kubectl",
       "subcommand": "cluster-info",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl cluster-info"
     },
     {
@@ -79,7 +79,7 @@
       "match": "ast",
       "binary": "kubectl",
       "subcommand": "version",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl version"
     },
     {
@@ -87,7 +87,7 @@
       "match": "ast",
       "binary": "kubectl",
       "subcommand": "help",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl help"
     },
     {
@@ -98,7 +98,7 @@
         "config",
         "view"
       ],
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl config view"
     },
     {
@@ -109,7 +109,7 @@
         "config",
         "current-context"
       ],
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl config current-context"
     },
     {
@@ -120,7 +120,7 @@
         "config",
         "get-contexts"
       ],
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl config get-contexts"
     },
     {
@@ -131,7 +131,7 @@
         "config",
         "get-clusters"
       ],
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl config get-clusters"
     },
     {
@@ -142,7 +142,7 @@
         "config",
         "get-users"
       ],
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl config get-users"
     },
     {
@@ -153,7 +153,7 @@
         "auth",
         "can-i"
       ],
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl auth can-i"
     },
     {
@@ -164,7 +164,7 @@
         "auth",
         "whoami"
       ],
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl auth whoami"
     },
     {
@@ -172,7 +172,7 @@
       "match": "ast",
       "binary": "kubectl",
       "subcommand": "options",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl options"
     },
     {
@@ -180,7 +180,7 @@
       "match": "ast",
       "binary": "kubectl",
       "subcommand": "wait",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl wait (blocks on state, no mutation)"
     },
     {
@@ -188,7 +188,7 @@
       "match": "ast",
       "binary": "kubectl",
       "subcommand": "diff",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl diff (computes delta, does not apply)"
     },
     {
@@ -199,7 +199,7 @@
         "plugin",
         "list"
       ],
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "kubectl plugin list"
     }
   ]

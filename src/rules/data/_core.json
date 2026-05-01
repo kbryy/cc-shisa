@@ -76,7 +76,7 @@
         ".git",
         "**/.git/"
       ],
-      "class": "irreversible-local",
+      "class": "write.local.destroy",
       "reason": "removing .git directory destroys repository history"
     },
     {
@@ -153,7 +153,7 @@
       "id": "core.curl.pipe.sh",
       "match": "regex",
       "pattern": "(curl|wget)\\s+[^|]*\\|\\s*(sh|bash|zsh|fish|dash|ksh)\\b",
-      "class": "eval",
+      "class": "dynamic",
       "reason": "piping remote content directly into a shell"
     },
     {
@@ -166,7 +166,7 @@
         "-f",
         "--force-with-lease"
       ],
-      "class": "irreversible-remote",
+      "class": "write.remote.destroy",
       "reason": "force push rewrites remote history"
     },
     {
@@ -177,7 +177,7 @@
       "flags": [
         "--hard"
       ],
-      "class": "irreversible-local",
+      "class": "write.local.destroy",
       "reason": "git reset --hard discards uncommitted changes"
     },
     {
@@ -199,7 +199,7 @@
       "id": "core.eval",
       "match": "ast",
       "binary": "eval",
-      "class": "eval",
+      "class": "dynamic",
       "reason": "eval executes a constructed string"
     },
     {
@@ -215,7 +215,7 @@
       "any_flags": [
         "-c"
       ],
-      "class": "eval",
+      "class": "dynamic",
       "reason": "shell -c executes a constructed string"
     },
     {
@@ -237,7 +237,7 @@
         "--print",
         "-c"
       ],
-      "class": "eval",
+      "class": "dynamic",
       "reason": "language runtime -e/--eval/--print/-c executes a constructed string"
     },
     {
@@ -248,7 +248,7 @@
         "srm",
         "wipe"
       ],
-      "class": "irreversible-local",
+      "class": "write.local.destroy",
       "reason": "secure-erase tools overwrite then unlink the target"
     },
     {
@@ -299,7 +299,7 @@
         "--delete-during",
         "--delete-excluded"
       ],
-      "class": "irreversible-local",
+      "class": "write.local.destroy",
       "reason": "rsync --delete removes destination files not present in source"
     },
     {
@@ -311,7 +311,7 @@
         "--delete",
         "-d"
       ],
-      "class": "irreversible-remote",
+      "class": "write.remote.destroy",
       "reason": "git push --delete removes a remote ref"
     },
     {
@@ -322,7 +322,7 @@
         "--delete-secret-keys",
         "--delete-secret-and-public-keys"
       ],
-      "class": "irreversible-local",
+      "class": "write.local.destroy",
       "reason": "gpg --delete-secret-keys destroys private keys"
     },
     {

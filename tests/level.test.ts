@@ -41,22 +41,38 @@ describe("strict level", () => {
   test("denies irreversible (git push --force)", () => {
     const d = evaluateAt(strictLevel(), "git push --force origin main");
     expect(d.action).toBe("deny");
-    expect(d.class).toBe("irreversible-remote");
+    expect(d.class).toBe("write.remote.destroy");
   });
 
-  test("denies eval (bash -c)", () => {
+  test("write.remote → deny (mapping)", () => {
+    expect(strictLevel().mapping["write.remote"]).toBe("deny");
+  });
+
+  test("asks dynamic (bash -c)", () => {
     const d = evaluateAt(strictLevel(), "bash -c whoami");
-    expect(d.action).toBe("deny");
-    expect(d.class).toBe("eval");
+    expect(d.action).toBe("ask");
+    expect(d.class).toBe("dynamic");
   });
 
-  test("asks write-local (git commit, mkdir)", () => {
+  test("asks write.local.destroy (git reset --hard)", () => {
+    const d = evaluateAt(strictLevel(), "git reset --hard HEAD~1");
+    expect(d.action).toBe("ask");
+    expect(d.class).toBe("write.local.destroy");
+  });
+
+  test("allows write.local (git commit, mkdir)", () => {
     const commit = evaluateAt(strictLevel(), "git commit -m fix");
-    expect(commit.action).toBe("ask");
-    expect(commit.class).toBe("write-local");
+    expect(commit.action).toBe("allow");
+    expect(commit.class).toBe("write.local");
     const mkdir = evaluateAt(strictLevel(), "mkdir foo");
-    expect(mkdir.action).toBe("ask");
-    expect(mkdir.class).toBe("write-local");
+    expect(mkdir.action).toBe("allow");
+    expect(mkdir.class).toBe("write.local");
+  });
+
+  test("allows read.remote (gh pr list)", () => {
+    const d = evaluateAt(strictLevel(), "gh pr list");
+    expect(d.action).toBe("allow");
+    expect(d.class).toBe("read.remote");
   });
 
   test("still asks unknown commands", () => {
@@ -65,7 +81,7 @@ describe("strict level", () => {
     expect(d.class).toBe("unknown");
   });
 
-  test("read still flows", () => {
+  test("read.local still flows", () => {
     const d = evaluateAt(strictLevel(), "ls");
     expect(d.action).toBe("allow");
   });
@@ -75,13 +91,13 @@ describe("safe level (default)", () => {
   test("asks irreversible", () => {
     const d = evaluateAt(safeLevel(), "git push --force origin main");
     expect(d.action).toBe("ask");
-    expect(d.class).toBe("irreversible-remote");
+    expect(d.class).toBe("write.remote.destroy");
   });
 
   test("asks eval", () => {
     const d = evaluateAt(safeLevel(), "bash -c whoami");
     expect(d.action).toBe("ask");
-    expect(d.class).toBe("eval");
+    expect(d.class).toBe("dynamic");
   });
 
   test("denies dangerous", () => {
@@ -94,7 +110,7 @@ describe("loose level", () => {
   test("allows eval (bash -c)", () => {
     const d = evaluateAt(looseLevel(), "bash -c whoami");
     expect(d.action).toBe("allow");
-    expect(d.class).toBe("eval");
+    expect(d.class).toBe("dynamic");
   });
 
   test("allows unknown commands", () => {
@@ -108,8 +124,9 @@ describe("loose level", () => {
     expect(d.action).toBe("deny");
   });
 
-  test("still asks irreversible", () => {
+  test("allows write.remote.destroy (git push --force) — only dangerous denies", () => {
     const d = evaluateAt(looseLevel(), "git push --force origin main");
-    expect(d.action).toBe("ask");
+    expect(d.action).toBe("allow");
+    expect(d.class).toBe("write.remote.destroy");
   });
 });

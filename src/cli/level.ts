@@ -22,14 +22,14 @@ export function runLevel(args: readonly string[]): number {
 
 const CLASS_COLUMNS = [
   "dangerous",
-  "irreversible-remote",
-  "irreversible-local",
-  "eval",
-  "write-remote",
-  "write-local",
+  "dynamic",
   "unknown",
-  "read-remote",
-  "read-local",
+  "read.local",
+  "read.remote",
+  "write.local",
+  "write.local.destroy",
+  "write.remote",
+  "write.remote.destroy",
 ] as const;
 
 function runLevelList(): number {

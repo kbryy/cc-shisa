@@ -7,7 +7,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "list",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm list"
     },
     {
@@ -15,7 +15,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "ls",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm ls"
     },
     {
@@ -23,7 +23,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "why",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm why"
     },
     {
@@ -31,7 +31,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "outdated",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "pnpm outdated"
     },
     {
@@ -39,7 +39,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "audit",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "pnpm audit"
     },
     {
@@ -47,7 +47,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "info",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "pnpm info"
     },
     {
@@ -55,7 +55,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "view",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "pnpm view"
     },
     {
@@ -63,7 +63,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "doctor",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm doctor"
     },
     {
@@ -71,7 +71,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "licenses",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm licenses"
     },
     {
@@ -79,7 +79,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "test",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm test (project-defined script, conventionally read-only)"
     },
     {
@@ -87,7 +87,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "t",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm t (alias for test)"
     },
     {
@@ -98,7 +98,7 @@
         "run",
         "typecheck"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm run typecheck"
     },
     {
@@ -109,7 +109,7 @@
         "run",
         "lint"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm run lint"
     },
     {
@@ -120,7 +120,7 @@
         "run",
         "test"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm run test"
     },
     {
@@ -131,7 +131,7 @@
         "run",
         "check"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm run check"
     },
     {
@@ -142,7 +142,7 @@
         "run",
         "format-check"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm run format-check"
     },
     {
@@ -150,7 +150,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "typecheck",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm typecheck (script shortcut)"
     },
     {
@@ -158,7 +158,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "lint",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm lint (script shortcut)"
     },
     {
@@ -166,7 +166,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "format-check",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm format-check (script shortcut)"
     },
     {
@@ -174,7 +174,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "check",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm check (script shortcut)"
     },
     {
@@ -182,7 +182,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "help",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm help"
     },
     {
@@ -193,7 +193,7 @@
         "--version",
         "-v"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm --version"
     },
     {
@@ -201,7 +201,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "whoami",
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "pnpm whoami"
     },
     {
@@ -209,7 +209,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "root",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm root"
     },
     {
@@ -217,7 +217,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "bin",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm bin"
     },
     {
@@ -225,7 +225,7 @@
       "match": "ast",
       "binary": "pnpm",
       "subcommand": "prefix",
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm prefix"
     },
     {
@@ -236,7 +236,7 @@
         "config",
         "get"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm config get"
     },
     {
@@ -247,7 +247,7 @@
         "config",
         "list"
       ],
-      "class": "read-local",
+      "class": "read.local",
       "reason": "pnpm config list"
     },
     {
@@ -258,7 +258,7 @@
         "env",
         "list-remote"
       ],
-      "class": "read-remote",
+      "class": "read.remote",
       "reason": "pnpm env list-remote (queries Node release index)"
     }
   ]
