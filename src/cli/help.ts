@@ -24,6 +24,7 @@ Usage:
   cc-shisa logs [summary]             Aggregate the JSONL decision log
   cc-shisa logs tail [-n N]           Show the last N entries (default 20)
   cc-shisa logs path                  Print the log file path
+  cc-shisa completion <bash|zsh|fish> Print a shell completion script (eval to enable tab completion)
   cc-shisa version                    Print version
 
 Environment:

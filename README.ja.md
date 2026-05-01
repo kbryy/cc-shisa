@@ -188,6 +188,43 @@ JSON を置けば追加できます:
 判定は最も厳しいものが勝つので、`pandas` を import しつつシェルアウト
 するスクリプトは引き続き `dangerous` のままです。
 
+## タブ補完
+
+Homebrew でインストールした場合、補完は自動でセットアップされます。
+`brew install` 後にシェルを再起動すれば `cc-shisa <TAB>` が効くはず。
+
+手動でインストールする (または更新する) 場合:
+
+```bash
+# bash
+cc-shisa completion bash > "$(brew --prefix)/etc/bash_completion.d/cc-shisa"
+
+# zsh
+cc-shisa completion zsh > "$(brew --prefix)/share/zsh/site-functions/_cc-shisa"
+# その後 zsh を再起動するか:  autoload -Uz compinit && compinit
+
+# fish
+cc-shisa completion fish > ~/.config/fish/completions/cc-shisa.fish
+```
+
+その場限りで有効化する:
+
+```bash
+# bash
+eval "$(cc-shisa completion bash)"
+
+# zsh
+eval "$(cc-shisa completion zsh)"
+
+# fish
+cc-shisa completion fish | source
+```
+
+補完対象は全サブコマンド、level (`strict|safe|loose`)、クラス (`dangerous`、
+`local.read`、`remote.write` 等)、アクション (`allow|ask|deny`)、それに
+有効化済みモジュール名 (`cc-shisa modules enable|disable` で動的に解決)
+です。
+
 ## ディレクトリ別のプロファイル
 
 `~/work` 配下では厳しめ、`~/personal-projects` では緩め、特定のリポジトリ
