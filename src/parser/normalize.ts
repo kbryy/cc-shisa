@@ -1,5 +1,3 @@
-import type { Word } from "./walker.ts";
-
 const PREFIX_WRAPPERS = new Set([
   "sudo",
   "timeout",
@@ -20,24 +18,13 @@ export function lastPath(s: string): string {
 }
 
 /**
- * Flatten a Word to its literal string if it contains no expansion;
- * return null if any expansion was present (variable, command sub, etc.).
+ * A backend-agnostic token: the literal text and whether it's purely
+ * literal (no `$VAR` / `$(...)` / etc.). Backend implementations convert
+ * their native AST nodes into this shape before calling `peelPrefixes`.
  */
-export function litString(word: Word): string | null {
-  if (word.expansion && word.expansion.length > 0) return null;
-  return word.text;
-}
-
-interface ResolvedToken {
+export interface ResolvedToken {
   text: string;
   isLiteral: boolean;
-}
-
-export function resolveWord(word: Word): ResolvedToken {
-  const lit = litString(word);
-  return lit !== null
-    ? { text: lit, isLiteral: true }
-    : { text: word.text, isLiteral: false };
 }
 
 /**
@@ -175,4 +162,3 @@ export function peelPrefixes(tokens: readonly ResolvedToken[]): PeeledTokens {
   };
 }
 
-export type { ResolvedToken };
