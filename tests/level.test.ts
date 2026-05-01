@@ -50,6 +50,15 @@ describe("strict level", () => {
     expect(d.class).toBe("eval");
   });
 
+  test("asks write-local (git commit, mkdir)", () => {
+    const commit = evaluateAt(strictLevel(), "git commit -m fix");
+    expect(commit.action).toBe("ask");
+    expect(commit.class).toBe("write-local");
+    const mkdir = evaluateAt(strictLevel(), "mkdir foo");
+    expect(mkdir.action).toBe("ask");
+    expect(mkdir.class).toBe("write-local");
+  });
+
   test("still asks unknown commands", () => {
     const d = evaluateAt(strictLevel(), "mybinary foo");
     expect(d.action).toBe("ask");

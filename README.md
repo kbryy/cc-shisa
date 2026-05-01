@@ -217,7 +217,7 @@ Mapping per class:
 | `eval`         | **deny** | ask              | **allow** |
 | `write-remote` | **deny** | ask              | **allow** |
 | `unknown`      | ask      | ask              | **allow** |
-| `write-local`  | allow    | allow            | allow   |
+| `write-local`  | **ask**  | allow            | allow   |
 | `read`         | allow    | allow            | allow   |
 
 `safe` is the right default for everyday use. Switch to `strict` if you want

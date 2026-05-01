@@ -27,7 +27,7 @@ export function strictLevel(): Level {
       irreversible: "deny",
       eval: "deny",
       "write-remote": "deny",
-      "write-local": "allow",
+      "write-local": "ask",
       unknown: "ask",
       read: "allow",
     },
