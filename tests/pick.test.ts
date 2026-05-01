@@ -3,7 +3,7 @@ import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-import { pickWith } from "../src/modules/index.ts";
+import { makeStdoutWriter, pickWith, showCursor } from "../src/modules/index.ts";
 import {
   initialState,
   parseKey,
@@ -203,5 +203,58 @@ describe("pickWith — full IO + profile persistence", () => {
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }
+  });
+});
+
+describe("makeStdoutWriter — cursor control sequences", () => {
+  test("emits hide-cursor escape on construction", () => {
+    const out: string[] = [];
+    makeStdoutWriter((s) => out.push(s));
+    expect(out).toEqual(["\x1b[?25l"]);
+  });
+
+  test("first frame writes content + newline, no clear", () => {
+    const out: string[] = [];
+    const write = makeStdoutWriter((s) => out.push(s));
+    out.length = 0;
+    write("line1\nline2");
+    expect(out).toEqual(["line1\nline2", "\n"]);
+  });
+
+  test("second frame moves cursor up by previous line count and clears below", () => {
+    const out: string[] = [];
+    const write = makeStdoutWriter((s) => out.push(s));
+    write("line1\nline2"); // prevLines becomes 2 after this call
+    out.length = 0;
+    write("new1\nnew2\nnew3");
+    expect(out[0]).toBe("\x1b[2A\x1b[J");
+    expect(out[1]).toBe("new1\nnew2\nnew3");
+    expect(out[2]).toBe("\n");
+  });
+
+  test("third frame uses the second frame's line count", () => {
+    const out: string[] = [];
+    const write = makeStdoutWriter((s) => out.push(s));
+    write("a"); // prevLines = 1
+    write("b\nc\nd\ne"); // prevLines = 4
+    out.length = 0;
+    write("x");
+    expect(out[0]).toBe("\x1b[4A\x1b[J");
+  });
+
+  test("escape sequences are real ESC bytes (0x1b), not literal '['", () => {
+    const out: string[] = [];
+    makeStdoutWriter((s) => out.push(s));
+    expect(out[0]?.charCodeAt(0)).toBe(0x1b);
+    expect(out[0]).not.toMatch(/^\[/);
+  });
+});
+
+describe("showCursor — emits show-cursor escape", () => {
+  test("writes \\x1b[?25h", () => {
+    const out: string[] = [];
+    showCursor((s) => out.push(s));
+    expect(out).toEqual(["\x1b[?25h"]);
+    expect(out[0]?.charCodeAt(0)).toBe(0x1b);
   });
 });
