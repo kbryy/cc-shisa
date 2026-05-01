@@ -274,6 +274,264 @@
       "subcommand": "home",
       "class": "local.read",
       "reason": "brew home (opens homepage in browser, no install)"
+    },
+    {
+      "id": "brew.install",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": "install",
+      "class": "local.write",
+      "reason": "brew install"
+    },
+    {
+      "id": "brew.reinstall",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": "reinstall",
+      "class": "local.write",
+      "reason": "brew reinstall"
+    },
+    {
+      "id": "brew.upgrade",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": "upgrade",
+      "class": "local.write",
+      "reason": "brew upgrade"
+    },
+    {
+      "id": "brew.update",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": "update",
+      "class": "local.write",
+      "reason": "brew update (refreshes formula index)"
+    },
+    {
+      "id": "brew.update-reset",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": "update-reset",
+      "class": "local.write.destroy",
+      "reason": "brew update-reset (resets local taps; loses local edits)"
+    },
+    {
+      "id": "brew.uninstall",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": "uninstall",
+      "class": "local.write",
+      "reason": "brew uninstall"
+    },
+    {
+      "id": "brew.remove",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": "remove",
+      "class": "local.write",
+      "reason": "brew remove (alias of uninstall)"
+    },
+    {
+      "id": "brew.rm",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": "rm",
+      "class": "local.write",
+      "reason": "brew rm (alias of uninstall)"
+    },
+    {
+      "id": "brew.link",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": "link",
+      "class": "local.write",
+      "reason": "brew link"
+    },
+    {
+      "id": "brew.unlink",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": "unlink",
+      "class": "local.write",
+      "reason": "brew unlink"
+    },
+    {
+      "id": "brew.pin",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": "pin",
+      "class": "local.write",
+      "reason": "brew pin"
+    },
+    {
+      "id": "brew.unpin",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": "unpin",
+      "class": "local.write",
+      "reason": "brew unpin"
+    },
+    {
+      "id": "brew.cleanup",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": "cleanup",
+      "class": "local.write.destroy",
+      "reason": "brew cleanup (removes old versions / cache)"
+    },
+    {
+      "id": "brew.autoremove",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": "autoremove",
+      "class": "local.write.destroy",
+      "reason": "brew autoremove (removes unused deps)"
+    },
+    {
+      "id": "brew.tap.write",
+      "match": "regex",
+      "pattern": "^\\s*brew\\s+tap\\s+\\S",
+      "class": "local.write",
+      "reason": "brew tap <name> (adds a third-party tap)"
+    },
+    {
+      "id": "brew.untap",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": "untap",
+      "class": "local.write",
+      "reason": "brew untap"
+    },
+    {
+      "id": "brew.services.start",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": [
+        "services",
+        "start"
+      ],
+      "class": "local.write",
+      "reason": "brew services start"
+    },
+    {
+      "id": "brew.services.run",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": [
+        "services",
+        "run"
+      ],
+      "class": "local.write",
+      "reason": "brew services run"
+    },
+    {
+      "id": "brew.services.restart",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": [
+        "services",
+        "restart"
+      ],
+      "class": "local.write",
+      "reason": "brew services restart"
+    },
+    {
+      "id": "brew.services.stop",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": [
+        "services",
+        "stop"
+      ],
+      "class": "local.write",
+      "reason": "brew services stop"
+    },
+    {
+      "id": "brew.services.kill",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": [
+        "services",
+        "kill"
+      ],
+      "class": "local.write",
+      "reason": "brew services kill"
+    },
+    {
+      "id": "brew.services.cleanup",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": [
+        "services",
+        "cleanup"
+      ],
+      "class": "local.write.destroy",
+      "reason": "brew services cleanup"
+    },
+    {
+      "id": "brew.fetch",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": "fetch",
+      "class": "local.write",
+      "reason": "brew fetch (downloads bottle to cache)"
+    },
+    {
+      "id": "brew.bundle",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": "bundle",
+      "excluded_flags": [
+        "check",
+        "list",
+        "dump"
+      ],
+      "class": "local.write",
+      "reason": "brew bundle (installs from Brewfile)"
+    },
+    {
+      "id": "brew.bundle.dump",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": [
+        "bundle",
+        "dump"
+      ],
+      "class": "local.write",
+      "reason": "brew bundle dump (writes Brewfile)"
+    },
+    {
+      "id": "brew.analytics.on",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": [
+        "analytics",
+        "on"
+      ],
+      "class": "local.write",
+      "reason": "brew analytics on"
+    },
+    {
+      "id": "brew.analytics.off",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": [
+        "analytics",
+        "off"
+      ],
+      "class": "local.write",
+      "reason": "brew analytics off"
+    },
+    {
+      "id": "brew.analytics.regenerate-uuid",
+      "match": "ast",
+      "binary": "brew",
+      "subcommand": [
+        "analytics",
+        "regenerate-uuid"
+      ],
+      "class": "local.write",
+      "reason": "brew analytics regenerate-uuid"
     }
   ]
 }
