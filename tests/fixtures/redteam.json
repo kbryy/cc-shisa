@@ -185,5 +185,32 @@
       "action": "ask",
       "class": "unknown"
     }
+  },
+  {
+    "name": "git push --force-with-lease still asks",
+    "command": "git push --force-with-lease origin main",
+    "expect": {
+      "action": "ask",
+      "class": "remote.write.destroy",
+      "ruleId": "core.git.push.force"
+    }
+  },
+  {
+    "name": "git push --delete still asks",
+    "command": "git push --delete origin feature",
+    "expect": {
+      "action": "ask",
+      "class": "remote.write.destroy",
+      "ruleId": "core.git.push.delete"
+    }
+  },
+  {
+    "name": "gh api --method=DELETE form",
+    "command": "gh api repos/owner/x --method=DELETE",
+    "expect": {
+      "action": "ask",
+      "class": "remote.write.destroy",
+      "ruleId": "gh.api.delete.method"
+    }
   }
 ]

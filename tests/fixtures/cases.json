@@ -358,11 +358,12 @@
     }
   },
   {
-    "name": "git push origin main asks (no force)",
+    "name": "git push allows (no force)",
     "command": "git push origin main",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "git.push"
     }
   },
   {
@@ -640,11 +641,12 @@
     }
   },
   {
-    "name": "gh pr create asks",
+    "name": "gh pr create allows",
     "command": "gh pr create --title foo",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.pr.create"
     }
   },
   {
@@ -890,19 +892,21 @@
     }
   },
   {
-    "name": "git branch -d asks (write mode excluded)",
+    "name": "git branch -d allows (delete only if merged)",
     "command": "git branch -d feature",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.branch.delete.safe"
     }
   },
   {
-    "name": "git branch -D asks (force delete excluded)",
+    "name": "git branch -D asks (force delete is destructive)",
     "command": "git branch -D feature",
     "expect": {
       "action": "ask",
-      "class": "unknown"
+      "class": "local.write.destroy",
+      "ruleId": "git.branch.delete.force"
     }
   },
   {
@@ -1723,11 +1727,12 @@
     }
   },
   {
-    "name": "git merge feature asks (non-ff)",
+    "name": "git merge allows (non-ff merge is reversible via revert)",
     "command": "git merge feature",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.merge"
     }
   },
   {
@@ -1740,11 +1745,12 @@
     }
   },
   {
-    "name": "git cherry-pick abc asks (initiates new pick)",
+    "name": "git cherry-pick allows (creates a new commit)",
     "command": "git cherry-pick abc123",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.cherry-pick"
     }
   },
   {
@@ -1757,11 +1763,12 @@
     }
   },
   {
-    "name": "git rebase main asks (initiates rebase)",
+    "name": "git rebase allows (rewrites local history; reflog recoverable)",
     "command": "git rebase main",
     "expect": {
-      "action": "ask",
-      "class": "unknown"
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.rebase"
     }
   },
   {
@@ -1774,11 +1781,12 @@
     }
   },
   {
-    "name": "git tag delete asks",
+    "name": "git tag -d asks (destroys local tag)",
     "command": "git tag -d v1.0.0",
     "expect": {
       "action": "ask",
-      "class": "unknown"
+      "class": "local.write.destroy",
+      "ruleId": "git.tag.delete"
     }
   },
   {
@@ -1832,6 +1840,474 @@
     "expect": {
       "action": "ask",
       "class": "unknown"
+    }
+  },
+  {
+    "name": "git pull allows",
+    "command": "git pull origin main",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.pull"
+    }
+  },
+  {
+    "name": "git revert allows",
+    "command": "git revert HEAD",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.revert"
+    }
+  },
+  {
+    "name": "git mv allows",
+    "command": "git mv old.txt new.txt",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.mv"
+    }
+  },
+  {
+    "name": "git rm single path allows",
+    "command": "git rm old.txt",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.rm"
+    }
+  },
+  {
+    "name": "git rm -r asks (recursive)",
+    "command": "git rm -r src/legacy",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "git.rm.recursive"
+    }
+  },
+  {
+    "name": "git restore --staged allows",
+    "command": "git restore --staged file.ts",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.restore.staged"
+    }
+  },
+  {
+    "name": "git restore path asks (discards work tree)",
+    "command": "git restore file.ts",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "git.restore.path"
+    }
+  },
+  {
+    "name": "git config set allows",
+    "command": "git config user.email me@example.com",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.config.set"
+    }
+  },
+  {
+    "name": "git config --unset allows",
+    "command": "git config --unset core.autocrlf",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.config.unset"
+    }
+  },
+  {
+    "name": "git remote add allows",
+    "command": "git remote add upstream git@github.com:foo/bar.git",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.remote.add"
+    }
+  },
+  {
+    "name": "git submodule update allows",
+    "command": "git submodule update --init",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.submodule.update"
+    }
+  },
+  {
+    "name": "git worktree add allows",
+    "command": "git worktree add ../wt-foo",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.worktree.add"
+    }
+  },
+  {
+    "name": "git worktree remove asks (destroys directory)",
+    "command": "git worktree remove ../wt-foo",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "git.worktree.remove"
+    }
+  },
+  {
+    "name": "git clean -fd asks",
+    "command": "git clean -fd",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "git.clean"
+    }
+  },
+  {
+    "name": "git clean -fdx asks",
+    "command": "git clean -fdx",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "git.clean"
+    }
+  },
+  {
+    "name": "git stash drop asks",
+    "command": "git stash drop stash@{0}",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "git.stash.drop"
+    }
+  },
+  {
+    "name": "git stash clear asks",
+    "command": "git stash clear",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "git.stash.clear"
+    }
+  },
+  {
+    "name": "git update-ref -d asks",
+    "command": "git update-ref -d refs/heads/old",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "git.update-ref.delete"
+    }
+  },
+  {
+    "name": "git filter-branch asks (history rewrite)",
+    "command": "git filter-branch --tree-filter 'rm -f secrets' HEAD",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "git.filter-branch"
+    }
+  },
+  {
+    "name": "git rebase --continue allows (resume)",
+    "command": "git rebase --continue",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.rebase.resume"
+    }
+  },
+  {
+    "name": "git apply allows",
+    "command": "git apply diff.patch",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.apply"
+    }
+  },
+  {
+    "name": "git checkout -- discard asks",
+    "command": "git checkout -- file.ts",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "git.checkout.discard"
+    }
+  },
+  {
+    "name": "gh pr edit allows",
+    "command": "gh pr edit 123 --title bar",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.pr.edit"
+    }
+  },
+  {
+    "name": "gh pr merge allows",
+    "command": "gh pr merge 123",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.pr.merge"
+    }
+  },
+  {
+    "name": "gh pr close allows (reversible)",
+    "command": "gh pr close 123",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.pr.close"
+    }
+  },
+  {
+    "name": "gh pr comment allows",
+    "command": "gh pr comment 123 --body hello",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.pr.comment"
+    }
+  },
+  {
+    "name": "gh issue create allows",
+    "command": "gh issue create --title foo",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.issue.create"
+    }
+  },
+  {
+    "name": "gh issue close allows",
+    "command": "gh issue close 42",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.issue.close"
+    }
+  },
+  {
+    "name": "gh repo clone allows (writes locally)",
+    "command": "gh repo clone owner/name",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "gh.repo.clone"
+    }
+  },
+  {
+    "name": "gh repo create allows",
+    "command": "gh repo create owner/new --public",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.repo.create"
+    }
+  },
+  {
+    "name": "gh repo edit allows",
+    "command": "gh repo edit owner/name --description x",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.repo.edit"
+    }
+  },
+  {
+    "name": "gh repo delete asks (destructive)",
+    "command": "gh repo delete owner/temp --yes",
+    "expect": {
+      "action": "ask",
+      "class": "remote.write.destroy",
+      "ruleId": "gh.repo.delete"
+    }
+  },
+  {
+    "name": "gh release create allows",
+    "command": "gh release create v1.0.0 --notes hi",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.release.create"
+    }
+  },
+  {
+    "name": "gh release delete asks",
+    "command": "gh release delete v1.0.0",
+    "expect": {
+      "action": "ask",
+      "class": "remote.write.destroy",
+      "ruleId": "gh.release.delete"
+    }
+  },
+  {
+    "name": "gh secret set allows",
+    "command": "gh secret set FOO --body bar",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.secret.set"
+    }
+  },
+  {
+    "name": "gh secret delete asks",
+    "command": "gh secret delete FOO",
+    "expect": {
+      "action": "ask",
+      "class": "remote.write.destroy",
+      "ruleId": "gh.secret.delete"
+    }
+  },
+  {
+    "name": "gh workflow run allows",
+    "command": "gh workflow run release.yml",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.workflow.run"
+    }
+  },
+  {
+    "name": "gh run cancel allows",
+    "command": "gh run cancel 12345",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.run.cancel"
+    }
+  },
+  {
+    "name": "gh run delete asks",
+    "command": "gh run delete 12345",
+    "expect": {
+      "action": "ask",
+      "class": "remote.write.destroy",
+      "ruleId": "gh.run.delete"
+    }
+  },
+  {
+    "name": "gh label create allows",
+    "command": "gh label create bug --color ff0000",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.label.create"
+    }
+  },
+  {
+    "name": "gh label delete asks",
+    "command": "gh label delete bug",
+    "expect": {
+      "action": "ask",
+      "class": "remote.write.destroy",
+      "ruleId": "gh.label.delete"
+    }
+  },
+  {
+    "name": "gh ssh-key add allows",
+    "command": "gh ssh-key add ~/.ssh/id_ed25519.pub",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.ssh-key.add"
+    }
+  },
+  {
+    "name": "gh ssh-key delete asks",
+    "command": "gh ssh-key delete 12345",
+    "expect": {
+      "action": "ask",
+      "class": "remote.write.destroy",
+      "ruleId": "gh.ssh-key.delete"
+    }
+  },
+  {
+    "name": "gh codespace create allows",
+    "command": "gh codespace create --repo owner/name",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.codespace.create"
+    }
+  },
+  {
+    "name": "gh codespace delete asks",
+    "command": "gh codespace delete --codespace foo",
+    "expect": {
+      "action": "ask",
+      "class": "remote.write.destroy",
+      "ruleId": "gh.codespace.delete"
+    }
+  },
+  {
+    "name": "gh project create allows",
+    "command": "gh project create --owner @me --title foo",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.project.create"
+    }
+  },
+  {
+    "name": "gh project delete asks",
+    "command": "gh project delete 1 --owner @me",
+    "expect": {
+      "action": "ask",
+      "class": "remote.write.destroy",
+      "ruleId": "gh.project.delete"
+    }
+  },
+  {
+    "name": "gh extension install allows",
+    "command": "gh extension install owner/gh-foo",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "gh.extension.install"
+    }
+  },
+  {
+    "name": "gh auth login allows (writes local creds)",
+    "command": "gh auth login",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "gh.auth.login"
+    }
+  },
+  {
+    "name": "gh api default GET allows",
+    "command": "gh api repos/owner/name",
+    "expect": {
+      "action": "allow",
+      "class": "remote.read",
+      "ruleId": "gh.api.read"
+    }
+  },
+  {
+    "name": "gh api --method POST allows",
+    "command": "gh api repos/owner/name/issues --method POST -f title=foo",
+    "expect": {
+      "action": "allow",
+      "class": "remote.write",
+      "ruleId": "gh.api.write.method"
+    }
+  },
+  {
+    "name": "gh api -X DELETE asks",
+    "command": "gh api repos/owner/temp -X DELETE",
+    "expect": {
+      "action": "ask",
+      "class": "remote.write.destroy",
+      "ruleId": "gh.api.delete.method"
     }
   }
 ]

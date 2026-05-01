@@ -592,6 +592,559 @@
       ],
       "class": "local.write",
       "reason": "git tag <name> (creates local tag; not pushed without git push)"
+    },
+    {
+      "id": "git.push",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "push",
+      "excluded_flags": [
+        "--force",
+        "-f",
+        "--force-with-lease",
+        "--delete",
+        "-d"
+      ],
+      "class": "remote.write",
+      "reason": "git push (no force / no delete)"
+    },
+    {
+      "id": "git.pull",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "pull",
+      "class": "local.write",
+      "reason": "git pull (fetch + merge into working branch)"
+    },
+    {
+      "id": "git.merge",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "merge",
+      "excluded_flags": [
+        "--abort",
+        "--ff-only"
+      ],
+      "class": "local.write",
+      "reason": "git merge (creates merge commit on the working branch)"
+    },
+    {
+      "id": "git.rebase",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "rebase",
+      "excluded_flags": [
+        "--continue",
+        "--abort",
+        "--skip",
+        "--quit",
+        "--edit-todo"
+      ],
+      "class": "local.write",
+      "reason": "git rebase (rewrites local history)"
+    },
+    {
+      "id": "git.cherry-pick",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "cherry-pick",
+      "excluded_flags": [
+        "--continue",
+        "--abort",
+        "--skip",
+        "--quit"
+      ],
+      "class": "local.write",
+      "reason": "git cherry-pick (applies a commit on the working branch)"
+    },
+    {
+      "id": "git.revert",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "revert",
+      "excluded_flags": [
+        "--continue",
+        "--abort",
+        "--skip",
+        "--quit"
+      ],
+      "class": "local.write",
+      "reason": "git revert (creates an inverse commit)"
+    },
+    {
+      "id": "git.apply",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "apply",
+      "class": "local.write",
+      "reason": "git apply (applies a patch to the working tree)"
+    },
+    {
+      "id": "git.am",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "am",
+      "excluded_flags": [
+        "--continue",
+        "--abort",
+        "--skip",
+        "--quit"
+      ],
+      "class": "local.write",
+      "reason": "git am (applies a mailbox patch as commits)"
+    },
+    {
+      "id": "git.mv",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "mv",
+      "class": "local.write",
+      "reason": "git mv (rename / move tracked files)"
+    },
+    {
+      "id": "git.rm",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "rm",
+      "excluded_flags": [
+        "-r",
+        "--recursive",
+        "-rf",
+        "-fr"
+      ],
+      "class": "local.write",
+      "reason": "git rm (stage a single-path deletion)"
+    },
+    {
+      "id": "git.rm.recursive",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "rm",
+      "any_flags": [
+        "-r",
+        "--recursive",
+        "-rf",
+        "-fr"
+      ],
+      "class": "local.write.destroy",
+      "reason": "git rm -r (recursive removal stages a directory deletion)"
+    },
+    {
+      "id": "git.restore.staged",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "restore",
+      "flags": [
+        "--staged"
+      ],
+      "class": "local.write",
+      "reason": "git restore --staged (unstage; working tree untouched)"
+    },
+    {
+      "id": "git.restore.path",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "restore",
+      "excluded_flags": [
+        "--staged"
+      ],
+      "class": "local.write.destroy",
+      "reason": "git restore (without --staged) discards working-tree changes"
+    },
+    {
+      "id": "git.config.set",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "config",
+      "excluded_flags": [
+        "--get",
+        "--get-all",
+        "--get-regexp",
+        "-l",
+        "--list",
+        "--show-origin",
+        "--unset",
+        "--unset-all"
+      ],
+      "class": "local.write",
+      "reason": "git config (set value in local config)"
+    },
+    {
+      "id": "git.config.unset",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "config",
+      "any_flags": [
+        "--unset",
+        "--unset-all"
+      ],
+      "class": "local.write",
+      "reason": "git config --unset (remove key from local config)"
+    },
+    {
+      "id": "git.remote.add",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "remote",
+        "add"
+      ],
+      "class": "local.write",
+      "reason": "git remote add"
+    },
+    {
+      "id": "git.remote.set-url",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "remote",
+        "set-url"
+      ],
+      "class": "local.write",
+      "reason": "git remote set-url"
+    },
+    {
+      "id": "git.remote.rename",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "remote",
+        "rename"
+      ],
+      "class": "local.write",
+      "reason": "git remote rename"
+    },
+    {
+      "id": "git.remote.remove",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "remote",
+        "remove"
+      ],
+      "class": "local.write",
+      "reason": "git remote remove (drops a configured remote, easily re-added)"
+    },
+    {
+      "id": "git.submodule.add",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "submodule",
+        "add"
+      ],
+      "class": "local.write",
+      "reason": "git submodule add"
+    },
+    {
+      "id": "git.submodule.update",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "submodule",
+        "update"
+      ],
+      "class": "local.write",
+      "reason": "git submodule update"
+    },
+    {
+      "id": "git.submodule.init",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "submodule",
+        "init"
+      ],
+      "class": "local.write",
+      "reason": "git submodule init"
+    },
+    {
+      "id": "git.submodule.sync",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "submodule",
+        "sync"
+      ],
+      "class": "local.write",
+      "reason": "git submodule sync"
+    },
+    {
+      "id": "git.worktree.add",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "worktree",
+        "add"
+      ],
+      "class": "local.write",
+      "reason": "git worktree add"
+    },
+    {
+      "id": "git.worktree.remove",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "worktree",
+        "remove"
+      ],
+      "class": "local.write.destroy",
+      "reason": "git worktree remove (deletes the worktree directory)"
+    },
+    {
+      "id": "git.worktree.prune",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "worktree",
+        "prune"
+      ],
+      "class": "local.write.destroy",
+      "reason": "git worktree prune"
+    },
+    {
+      "id": "git.notes.add",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "notes",
+        "add"
+      ],
+      "class": "local.write",
+      "reason": "git notes add"
+    },
+    {
+      "id": "git.notes.append",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "notes",
+        "append"
+      ],
+      "class": "local.write",
+      "reason": "git notes append"
+    },
+    {
+      "id": "git.notes.edit",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "notes",
+        "edit"
+      ],
+      "class": "local.write",
+      "reason": "git notes edit"
+    },
+    {
+      "id": "git.notes.remove",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "notes",
+        "remove"
+      ],
+      "class": "local.write.destroy",
+      "reason": "git notes remove"
+    },
+    {
+      "id": "git.bisect.start",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "bisect",
+        "start"
+      ],
+      "class": "local.write",
+      "reason": "git bisect start"
+    },
+    {
+      "id": "git.bisect.good",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "bisect",
+        "good"
+      ],
+      "class": "local.write",
+      "reason": "git bisect good"
+    },
+    {
+      "id": "git.bisect.bad",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "bisect",
+        "bad"
+      ],
+      "class": "local.write",
+      "reason": "git bisect bad"
+    },
+    {
+      "id": "git.bisect.skip",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "bisect",
+        "skip"
+      ],
+      "class": "local.write",
+      "reason": "git bisect skip"
+    },
+    {
+      "id": "git.bisect.reset",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "bisect",
+        "reset"
+      ],
+      "class": "local.write",
+      "reason": "git bisect reset"
+    },
+    {
+      "id": "git.clean",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "clean",
+      "any_flags": [
+        "-f",
+        "--force",
+        "-fd",
+        "-fdx",
+        "-df",
+        "-fx"
+      ],
+      "class": "local.write.destroy",
+      "reason": "git clean -f removes untracked files / dirs from the working tree"
+    },
+    {
+      "id": "git.stash.drop",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "stash",
+        "drop"
+      ],
+      "class": "local.write.destroy",
+      "reason": "git stash drop (discards a stash entry)"
+    },
+    {
+      "id": "git.stash.clear",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "stash",
+        "clear"
+      ],
+      "class": "local.write.destroy",
+      "reason": "git stash clear (drops every stash entry)"
+    },
+    {
+      "id": "git.tag.delete",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "tag",
+      "any_flags": [
+        "-d",
+        "--delete"
+      ],
+      "class": "local.write.destroy",
+      "reason": "git tag -d (deletes a local tag)"
+    },
+    {
+      "id": "git.branch.delete.safe",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "branch",
+      "any_flags": [
+        "-d"
+      ],
+      "excluded_flags": [
+        "-D",
+        "--force"
+      ],
+      "class": "local.write",
+      "reason": "git branch -d (delete only if merged)"
+    },
+    {
+      "id": "git.branch.delete.force",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "branch",
+      "any_flags": [
+        "-D"
+      ],
+      "class": "local.write.destroy",
+      "reason": "git branch -D (force delete; throws away unmerged commits)"
+    },
+    {
+      "id": "git.update-ref.delete",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "update-ref",
+      "any_flags": [
+        "-d"
+      ],
+      "class": "local.write.destroy",
+      "reason": "git update-ref -d (delete a ref directly)"
+    },
+    {
+      "id": "git.reflog.delete",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "reflog",
+        "delete"
+      ],
+      "class": "local.write.destroy",
+      "reason": "git reflog delete"
+    },
+    {
+      "id": "git.reflog.expire",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": [
+        "reflog",
+        "expire"
+      ],
+      "class": "local.write.destroy",
+      "reason": "git reflog expire"
+    },
+    {
+      "id": "git.gc.aggressive",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "gc",
+      "any_flags": [
+        "--aggressive",
+        "--prune=now",
+        "--prune=all"
+      ],
+      "class": "local.write.destroy",
+      "reason": "git gc with aggressive / prune now (immediately drops unreachable objects)"
+    },
+    {
+      "id": "git.filter-branch",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "filter-branch",
+      "class": "local.write.destroy",
+      "reason": "git filter-branch rewrites history irreversibly"
+    },
+    {
+      "id": "git.filter-repo",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "filter-repo",
+      "class": "local.write.destroy",
+      "reason": "git filter-repo rewrites history irreversibly"
+    },
+    {
+      "id": "git.checkout.discard",
+      "match": "regex",
+      "pattern": "^\\s*git\\s+checkout(\\s+[^\\s]+)*\\s+--(\\s|$)",
+      "class": "local.write.destroy",
+      "reason": "git checkout -- <path> discards working-tree changes"
     }
   ]
 }

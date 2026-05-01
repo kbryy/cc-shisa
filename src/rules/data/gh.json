@@ -410,6 +410,1075 @@
       ],
       "class": "remote.read",
       "reason": "gh attestation verify"
+    },
+    {
+      "id": "gh.pr.create",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "pr",
+        "create"
+      ],
+      "class": "remote.write",
+      "reason": "gh pr create"
+    },
+    {
+      "id": "gh.pr.edit",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "pr",
+        "edit"
+      ],
+      "class": "remote.write",
+      "reason": "gh pr edit"
+    },
+    {
+      "id": "gh.pr.comment",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "pr",
+        "comment"
+      ],
+      "class": "remote.write",
+      "reason": "gh pr comment"
+    },
+    {
+      "id": "gh.pr.review",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "pr",
+        "review"
+      ],
+      "class": "remote.write",
+      "reason": "gh pr review"
+    },
+    {
+      "id": "gh.pr.ready",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "pr",
+        "ready"
+      ],
+      "class": "remote.write",
+      "reason": "gh pr ready"
+    },
+    {
+      "id": "gh.pr.merge",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "pr",
+        "merge"
+      ],
+      "class": "remote.write",
+      "reason": "gh pr merge"
+    },
+    {
+      "id": "gh.pr.close",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "pr",
+        "close"
+      ],
+      "class": "remote.write",
+      "reason": "gh pr close (reversible via gh pr reopen)"
+    },
+    {
+      "id": "gh.pr.reopen",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "pr",
+        "reopen"
+      ],
+      "class": "remote.write",
+      "reason": "gh pr reopen"
+    },
+    {
+      "id": "gh.pr.lock",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "pr",
+        "lock"
+      ],
+      "class": "remote.write",
+      "reason": "gh pr lock"
+    },
+    {
+      "id": "gh.pr.unlock",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "pr",
+        "unlock"
+      ],
+      "class": "remote.write",
+      "reason": "gh pr unlock"
+    },
+    {
+      "id": "gh.pr.checkout",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "pr",
+        "checkout"
+      ],
+      "class": "local.write",
+      "reason": "gh pr checkout (creates / switches to a local branch)"
+    },
+    {
+      "id": "gh.issue.create",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "issue",
+        "create"
+      ],
+      "class": "remote.write",
+      "reason": "gh issue create"
+    },
+    {
+      "id": "gh.issue.edit",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "issue",
+        "edit"
+      ],
+      "class": "remote.write",
+      "reason": "gh issue edit"
+    },
+    {
+      "id": "gh.issue.comment",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "issue",
+        "comment"
+      ],
+      "class": "remote.write",
+      "reason": "gh issue comment"
+    },
+    {
+      "id": "gh.issue.close",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "issue",
+        "close"
+      ],
+      "class": "remote.write",
+      "reason": "gh issue close"
+    },
+    {
+      "id": "gh.issue.reopen",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "issue",
+        "reopen"
+      ],
+      "class": "remote.write",
+      "reason": "gh issue reopen"
+    },
+    {
+      "id": "gh.issue.lock",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "issue",
+        "lock"
+      ],
+      "class": "remote.write",
+      "reason": "gh issue lock"
+    },
+    {
+      "id": "gh.issue.unlock",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "issue",
+        "unlock"
+      ],
+      "class": "remote.write",
+      "reason": "gh issue unlock"
+    },
+    {
+      "id": "gh.issue.transfer",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "issue",
+        "transfer"
+      ],
+      "class": "remote.write",
+      "reason": "gh issue transfer"
+    },
+    {
+      "id": "gh.issue.pin",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "issue",
+        "pin"
+      ],
+      "class": "remote.write",
+      "reason": "gh issue pin"
+    },
+    {
+      "id": "gh.issue.unpin",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "issue",
+        "unpin"
+      ],
+      "class": "remote.write",
+      "reason": "gh issue unpin"
+    },
+    {
+      "id": "gh.issue.develop",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "issue",
+        "develop"
+      ],
+      "class": "remote.write",
+      "reason": "gh issue develop (creates a linked branch)"
+    },
+    {
+      "id": "gh.repo.create",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "repo",
+        "create"
+      ],
+      "class": "remote.write",
+      "reason": "gh repo create"
+    },
+    {
+      "id": "gh.repo.edit",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "repo",
+        "edit"
+      ],
+      "class": "remote.write",
+      "reason": "gh repo edit"
+    },
+    {
+      "id": "gh.repo.fork",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "repo",
+        "fork"
+      ],
+      "class": "remote.write",
+      "reason": "gh repo fork"
+    },
+    {
+      "id": "gh.repo.archive",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "repo",
+        "archive"
+      ],
+      "class": "remote.write",
+      "reason": "gh repo archive (reversible via gh repo unarchive)"
+    },
+    {
+      "id": "gh.repo.unarchive",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "repo",
+        "unarchive"
+      ],
+      "class": "remote.write",
+      "reason": "gh repo unarchive"
+    },
+    {
+      "id": "gh.repo.rename",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "repo",
+        "rename"
+      ],
+      "class": "remote.write",
+      "reason": "gh repo rename"
+    },
+    {
+      "id": "gh.repo.set-default",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "repo",
+        "set-default"
+      ],
+      "class": "local.write",
+      "reason": "gh repo set-default (writes to local git config)"
+    },
+    {
+      "id": "gh.repo.sync",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "repo",
+        "sync"
+      ],
+      "class": "remote.write",
+      "reason": "gh repo sync (sync fork branch from upstream)"
+    },
+    {
+      "id": "gh.repo.clone",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "repo",
+        "clone"
+      ],
+      "class": "local.write",
+      "reason": "gh repo clone (clones into the local filesystem)"
+    },
+    {
+      "id": "gh.repo.delete",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "repo",
+        "delete"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "gh repo delete"
+    },
+    {
+      "id": "gh.repo.deploy-key.add",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "repo",
+        "deploy-key",
+        "add"
+      ],
+      "class": "remote.write",
+      "reason": "gh repo deploy-key add"
+    },
+    {
+      "id": "gh.repo.deploy-key.delete",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "repo",
+        "deploy-key",
+        "delete"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "gh repo deploy-key delete"
+    },
+    {
+      "id": "gh.release.create",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "release",
+        "create"
+      ],
+      "class": "remote.write",
+      "reason": "gh release create"
+    },
+    {
+      "id": "gh.release.edit",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "release",
+        "edit"
+      ],
+      "class": "remote.write",
+      "reason": "gh release edit"
+    },
+    {
+      "id": "gh.release.upload",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "release",
+        "upload"
+      ],
+      "class": "remote.write",
+      "reason": "gh release upload"
+    },
+    {
+      "id": "gh.release.download",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "release",
+        "download"
+      ],
+      "class": "local.write",
+      "reason": "gh release download (writes assets to local fs)"
+    },
+    {
+      "id": "gh.release.delete",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "release",
+        "delete"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "gh release delete"
+    },
+    {
+      "id": "gh.release.delete-asset",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "release",
+        "delete-asset"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "gh release delete-asset"
+    },
+    {
+      "id": "gh.gist.create",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "gist",
+        "create"
+      ],
+      "class": "remote.write",
+      "reason": "gh gist create"
+    },
+    {
+      "id": "gh.gist.edit",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "gist",
+        "edit"
+      ],
+      "class": "remote.write",
+      "reason": "gh gist edit"
+    },
+    {
+      "id": "gh.gist.clone",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "gist",
+        "clone"
+      ],
+      "class": "local.write",
+      "reason": "gh gist clone (clones into the local filesystem)"
+    },
+    {
+      "id": "gh.gist.rename",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "gist",
+        "rename"
+      ],
+      "class": "remote.write",
+      "reason": "gh gist rename"
+    },
+    {
+      "id": "gh.gist.delete",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "gist",
+        "delete"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "gh gist delete"
+    },
+    {
+      "id": "gh.workflow.run",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "workflow",
+        "run"
+      ],
+      "class": "remote.write",
+      "reason": "gh workflow run (triggers a workflow_dispatch)"
+    },
+    {
+      "id": "gh.workflow.enable",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "workflow",
+        "enable"
+      ],
+      "class": "remote.write",
+      "reason": "gh workflow enable"
+    },
+    {
+      "id": "gh.workflow.disable",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "workflow",
+        "disable"
+      ],
+      "class": "remote.write",
+      "reason": "gh workflow disable (reversible)"
+    },
+    {
+      "id": "gh.run.cancel",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "run",
+        "cancel"
+      ],
+      "class": "remote.write",
+      "reason": "gh run cancel"
+    },
+    {
+      "id": "gh.run.rerun",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "run",
+        "rerun"
+      ],
+      "class": "remote.write",
+      "reason": "gh run rerun"
+    },
+    {
+      "id": "gh.run.delete",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "run",
+        "delete"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "gh run delete"
+    },
+    {
+      "id": "gh.cache.delete",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "cache",
+        "delete"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "gh cache delete"
+    },
+    {
+      "id": "gh.secret.set",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "secret",
+        "set"
+      ],
+      "class": "remote.write",
+      "reason": "gh secret set"
+    },
+    {
+      "id": "gh.secret.delete",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "secret",
+        "delete"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "gh secret delete"
+    },
+    {
+      "id": "gh.variable.set",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "variable",
+        "set"
+      ],
+      "class": "remote.write",
+      "reason": "gh variable set"
+    },
+    {
+      "id": "gh.variable.delete",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "variable",
+        "delete"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "gh variable delete"
+    },
+    {
+      "id": "gh.label.create",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "label",
+        "create"
+      ],
+      "class": "remote.write",
+      "reason": "gh label create"
+    },
+    {
+      "id": "gh.label.edit",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "label",
+        "edit"
+      ],
+      "class": "remote.write",
+      "reason": "gh label edit"
+    },
+    {
+      "id": "gh.label.clone",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "label",
+        "clone"
+      ],
+      "class": "remote.write",
+      "reason": "gh label clone (copies labels into another repo)"
+    },
+    {
+      "id": "gh.label.delete",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "label",
+        "delete"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "gh label delete"
+    },
+    {
+      "id": "gh.ssh-key.add",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "ssh-key",
+        "add"
+      ],
+      "class": "remote.write",
+      "reason": "gh ssh-key add"
+    },
+    {
+      "id": "gh.ssh-key.delete",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "ssh-key",
+        "delete"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "gh ssh-key delete"
+    },
+    {
+      "id": "gh.gpg-key.add",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "gpg-key",
+        "add"
+      ],
+      "class": "remote.write",
+      "reason": "gh gpg-key add"
+    },
+    {
+      "id": "gh.gpg-key.delete",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "gpg-key",
+        "delete"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "gh gpg-key delete"
+    },
+    {
+      "id": "gh.ruleset.create",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "ruleset",
+        "create"
+      ],
+      "class": "remote.write",
+      "reason": "gh ruleset create"
+    },
+    {
+      "id": "gh.ruleset.edit",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "ruleset",
+        "edit"
+      ],
+      "class": "remote.write",
+      "reason": "gh ruleset edit"
+    },
+    {
+      "id": "gh.ruleset.delete",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "ruleset",
+        "delete"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "gh ruleset delete"
+    },
+    {
+      "id": "gh.codespace.create",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "codespace",
+        "create"
+      ],
+      "class": "remote.write",
+      "reason": "gh codespace create"
+    },
+    {
+      "id": "gh.codespace.edit",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "codespace",
+        "edit"
+      ],
+      "class": "remote.write",
+      "reason": "gh codespace edit"
+    },
+    {
+      "id": "gh.codespace.stop",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "codespace",
+        "stop"
+      ],
+      "class": "remote.write",
+      "reason": "gh codespace stop"
+    },
+    {
+      "id": "gh.codespace.rebuild",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "codespace",
+        "rebuild"
+      ],
+      "class": "remote.write",
+      "reason": "gh codespace rebuild"
+    },
+    {
+      "id": "gh.codespace.ssh",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "codespace",
+        "ssh"
+      ],
+      "class": "remote.write",
+      "reason": "gh codespace ssh (interactive remote shell)"
+    },
+    {
+      "id": "gh.codespace.delete",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "codespace",
+        "delete"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "gh codespace delete"
+    },
+    {
+      "id": "gh.project.create",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "project",
+        "create"
+      ],
+      "class": "remote.write",
+      "reason": "gh project create"
+    },
+    {
+      "id": "gh.project.edit",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "project",
+        "edit"
+      ],
+      "class": "remote.write",
+      "reason": "gh project edit"
+    },
+    {
+      "id": "gh.project.copy",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "project",
+        "copy"
+      ],
+      "class": "remote.write",
+      "reason": "gh project copy"
+    },
+    {
+      "id": "gh.project.close",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "project",
+        "close"
+      ],
+      "class": "remote.write",
+      "reason": "gh project close"
+    },
+    {
+      "id": "gh.project.field-create",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "project",
+        "field-create"
+      ],
+      "class": "remote.write",
+      "reason": "gh project field-create"
+    },
+    {
+      "id": "gh.project.field-delete",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "project",
+        "field-delete"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "gh project field-delete"
+    },
+    {
+      "id": "gh.project.item-add",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "project",
+        "item-add"
+      ],
+      "class": "remote.write",
+      "reason": "gh project item-add"
+    },
+    {
+      "id": "gh.project.item-edit",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "project",
+        "item-edit"
+      ],
+      "class": "remote.write",
+      "reason": "gh project item-edit"
+    },
+    {
+      "id": "gh.project.item-archive",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "project",
+        "item-archive"
+      ],
+      "class": "remote.write",
+      "reason": "gh project item-archive"
+    },
+    {
+      "id": "gh.project.item-delete",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "project",
+        "item-delete"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "gh project item-delete"
+    },
+    {
+      "id": "gh.project.delete",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "project",
+        "delete"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "gh project delete"
+    },
+    {
+      "id": "gh.extension.install",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "extension",
+        "install"
+      ],
+      "class": "local.write",
+      "reason": "gh extension install"
+    },
+    {
+      "id": "gh.extension.upgrade",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "extension",
+        "upgrade"
+      ],
+      "class": "local.write",
+      "reason": "gh extension upgrade"
+    },
+    {
+      "id": "gh.extension.create",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "extension",
+        "create"
+      ],
+      "class": "local.write",
+      "reason": "gh extension create (scaffolds an extension locally)"
+    },
+    {
+      "id": "gh.extension.remove",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "extension",
+        "remove"
+      ],
+      "class": "local.write",
+      "reason": "gh extension remove (uninstalls a local extension; reinstall is cheap)"
+    },
+    {
+      "id": "gh.auth.login",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "auth",
+        "login"
+      ],
+      "class": "local.write",
+      "reason": "gh auth login (writes credentials locally)"
+    },
+    {
+      "id": "gh.auth.logout",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "auth",
+        "logout"
+      ],
+      "class": "local.write",
+      "reason": "gh auth logout"
+    },
+    {
+      "id": "gh.auth.refresh",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "auth",
+        "refresh"
+      ],
+      "class": "remote.write",
+      "reason": "gh auth refresh (rotates the OAuth token)"
+    },
+    {
+      "id": "gh.auth.setup-git",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "auth",
+        "setup-git"
+      ],
+      "class": "local.write",
+      "reason": "gh auth setup-git (writes git credential helper)"
+    },
+    {
+      "id": "gh.auth.token",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "auth",
+        "token"
+      ],
+      "class": "local.read",
+      "reason": "gh auth token (prints the stored token)"
+    },
+    {
+      "id": "gh.config.set",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "config",
+        "set"
+      ],
+      "class": "local.write",
+      "reason": "gh config set"
+    },
+    {
+      "id": "gh.config.clear-cache",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": [
+        "config",
+        "clear-cache"
+      ],
+      "class": "local.write",
+      "reason": "gh config clear-cache"
+    },
+    {
+      "id": "gh.api.write.method",
+      "match": "regex",
+      "pattern": "(^|[\\s;|&])gh\\s+api\\b(\\s|.)*?(--method[=\\s]+|-X[=\\s]+)(POST|PUT|PATCH)\\b",
+      "class": "remote.write",
+      "reason": "gh api with --method POST/PUT/PATCH (mutating HTTP)"
+    },
+    {
+      "id": "gh.api.read",
+      "match": "ast",
+      "binary": "gh",
+      "subcommand": "api",
+      "class": "remote.read",
+      "reason": "gh api (default GET; method-aware regex rule overrides for write methods)"
+    },
+    {
+      "id": "gh.api.delete.method",
+      "match": "regex",
+      "pattern": "(^|[\\s;|&])gh\\s+api\\b(\\s|.)*?(--method[=\\s]+|-X[=\\s]+)DELETE\\b",
+      "class": "remote.write.destroy",
+      "reason": "gh api with --method DELETE (destructive)"
     }
   ]
 }
