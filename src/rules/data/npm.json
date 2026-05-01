@@ -269,6 +269,529 @@
       ],
       "class": "remote.read",
       "reason": "npm token list (values masked)"
+    },
+    {
+      "id": "npm.install",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "install",
+      "class": "local.write",
+      "reason": "npm install (write node_modules + lockfile)"
+    },
+    {
+      "id": "npm.i",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "i",
+      "class": "local.write",
+      "reason": "npm i (alias of install)"
+    },
+    {
+      "id": "npm.ci",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "ci",
+      "class": "local.write",
+      "reason": "npm ci (clean install from lockfile)"
+    },
+    {
+      "id": "npm.add",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "add",
+      "class": "local.write",
+      "reason": "npm add (alias of install)"
+    },
+    {
+      "id": "npm.uninstall",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "uninstall",
+      "class": "local.write",
+      "reason": "npm uninstall"
+    },
+    {
+      "id": "npm.remove",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "remove",
+      "class": "local.write",
+      "reason": "npm remove"
+    },
+    {
+      "id": "npm.rm",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "rm",
+      "class": "local.write",
+      "reason": "npm rm (alias of uninstall)"
+    },
+    {
+      "id": "npm.update",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "update",
+      "class": "local.write",
+      "reason": "npm update"
+    },
+    {
+      "id": "npm.up",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "up",
+      "class": "local.write",
+      "reason": "npm up (alias of update)"
+    },
+    {
+      "id": "npm.dedupe",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "dedupe",
+      "class": "local.write",
+      "reason": "npm dedupe"
+    },
+    {
+      "id": "npm.dedup",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "dedup",
+      "class": "local.write",
+      "reason": "npm dedup (alias)"
+    },
+    {
+      "id": "npm.rebuild",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "rebuild",
+      "class": "local.write",
+      "reason": "npm rebuild"
+    },
+    {
+      "id": "npm.link",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "link",
+      "class": "local.write",
+      "reason": "npm link"
+    },
+    {
+      "id": "npm.unlink",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "unlink",
+      "class": "local.write",
+      "reason": "npm unlink"
+    },
+    {
+      "id": "npm.init",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "init",
+      "class": "local.write",
+      "reason": "npm init (writes package.json / scaffolds project)"
+    },
+    {
+      "id": "npm.pack",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "pack",
+      "class": "local.write",
+      "reason": "npm pack (creates a local tarball)"
+    },
+    {
+      "id": "npm.version",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "version",
+      "class": "local.write",
+      "reason": "npm version (bumps version, may tag)"
+    },
+    {
+      "id": "npm.pkg.set",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "pkg",
+        "set"
+      ],
+      "class": "local.write",
+      "reason": "npm pkg set (writes package.json)"
+    },
+    {
+      "id": "npm.pkg.delete",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "pkg",
+        "delete"
+      ],
+      "class": "local.write",
+      "reason": "npm pkg delete (removes a package.json entry)"
+    },
+    {
+      "id": "npm.config.set",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "config",
+        "set"
+      ],
+      "class": "local.write",
+      "reason": "npm config set"
+    },
+    {
+      "id": "npm.config.delete",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "config",
+        "delete"
+      ],
+      "class": "local.write",
+      "reason": "npm config delete"
+    },
+    {
+      "id": "npm.config.edit",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "config",
+        "edit"
+      ],
+      "class": "local.write",
+      "reason": "npm config edit"
+    },
+    {
+      "id": "npm.set",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "set",
+      "class": "local.write",
+      "reason": "npm set (alias of config set)"
+    },
+    {
+      "id": "npm.adduser",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "adduser",
+      "class": "local.write",
+      "reason": "npm adduser (writes auth token to ~/.npmrc)"
+    },
+    {
+      "id": "npm.login",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "login",
+      "class": "local.write",
+      "reason": "npm login"
+    },
+    {
+      "id": "npm.logout",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "logout",
+      "class": "local.write",
+      "reason": "npm logout"
+    },
+    {
+      "id": "npm.cache.add",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "cache",
+        "add"
+      ],
+      "class": "local.write",
+      "reason": "npm cache add"
+    },
+    {
+      "id": "npm.cache.clean",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "cache",
+        "clean"
+      ],
+      "class": "local.write.destroy",
+      "reason": "npm cache clean (drops cached packages)"
+    },
+    {
+      "id": "npm.cache.verify",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "cache",
+        "verify"
+      ],
+      "class": "local.read",
+      "reason": "npm cache verify (read-only check)"
+    },
+    {
+      "id": "npm.prune",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "prune",
+      "class": "local.write.destroy",
+      "reason": "npm prune (removes extraneous packages)"
+    },
+    {
+      "id": "npm.publish",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "publish",
+      "class": "remote.write",
+      "reason": "npm publish"
+    },
+    {
+      "id": "npm.unpublish",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "unpublish",
+      "class": "remote.write.destroy",
+      "reason": "npm unpublish (irreversible after 24h)"
+    },
+    {
+      "id": "npm.deprecate",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "deprecate",
+      "class": "remote.write",
+      "reason": "npm deprecate"
+    },
+    {
+      "id": "npm.undeprecate",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "undeprecate",
+      "class": "remote.write",
+      "reason": "npm undeprecate"
+    },
+    {
+      "id": "npm.dist-tag.add",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "dist-tag",
+        "add"
+      ],
+      "class": "remote.write",
+      "reason": "npm dist-tag add"
+    },
+    {
+      "id": "npm.dist-tag.rm",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "dist-tag",
+        "rm"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "npm dist-tag rm"
+    },
+    {
+      "id": "npm.access.grant",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "access",
+        "grant"
+      ],
+      "class": "remote.write",
+      "reason": "npm access grant"
+    },
+    {
+      "id": "npm.access.revoke",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "access",
+        "revoke"
+      ],
+      "class": "remote.write",
+      "reason": "npm access revoke"
+    },
+    {
+      "id": "npm.access.set",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "access",
+        "set"
+      ],
+      "class": "remote.write",
+      "reason": "npm access set"
+    },
+    {
+      "id": "npm.owner.add",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "owner",
+        "add"
+      ],
+      "class": "remote.write",
+      "reason": "npm owner add"
+    },
+    {
+      "id": "npm.owner.rm",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "owner",
+        "rm"
+      ],
+      "class": "remote.write",
+      "reason": "npm owner rm"
+    },
+    {
+      "id": "npm.token.create",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "token",
+        "create"
+      ],
+      "class": "remote.write",
+      "reason": "npm token create"
+    },
+    {
+      "id": "npm.token.revoke",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "token",
+        "revoke"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "npm token revoke"
+    },
+    {
+      "id": "npm.team.create",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "team",
+        "create"
+      ],
+      "class": "remote.write",
+      "reason": "npm team create"
+    },
+    {
+      "id": "npm.team.add",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "team",
+        "add"
+      ],
+      "class": "remote.write",
+      "reason": "npm team add"
+    },
+    {
+      "id": "npm.team.rm",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "team",
+        "rm"
+      ],
+      "class": "remote.write",
+      "reason": "npm team rm"
+    },
+    {
+      "id": "npm.team.destroy",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "team",
+        "destroy"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "npm team destroy"
+    },
+    {
+      "id": "npm.star",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "star",
+      "class": "remote.write",
+      "reason": "npm star"
+    },
+    {
+      "id": "npm.unstar",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "unstar",
+      "class": "remote.write",
+      "reason": "npm unstar"
+    },
+    {
+      "id": "npm.hook.add",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "hook",
+        "add"
+      ],
+      "class": "remote.write",
+      "reason": "npm hook add"
+    },
+    {
+      "id": "npm.hook.update",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "hook",
+        "update"
+      ],
+      "class": "remote.write",
+      "reason": "npm hook update"
+    },
+    {
+      "id": "npm.hook.rm",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "hook",
+        "rm"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "npm hook rm"
+    },
+    {
+      "id": "npm.profile.set",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "profile",
+        "set"
+      ],
+      "class": "remote.write",
+      "reason": "npm profile set"
+    },
+    {
+      "id": "npm.exec",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "exec",
+      "class": "dynamic",
+      "reason": "npm exec runs arbitrary published code"
+    },
+    {
+      "id": "npm.x",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "x",
+      "class": "dynamic",
+      "reason": "npm x (alias of exec)"
+    },
+    {
+      "id": "npm.create",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": "create",
+      "class": "dynamic",
+      "reason": "npm create runs a create-* package, arbitrary code"
     }
   ]
 }

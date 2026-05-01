@@ -211,6 +211,333 @@
       ],
       "class": "remote.read",
       "reason": "yarn npm whoami (Berry)"
+    },
+    {
+      "id": "yarn.install",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "install",
+      "class": "local.write",
+      "reason": "yarn install"
+    },
+    {
+      "id": "yarn.add",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "add",
+      "class": "local.write",
+      "reason": "yarn add"
+    },
+    {
+      "id": "yarn.remove",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "remove",
+      "class": "local.write",
+      "reason": "yarn remove"
+    },
+    {
+      "id": "yarn.upgrade",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "upgrade",
+      "class": "local.write",
+      "reason": "yarn upgrade (classic)"
+    },
+    {
+      "id": "yarn.up",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "up",
+      "class": "local.write",
+      "reason": "yarn up (berry)"
+    },
+    {
+      "id": "yarn.upgrade-interactive",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "upgrade-interactive",
+      "class": "local.write",
+      "reason": "yarn upgrade-interactive"
+    },
+    {
+      "id": "yarn.dedupe",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "dedupe",
+      "class": "local.write",
+      "reason": "yarn dedupe"
+    },
+    {
+      "id": "yarn.rebuild",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "rebuild",
+      "class": "local.write",
+      "reason": "yarn rebuild"
+    },
+    {
+      "id": "yarn.link",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "link",
+      "class": "local.write",
+      "reason": "yarn link"
+    },
+    {
+      "id": "yarn.unlink",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "unlink",
+      "class": "local.write",
+      "reason": "yarn unlink"
+    },
+    {
+      "id": "yarn.init",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "init",
+      "class": "local.write",
+      "reason": "yarn init"
+    },
+    {
+      "id": "yarn.pack",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "pack",
+      "class": "local.write",
+      "reason": "yarn pack"
+    },
+    {
+      "id": "yarn.version",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "version",
+      "class": "local.write",
+      "reason": "yarn version (bumps version)"
+    },
+    {
+      "id": "yarn.import",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "import",
+      "class": "local.write",
+      "reason": "yarn import"
+    },
+    {
+      "id": "yarn.set.version",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "set",
+        "version"
+      ],
+      "class": "local.write",
+      "reason": "yarn set version (berry)"
+    },
+    {
+      "id": "yarn.set.resolution",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "set",
+        "resolution"
+      ],
+      "class": "local.write",
+      "reason": "yarn set resolution (berry)"
+    },
+    {
+      "id": "yarn.config.set",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "config",
+        "set"
+      ],
+      "class": "local.write",
+      "reason": "yarn config set"
+    },
+    {
+      "id": "yarn.config.delete",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "config",
+        "delete"
+      ],
+      "class": "local.write",
+      "reason": "yarn config delete"
+    },
+    {
+      "id": "yarn.config.unset",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "config",
+        "unset"
+      ],
+      "class": "local.write",
+      "reason": "yarn config unset (berry)"
+    },
+    {
+      "id": "yarn.cache.clean",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "cache",
+        "clean"
+      ],
+      "class": "local.write.destroy",
+      "reason": "yarn cache clean"
+    },
+    {
+      "id": "yarn.patch",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "patch",
+      "class": "local.write",
+      "reason": "yarn patch (berry)"
+    },
+    {
+      "id": "yarn.patch-commit",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "patch-commit",
+      "class": "local.write",
+      "reason": "yarn patch-commit (berry)"
+    },
+    {
+      "id": "yarn.plugin.import",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "plugin",
+        "import"
+      ],
+      "class": "local.write",
+      "reason": "yarn plugin import (berry)"
+    },
+    {
+      "id": "yarn.plugin.remove",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "plugin",
+        "remove"
+      ],
+      "class": "local.write",
+      "reason": "yarn plugin remove (berry)"
+    },
+    {
+      "id": "yarn.npm.login",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "npm",
+        "login"
+      ],
+      "class": "local.write",
+      "reason": "yarn npm login (berry)"
+    },
+    {
+      "id": "yarn.npm.logout",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "npm",
+        "logout"
+      ],
+      "class": "local.write",
+      "reason": "yarn npm logout (berry)"
+    },
+    {
+      "id": "yarn.publish",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "publish",
+      "class": "remote.write",
+      "reason": "yarn publish (classic)"
+    },
+    {
+      "id": "yarn.npm.publish",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "npm",
+        "publish"
+      ],
+      "class": "remote.write",
+      "reason": "yarn npm publish (berry)"
+    },
+    {
+      "id": "yarn.npm.tag.add",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "npm",
+        "tag",
+        "add"
+      ],
+      "class": "remote.write",
+      "reason": "yarn npm tag add (berry)"
+    },
+    {
+      "id": "yarn.npm.tag.remove",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "npm",
+        "tag",
+        "remove"
+      ],
+      "class": "remote.write.destroy",
+      "reason": "yarn npm tag remove (berry)"
+    },
+    {
+      "id": "yarn.npm.audit",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "npm",
+        "audit"
+      ],
+      "class": "remote.read",
+      "reason": "yarn npm audit"
+    },
+    {
+      "id": "yarn.npm.info",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "npm",
+        "info"
+      ],
+      "class": "remote.read",
+      "reason": "yarn npm info"
+    },
+    {
+      "id": "yarn.exec",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "exec",
+      "class": "dynamic",
+      "reason": "yarn exec runs an installed binary (opaque)"
+    },
+    {
+      "id": "yarn.dlx",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "dlx",
+      "class": "dynamic",
+      "reason": "yarn dlx fetches and runs an arbitrary package"
+    },
+    {
+      "id": "yarn.create",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "create",
+      "class": "dynamic",
+      "reason": "yarn create runs a create-* package"
     }
   ]
 }

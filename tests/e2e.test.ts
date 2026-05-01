@@ -122,7 +122,7 @@ describe("e2e — full hook protocol via subprocess", () => {
     proc.stdin.write(
       JSON.stringify({
         tool_name: "Bash",
-        tool_input: { command: "pnpm install" },
+        tool_input: { command: "totally-fictional-bin --do-things" },
       }),
     );
     await proc.stdin.end();
