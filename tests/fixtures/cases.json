@@ -845,12 +845,12 @@
     }
   },
   {
-    "name": "python3 -c asks (eval)",
+    "name": "python3 -c print(1) is local.read (inspected)",
     "command": "python3 -c \"print(1)\"",
     "expect": {
-      "action": "ask",
-      "class": "dynamic",
-      "ruleId": "core.eval.flag"
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "interpreter-inspect"
     }
   },
   {

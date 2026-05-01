@@ -1,6 +1,8 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 
+import type { Class } from "./types.ts";
+
 export function configDir(env: NodeJS.ProcessEnv = process.env): string {
   const xdg = env["XDG_CONFIG_HOME"];
   const base = xdg && xdg.length > 0 ? xdg : `${env["HOME"] ?? ""}/.config`;
@@ -80,3 +82,88 @@ export function writeUserProfile(profile: RawProfile, env: NodeJS.ProcessEnv = p
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, `${JSON.stringify(profile, null, 2)}\n`, "utf-8");
 }
+
+/**
+ * Optional user whitelist for `python -c <code>` style inline content.
+ * Lives at `~/.config/cc-shisa/interpreter.json` and lets users register
+ * project-specific modules (e.g. openpyxl, python-pptx, pandas) that the
+ * inspector should treat as a known class instead of falling back to
+ * dynamic. Format:
+ *
+ *   {
+ *     "python": {
+ *       "modules": {
+ *         "openpyxl":     "local.write",
+ *         "python-pptx":  "local.write",
+ *         "pandas":       "local.read"
+ *       }
+ *     }
+ *   }
+ */
+export interface InterpreterConfig {
+  python?: { modules?: Readonly<Record<string, Class>> };
+}
+
+export function interpreterConfigPath(env: NodeJS.ProcessEnv = process.env): string {
+  return join(configDir(env), "interpreter.json");
+}
+
+export function readInterpreterConfig(
+  env: NodeJS.ProcessEnv = process.env,
+): InterpreterConfig | null {
+  const path = interpreterConfigPath(env);
+  if (!existsSync(path)) return null;
+  let raw: unknown;
+  try {
+    raw = JSON.parse(readFileSync(path, "utf-8"));
+  } catch (err) {
+    if (env["CC_SHISA_DEBUG"] === "1") {
+      process.stderr.write(`cc-shisa: failed to parse ${path}: ${(err as Error).message}\n`);
+    }
+    return null;
+  }
+  return validateInterpreterConfig(raw, env);
+}
+
+function validateInterpreterConfig(
+  raw: unknown,
+  env: NodeJS.ProcessEnv,
+): InterpreterConfig | null {
+  if (typeof raw !== "object" || raw === null) return null;
+  const obj = raw as Record<string, unknown>;
+  const out: InterpreterConfig = {};
+  const py = obj["python"];
+  if (typeof py === "object" && py !== null) {
+    const modulesRaw = (py as Record<string, unknown>)["modules"];
+    if (typeof modulesRaw === "object" && modulesRaw !== null) {
+      const modules: Record<string, Class> = {};
+      for (const [name, cls] of Object.entries(modulesRaw as Record<string, unknown>)) {
+        if (typeof cls !== "string" || !VALID_CLASSES_FOR_MODULES.has(cls as Class)) {
+          if (env["CC_SHISA_DEBUG"] === "1") {
+            process.stderr.write(
+              `cc-shisa: interpreter.json python.modules["${name}"] has invalid class "${String(cls)}"; skipping\n`,
+            );
+          }
+          continue;
+        }
+        modules[name] = cls as Class;
+      }
+      if (Object.keys(modules).length > 0) {
+        out.python = { modules };
+      }
+    }
+  }
+  return out;
+}
+
+const VALID_CLASSES_FOR_MODULES: ReadonlySet<Class> = new Set([
+  "dangerous",
+  "dynamic",
+  "unknown",
+  "local.read",
+  "local.write",
+  "local.write.destroy",
+  "remote.read",
+  "remote.write",
+  "remote.write.destroy",
+]);

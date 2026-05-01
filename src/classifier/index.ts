@@ -1,6 +1,7 @@
 import type { ParseResult, Segment } from "../parser/types.ts";
 import { strictnessRank } from "../rules/index.ts";
 import type { Class, Module, Rule } from "../rules/types.ts";
+import { inspectDynamic } from "./interpreter-inspect.ts";
 import { matchAst, matchRegex } from "./matcher.ts";
 
 export interface Classification {
@@ -44,6 +45,17 @@ export function classify(
   }
 
   if (best) {
+    if (best.rule.class === "dynamic" && best.seg) {
+      const refined = inspectDynamic(best.seg);
+      if (refined !== null) {
+        return {
+          class: refined.class,
+          reason: refined.reason,
+          ruleId: "interpreter-inspect",
+          matchedSegment: best.seg.raw,
+        };
+      }
+    }
     return {
       class: best.rule.class,
       reason: best.rule.reason,

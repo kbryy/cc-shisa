@@ -247,6 +247,45 @@ Per-class overrides via `~/.config/cc-shisa/profile.json` (e.g.
 `"overrides": { "eval": "deny" }`) and per-repo `.claude/cc-shisa.json` are
 deferred to v0.4.
 
+## Inspecting `python -c "..."`
+
+`bash -c` / `python -c` / `node -e` style commands are normally classified
+as `dynamic` (cc-shisa cannot see inside the constructed string). For
+`python -c "..."` specifically, cc-shisa runs a regex inspector against
+the inline content and refines the class:
+
+| `-c` content | refined class |
+|--------------|---------------|
+| Shells out (`os.system`, subprocess spawn) | `dangerous` |
+| `os.remove`, `shutil.rmtree`, `Path.unlink` | `local.write.destroy` |
+| `requests.post/put/delete/patch`, `socket.bind/listen`, `http.server` | `remote.write` |
+| `requests.get`, `urllib.request` | `remote.read` |
+| `open(..., 'w')`, `os.makedirs`, `Path.write_text` | `local.write` |
+| pure `print(...)` / arithmetic / safe stdlib reads | `local.read` |
+| anything else | stays `dynamic` (ask) |
+
+For project-specific libraries, drop a whitelist at
+`~/.config/cc-shisa/interpreter.json`:
+
+```jsonc
+{
+  "python": {
+    "modules": {
+      "openpyxl":     "local.write",
+      "python-pptx":  "local.write",
+      "pandas":       "local.read",
+      "numpy":        "local.read"
+    }
+  }
+}
+```
+
+When the inspector sees `import openpyxl` (or `from openpyxl…`), it tags
+the segment as `local.write` and lets it through under `safe`. The
+strictest match across built-in DENY patterns + the user whitelist
+wins, so a script that imports openpyxl AND shells out still classifies
+as `dangerous`.
+
 ## Documents
 
 - [`CLAUDE.md`](./CLAUDE.md) — agent-facing context: architecture,
