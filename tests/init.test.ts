@@ -1,9 +1,9 @@
 import { describe, expect, test } from "bun:test";
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-import { defaultSettingsPath, runInit } from "../src/init/index.ts";
+import { defaultSettingsPath, isHookRegistered, runInit } from "../src/init/index.ts";
 
 function tmp(): string {
   return mkdtempSync(join(tmpdir(), "cc-shisa-init-"));
@@ -164,5 +164,58 @@ describe("init.defaultSettingsPath", () => {
   });
   test("throws when HOME is unset", () => {
     expect(() => defaultSettingsPath({})).toThrow();
+  });
+});
+
+describe("init.isHookRegistered", () => {
+  test("false when settings file does not exist", () => {
+    const dir = tmp();
+    try {
+      expect(isHookRegistered({ HOME: dir })).toBe(false);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("false when HOME is unset", () => {
+    expect(isHookRegistered({})).toBe(false);
+  });
+
+  test("false on unparseable settings", () => {
+    const dir = tmp();
+    try {
+      mkdirSync(`${dir}/.claude`, { recursive: true });
+      writeFileSync(`${dir}/.claude/settings.json`, "not json");
+      expect(isHookRegistered({ HOME: dir })).toBe(false);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("false when hooks block exists but cc-shisa is not in it", () => {
+    const dir = tmp();
+    try {
+      mkdirSync(`${dir}/.claude`, { recursive: true });
+      writeFileSync(
+        `${dir}/.claude/settings.json`,
+        JSON.stringify({
+          hooks: { PreToolUse: [{ matcher: "Bash", hooks: [{ type: "command", command: "other" }] }] },
+        }),
+      );
+      expect(isHookRegistered({ HOME: dir })).toBe(false);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
+  });
+
+  test("true after runInit registers the hook", () => {
+    const dir = tmp();
+    try {
+      mkdirSync(`${dir}/.claude`, { recursive: true });
+      runInit(`${dir}/.claude/settings.json`);
+      expect(isHookRegistered({ HOME: dir })).toBe(true);
+    } finally {
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });
