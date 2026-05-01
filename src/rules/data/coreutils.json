@@ -841,6 +841,27 @@
       "pattern": "^\\s*perl\\s+(-[a-zA-Z]+\\s*)*-i",
       "class": "local.write",
       "reason": "perl -i (in-place edit)"
+    },
+    {
+      "id": "coreutils.cd",
+      "match": "ast",
+      "binary": "cd",
+      "class": "local.read",
+      "reason": "cd (changes process cwd; no filesystem write)"
+    },
+    {
+      "id": "coreutils.pushd",
+      "match": "ast",
+      "binary": "pushd",
+      "class": "local.read",
+      "reason": "pushd (cd + push to dir stack)"
+    },
+    {
+      "id": "coreutils.popd",
+      "match": "ast",
+      "binary": "popd",
+      "class": "local.read",
+      "reason": "popd (pop dir stack)"
     }
   ]
 }
