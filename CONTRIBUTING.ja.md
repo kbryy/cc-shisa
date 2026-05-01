@@ -1,63 +1,64 @@
-# cc-shisa のコントリビューション
+# cc-shisa への貢献
 
-エンドユーザー向けドキュメントは [`README.ja.md`](./README.ja.md)
-を参照してください。本ファイルは内部実装を理解したい人、ソースから
-ビルドしたい人、PR を送りたい人向けです。
+エンドユーザー向けの説明は [`README.ja.md`](./README.ja.md) を参照
+してください。このファイルは、内部の仕組みを理解したい人、ソースから
+ビルドしたい人、PR を送りたい人のためのものです。
 
 🇬🇧 [English version](./CONTRIBUTING.md)
 
-## ソースからビルド
+## ソースからビルドする
 
 ```bash
 git clone git@github.com:kbryy/cc-shisa.git && cd cc-shisa
-mise install                 # mise.toml の bun バージョンを取得
+mise install                 # mise.toml に書かれた bun のバージョンを取得
 bun install
 bun run typecheck            # tsc --noEmit
-bun test                     # 459 tests, ~250ms
-bun run build                # darwin-arm64 用の ./cc-shisa を生成
-./cc-shisa init              # ~/.claude/settings.json にフックを書き込む
+bun test                     # 459 件のテストが約 250ms で回ります
+bun run build                # darwin-arm64 用に ./cc-shisa を生成
+./cc-shisa init              # ~/.claude/settings.json にフックを登録
 ```
 
-クロスプラットフォームバイナリ:
+クロスプラットフォームのバイナリをまとめて作る場合:
 
 ```bash
 bun run build:all   # darwin-arm64 + darwin-x64 + linux-arm64 + linux-x64
 ```
 
-## 判定の流れ
+## 判定までの流れ
 
 ```
                  標準入力に PreToolUse JSON
                           │
                           ▼
      parse → 複合コマンドをセグメントに分解
-            (bash-parser デフォルト / tree-sitter は opt-in)
+            (デフォルト: bash-parser、tree-sitter は opt-in)
                           │
                           ▼
      normalize → sudo / timeout / env 系のラッパーを剥がす
                           │
                           ▼
-     classify → ルールにマッチさせ、最も厳しいクラスを選ぶ
-            (interpreter inspector が `dynamic` セグメントを refine)
+     classify → ルールに照らし、最も厳しいクラスを採用
+            (`dynamic` なセグメントはインタープリタインスペクタが再分類)
                           │
                           ▼
-     policy → アクティブな level に従い class → allow/ask/deny
+     policy → アクティブな level に従って class → allow/ask/deny
                           │
                           ▼
             標準出力に HookOutput JSON (exit 0)
 ```
 
-**Fail-safe 原則**: 各層は失敗時に `ask` をデフォルトにする。構文
-エラー、未知のバイナリ、解決不能な変数、内部例外 — すべて `ask`
-に落ちる。`allow` を返すのは明示的な safe マッチがあった時だけ、
-`deny` を返すのは明示的な dangerous マッチがあった時だけ。
+**Fail-safe の原則**: どの層でも、判断がつかなければ `ask` にフォール
+バックします。構文エラー、未知のバイナリ、未解決の変数、内部例外 — どの
+ルートを通っても最終的に `ask` に落ち着きます。`allow` を返すのは明示
+的な safe マッチがあったときだけ、`deny` を返すのは明示的な dangerous
+マッチがあったときだけです。
 
 ## クラス体系
 
 | クラス                  | 例                                                                              |
 |-------------------------|--------------------------------------------------------------------------------|
 | `dangerous`             | `rm -rf /`、fork bomb、`dd of=/dev/disk*`、`mkfs`、`chmod -R 777 /`             |
-| `dynamic`               | `eval`、`bash -c`、`curl … \| sh`、`node -e`、`python -c` (中身が opaque)      |
+| `dynamic`               | `eval`、`bash -c`、`curl … \| sh`、`node -e`、`python -c` (中身が静的に見えない) |
 | `unknown`               | どのルールにもマッチしないバイナリ                                              |
 | `local.read`            | `git status`、`ls`、`cat`、`jq`、`pnpm typecheck`                              |
 | `local.write`           | `git commit`、`mkdir`、`cp`、`mv`、`git stash`、`git switch`                   |
@@ -66,66 +67,68 @@ bun run build:all   # darwin-arm64 + darwin-x64 + linux-arm64 + linux-x64
 | `remote.write`          | `git push`、`gh pr create`、`npm publish`                                      |
 | `remote.write.destroy`  | `git push --force`、`git push --delete`                                        |
 
-階層: 場所 (`local.*` / `remote.*`) を上位、操作 (`read` / `write`)
-を下位に配置。`write` には不可逆操作用の `destroy` サブバケットがある。
+階層は「場所 (`local.*` / `remote.*`) → 操作 (`read` / `write`)」の
+順で並んでいます。`write` には不可逆な操作のための `destroy` サブ
+バケットがあります。
 
-レベルごとのマッピング (どの class が `allow` / `ask` / `deny` に
-なるか) は `src/rules/level.ts` に集約されている。
-[ユーザー README のレベル表](./README.ja.md#レベルを選ぶ) も参照。
+レベルごとのマッピング (どのクラスが `allow` / `ask` / `deny` に
+なるか) は `src/rules/level.ts` に集約しています。
+[ユーザー README のレベル表](./README.ja.md#レベルを選ぶ) も参照
+してください。
 
-## インスペクターのパターンカタログ
+## インスペクタのパターンカタログ
 
-インタープリターインスペクター
-(`src/classifier/interpreter-inspect.ts`) は `python` / `python3` /
-`python2`、JS+TS ランタイム (`node` / `nodejs` / `bun` / `tsx` /
-`ts-node` / `deno`)、`ruby` / `irb`、`perl` の `dynamic` セグメント
-を refine する。
+インタープリタインスペクタ (`src/classifier/interpreter-inspect.ts`)
+は次のバイナリの `dynamic` セグメントを再分類します: `python` /
+`python3` / `python2`、JS+TS ランタイム (`node` / `nodejs` / `bun` /
+`tsx` / `ts-node` / `deno`)、`ruby` / `irb`、`perl`。
 
-| `-c`/`-e` の内容                                                          | 分類後の class       |
-|---------------------------------------------------------------------------|---------------------|
-| シェル起動 / 子プロセス起動                                                | `dangerous`         |
-| ファイル削除 (rm / unlink / rmtree / Path.unlink / FileUtils.rm_rf)        | `local.write.destroy` |
-| ネット送信 (HTTP POST/PUT/DELETE、socket bind/listen、HTTP server)         | `remote.write`      |
-| ネット取得 (HTTP GET、urllib request、fetch、Net::HTTP.get、LWP)           | `remote.read`       |
-| ファイル書き込み (open w/a、makedirs、writeFile、File.write)               | `local.write`       |
-| 純粋な `print` / `console.log` / `puts` リテラル / 算術                    | `local.read`        |
-| 動的構文 (eval、vm.runIn*、instance_eval、eval-block)                      | `dynamic` のまま     |
-| 上記いずれにも当たらない                                                   | `dynamic` のまま (ask) |
+| `-c` / `-e` の中身                                                       | 再分類後のクラス     |
+|--------------------------------------------------------------------------|---------------------|
+| シェル起動 / 子プロセス起動                                               | `dangerous`         |
+| ファイル削除 (rm / unlink / rmtree / Path.unlink / FileUtils.rm_rf)       | `local.write.destroy` |
+| ネット送信 (HTTP POST/PUT/DELETE、socket bind/listen、HTTP server)        | `remote.write`      |
+| ネット取得 (HTTP GET、urllib request、fetch、Net::HTTP.get、LWP)          | `remote.read`       |
+| ファイル書き込み (open w/a、makedirs、writeFile、File.write)              | `local.write`       |
+| 純粋なリテラル / 算術 / `print` / `console.log` / `puts`                  | `local.read`        |
+| 動的構文 (eval、vm.runIn*、instance_eval、eval-block)                     | `dynamic` のまま     |
+| 上記いずれにも該当しないもの                                              | `dynamic` のまま (ask) |
 
-言語別 whitelist ファイル (`~/.config/cc-shisa/interpreter.json`) は、
-インスペクターが `import` (Python) / `require` / `from … import`
-(Node) / `require` (Ruby) / `use` (Perl) を検出するとユーザー指定の
-class でセグメントを分類する。strictest match (組み込み DENY ∪
-ユーザー whitelist) が勝つ。
+`~/.config/cc-shisa/interpreter.json` の言語別ホワイトリストには、
+インスペクタが `import` (Python)、`require` / `from … import` (Node)、
+`require` (Ruby)、`use` (Perl) を検出した時にユーザーが指定したクラス
+で再分類するモジュール一覧を記述します。最終的な判定は「組み込みの
+DENY パターン ∪ ユーザー側ホワイトリスト」のうち、最も厳しいものが
+勝ちます。
 
 ## パーサーバックエンド
 
-cc-shisa は Bash コマンドを AST にパースしてから分類する。2 つの
-バックエンドが同梱されており、`CC_SHISA_PARSER` 環境変数で切替:
+cc-shisa は分類前に Bash コマンドを AST にパースします。同梱の
+バックエンドは 2 種類で、`CC_SHISA_PARSER` 環境変数で切り替えます:
 
-| バックエンド    | デフォルト | 利点                                          | 欠点                                                                  |
+| バックエンド    | デフォルト | 利点                                          | 注意点                                                                |
 |----------------|------------|----------------------------------------------|----------------------------------------------------------------------|
-| `bash-parser`  | ✅         | 純 JS、追加ランタイム不要、cold start ~22 ms  | 特定エッジケース (quoted heredoc 内の `(parens)` 等) で失敗            |
-| `tree-sitter`  |            | 堅牢な grammar、実世界の bash を網羅          | +~7 ms cold start、+1.6 MB バイナリ                                    |
+| `bash-parser`  | ✅         | 純 JS、追加ランタイム不要、cold start 約 22 ms | quoted heredoc 内の `(parens)` など、特定のエッジケースで失敗する      |
+| `tree-sitter`  |            | 堅牢な grammar で実世界の bash を網羅         | cold start +約 7 ms、バイナリサイズ +1.6 MB                            |
 
-active backend の parse が失敗した場合、`src/parser/recovery.ts` が
-次の順で recovery:
+アクティブなバックエンドが parse に失敗した場合、`src/parser/recovery.ts`
+が以下の順でリカバリを試みます:
 
-1. quoted-heredoc body を空にして再 parse
-2. 行単位で split し各行を独立 parse
-3. 全部ダメなら `ask` (理由: "parser failed")
+1. quoted-heredoc の本文を空にして再 parse
+2. 行単位に分割して各行を独立に parse
+3. それでも駄目なら `ask` (理由: "parser failed")
 
-通常 recovery で十分なので、大半のユーザーは切り替え不要。tree-sitter
-を試したい場合:
+リカバリで吸収できるケースが多いので、ほとんどのユーザーはバックエンド
+を切り替える必要はありません。tree-sitter を試したい場合は:
 
 ```bash
 export CC_SHISA_PARSER=tree-sitter
 ```
 
-grammar WASM は `src/parser/impl/tree-sitter-bash.wasm` に vendor、
-web-tree-sitter ランタイム WASM は
-`src/parser/impl/web-tree-sitter-runtime.wasm` に vendor している。
-`web-tree-sitter` のバージョン更新時の再同期手順:
+grammar の WASM は `src/parser/impl/tree-sitter-bash.wasm` に、
+web-tree-sitter のランタイム WASM は
+`src/parser/impl/web-tree-sitter-runtime.wasm` に vendor しています。
+`web-tree-sitter` をバージョンアップした際の更新手順は次の通り:
 
 ```bash
 bun add web-tree-sitter@x.y.z
@@ -140,34 +143,34 @@ bun test                                # デフォルトバックエンド (bas
 CC_SHISA_PARSER=tree-sitter bun test    # tree-sitter バックエンド
 ```
 
-CI は両 backend を毎 PR で実行
+CI は両方のバックエンドを毎 PR で実行します
 ([`.github/workflows/ci.yml`](./.github/workflows/ci.yml))。
 
-`tests/fixtures/` の fixture スイートは cc-shisa を end-to-end で
-検証する:
+`tests/fixtures/` 配下の fixture スイートは cc-shisa を end-to-end で
+検証するためのものです:
 
 ```bash
-cc-shisa test                              # 標準ケース (約 220)
-cc-shisa test tests/fixtures/redteam.json  # 難読化 / 回避ケース
+cc-shisa test                              # 標準ケース (約 220 件)
+cc-shisa test tests/fixtures/redteam.json  # 難読化・回避ケース
 ```
 
-標準スイートは全モジュール有効化を前提としているので、ローカルで
-fixture を回す前に `cc-shisa modules pick` で全モジュールを ON に
-するか、一時的な `loose` プロファイルを使うと `ask` クラスの fixture
-ミスマッチを避けられる。
+標準スイートは全モジュールが有効な前提で書かれているので、ローカルで
+動かす前に `cc-shisa modules pick` で全部 ON にするか、一時的に
+`loose` レベルのプロファイルを使うと、`ask` クラスのミスマッチを
+避けられます。
 
 ## PR の出し方
 
-- PR を出す前に `bun run typecheck && bun test` を通す
-- 新規ルールは `src/rules/data/<module>.json`。非自明な振る舞いは
-  `tests/fixtures/cases.json` と `tests/fixtures/redteam.json` に
-  fixture を追加する
-- 依存グラフは小さく保つ。新しい `bun add` は毎回セキュリティレビュー
-  扱い — このツールを自前で書いている目的の一つは npm の supply-chain
-  リスクを避けることなので
-- ファイルレイアウト、フックプロトコル、決定ログ等の深いコンテキスト
-  は [`CLAUDE.md`](./CLAUDE.md) を参照
+- PR を出す前に `bun run typecheck && bun test` を通してください
+- 新しいルールは `src/rules/data/<module>.json` に書きます。自明でない
+  振る舞いに対しては `tests/fixtures/cases.json` と
+  `tests/fixtures/redteam.json` に fixture を追加してください
+- 依存グラフは小さく保ちます。新しい `bun add` は毎回セキュリティ
+  レビュー扱いです — このツールを自前で書いている目的のひとつが、
+  npm のサプライチェーンリスクを避けることなので
+- ファイル構成、フックプロトコル、設計判断の履歴など、より深い
+  コンテキストは [`CLAUDE.md`](./CLAUDE.md) を参照してください
 
 ## ライセンス
 
-MIT — [`LICENSE`](./LICENSE) を参照。
+MIT — [`LICENSE`](./LICENSE) を参照してください。

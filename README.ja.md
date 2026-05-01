@@ -1,24 +1,24 @@
 # cc-shisa
 
-> Claude Code の `PreToolUse` フックとして動く静的解析ツール — 安全な
-> コマンドは黙って通し、危険なコマンドだけ止める沖縄シーサー。
+> Claude Code の `PreToolUse` フックとして動く静的解析ツール。安全な
+> コマンドは黙って通し、危険なコマンドだけ止める沖縄のシーサーです。
 
 🇬🇧 [English README](./README.md)
 
-Claude Code の Bash 権限管理は、規模が大きくなると破綻します。手作りの
-allowlist は long tail をカバーできず、denylist は穴だらけ、
-`pnpm typecheck && pnpm build` のような複合コマンドはどちらの方式でも
-検出できません。
+Claude Code の Bash 権限管理は規模が大きくなるほど辛くなります。
+allowlist は手で書き続けないと long tail に追いつきませんし、denylist
+には穴がいくらでも開きます。`pnpm typecheck && pnpm build` のような
+複合コマンドはそもそもどちらの方式でも素直に書けません。
 
-cc-shisa は Claude Code が実行しようとする Bash コマンドをすべて監視
-し、本物の AST にパースしてセグメントごとに分類、`allow` / `ask` /
-`deny` を返します。これで `permissions.allow` を手作業で育てる必要が
+cc-shisa は Claude Code が実行しようとする Bash コマンドを毎回受け取り、
+本物の AST にパースしてセグメントごとに分類し、`allow` / `ask` /
+`deny` を返します。これで `permissions.allow` を手で育て続ける必要は
 なくなります。
 
-名前は沖縄の守り神シーサー (獅子犬) に由来します。門前に対で置かれる
-像の口の形 — 阿 (口を開けて招く) と吽 (口を閉じて防ぐ) — がそのまま
-このツールの役割になっています。安全なコマンドを通し、危険なコマンドを
-止める。
+名前は沖縄の守り神シーサー (獅子犬) から取りました。門前に対で置かれる
+像の口の形 — 阿 (口を開けて招き入れる) と吽 (口を閉じて防ぐ) — が
+そのままこのツールの役割になっています。安全なコマンドは通し、危険な
+コマンドは止める。
 
 ## インストール
 
@@ -28,10 +28,10 @@ brew install cc-shisa
 cc-shisa init      # ~/.claude/settings.json にフックを登録
 ```
 
-これだけです。Claude Code を再起動 (または次の Bash 呼び出しを待つ)
-すれば cc-shisa が割り込みを始めます。
+これで完了です。Claude Code を再起動するか、次に Bash が呼ばれた時点で
+cc-shisa が割り込みを始めます。
 
-動作確認:
+ちゃんと動いているか確認するには:
 
 ```bash
 cc-shisa check 'rm -rf /'
@@ -42,44 +42,47 @@ cc-shisa check 'rm -rf /'
 
 ## 何をブロックするか
 
-必須の `_core` ベースラインが約 23 個の致命的・不可逆パターンを最初から
-ブロックします:
+必須で常に有効な `_core` セットが、致命的・不可逆な約 23 パターンを
+最初からブロックします:
 
-- `rm -rf` の対象が `/`、`$HOME`、`~`、`/Users/*`、システムパス、`.git`
-- `dd` / シェルリダイレクトで raw デバイスへ書き込み (`/dev/disk*`、
-  `/dev/sd*` 等)
+- `rm -rf` で `/`、`$HOME`、`~`、`/Users/*`、システムパス、`.git` を
+  消そうとするケース
+- `dd` やシェルリダイレクトで raw デバイスへ書き込むケース
+  (`/dev/disk*`、`/dev/sd*` など)
 - `mkfs*`、`newfs*`、`fdisk` / `gdisk` / `parted`、`diskutil eraseDisk`
 - 古典的な bash fork bomb
 - `curl … | sh` / `wget … | bash` (zsh / fish / dash / ksh の派生も)
 - `kill -9 1` / `killall -9 init`
-- システムパスへの再帰的 `chown` / `chmod 777` / `a+rwx`
+- システムパスへの再帰的な `chown` / `chmod 777` / `a+rwx`
 - `git push --force` / `--delete`、`git reset --hard`
 - `shred` / `srm` / `wipe`、`rsync --delete`、`gpg --delete-secret-keys`
-- `eval`、`bash -c`、`python -c`、`node -e` 等 (一部のインタープリター
-  は中身検査あり — 後述「インタープリター `-c` / `-e` の中身検査」)
+- `eval`、`bash -c`、`python -c`、`node -e` など (一部のインタープリタ
+  については中身まで見ています — 後述「インタープリタの `-c` / `-e`
+  を読む」を参照)
 
-`_core` は常時ロードで無効化不可。オプションモジュール (`git`、`gh`、
-`npm`、`pnpm`、`yarn`、`bun`、`docker`、`kubectl`、`cargo`、`brew`、
-`coreutils`) を有効にすると、数百種類の通常作業コマンドが安全側に分類
-され、毎回 `ask` されることがなくなります。
+`_core` は常時ロードされ、無効化できません。これに加えて、`git`、
+`gh`、`npm`、`pnpm`、`yarn`、`bun`、`docker`、`kubectl`、`cargo`、
+`brew`、`coreutils` といったオプションモジュールを有効にしておくと、
+日常的に使うコマンドのほとんどが安全側に分類され、毎回 `ask` で
+止められることがなくなります。
 
 ## モジュールを選ぶ
 
-インストール直後は `_core` のみ有効。実際に使うモジュールを選んで
-有効化します:
+インストール直後は `_core` のみが有効です。実際に使うモジュールを
+選んで有効化してください:
 
 ```bash
-cc-shisa modules                         # 対話ピッカー (TTY) / list (非TTY)
+cc-shisa modules                         # 対話ピッカー (TTY) / リスト表示 (非TTY)
 cc-shisa modules enable coreutils git    # 有効化
 cc-shisa modules disable gh              # 無効化
 ```
 
-設定は `~/.config/cc-shisa/profile.json` に書き込まれ、次回フック発火時
-に反映されます。
+設定は `~/.config/cc-shisa/profile.json` に書き込まれ、次にフックが
+発火したタイミングで反映されます。
 
-| 名前        | 内容                                          |
+| モジュール   | 内容                                          |
 |-------------|----------------------------------------------|
-| `_core`     | 致命的 + 不可逆パターン (常時 ON)              |
+| `_core`     | 致命的・不可逆パターン (常時 ON)               |
 | `coreutils` | `ls`/`cat`/`grep`/`wc`/`pwd`/`mkdir`/`cp`/... |
 | `git`       | `git status`/`log`/`diff`/`commit`/`switch`/...|
 | `gh`        | `gh pr list`/`view`、`gh issue list`/...      |
@@ -94,51 +97,54 @@ cc-shisa modules disable gh              # 無効化
 
 ## レベルを選ぶ
 
-3 段階のセキュリティレベルが同梱されています:
+セキュリティレベルは 3 段階用意してあります:
 
 ```bash
-cc-shisa level                  # 現在のレベル + マッピングを表示
+cc-shisa level                  # 現在のレベルとマッピングを表示
 cc-shisa level set strict       # ~/.config/cc-shisa/profile.json に書き込む
 ```
 
-| レベル   | 適した状況                              | 振る舞い |
-|----------|----------------------------------------|----------|
-| `strict` | 共有リソース環境 (会社・チーム)          | リモート書き込み (push、publish、gh pr create) を全 deny |
-| `safe`   | デフォルト — 日常の個人利用              | destroy / dynamic / unknown は ask、routine な read + write は通す |
-| `loose`  | サンドボックス / CI / 信頼できる手元 PC  | `dangerous` のみブロック、それ以外は全部通す |
+| レベル   | 想定する状況                              | ふるまい |
+|----------|------------------------------------------|----------|
+| `strict` | 共有環境 (会社・チームのリソース)         | リモートへの書き込み (push、publish、gh pr create 等) はすべて `deny` |
+| `safe`   | デフォルト。個人の日常作業                | 破壊的操作・動的コード・未知のバイナリは `ask`、通常の読み書きは通す |
+| `loose`  | サンドボックス、CI、信頼できる手元のマシン | `dangerous` のみブロックし、それ以外はすべて通す |
 
-クラス別の override は `~/.config/cc-shisa/profile.json` で設定可能
-(例: `"overrides": { "remote.write": "ask" }`)。
+クラス単位で挙動を変えたい場合は `~/.config/cc-shisa/profile.json`
+の `overrides` で個別に設定できます (例: `"overrides": { "remote.write": "ask" }`)。
 
-## 推奨ロールアウト
+## 段階的な導入
 
-cc-shisa は **shadow モード** をサポートしていて、判定をすべて強制的に
-`allow` にしながら「本来なら何が起きていたか」を記録します:
+cc-shisa には **shadow モード** があり、すべての判定を強制的に `allow`
+に倒したうえで「本来なら何が起きていたか」を記録します。enforce する前に
+動作を観察したい時に便利です:
 
 ```bash
-# 1 週目: shadow — 判定はすべて allow に強制 + ログ
+# 1 週目: shadow モードで様子を見る
 export CC_SHISA_SHADOW=1
 ```
 
-ログは `${XDG_STATE_HOME:-~/.local/state}/cc-shisa/decisions.jsonl`
-に書かれます (または `cc-shisa logs summary` / `cc-shisa logs tail`):
+ログは
+`${XDG_STATE_HOME:-~/.local/state}/cc-shisa/decisions.jsonl` に書き
+出されます。`cc-shisa logs summary` や `cc-shisa logs tail` でも
+確認できます。チェックすべきポイントは 2 つ:
 
-- `originalAction:"deny"` 行 — 本来ブロックする予定だったもの。本当に
-  危険だったか?
-- `originalAction:"ask"` 行 — 本来 prompt する予定だったもの。頻度は
-  許容範囲か?
+- `originalAction:"deny"` の行 — 本来ブロックされていたもの。本当に
+  危ない操作だったか?
+- `originalAction:"ask"` の行 — 本来は確認プロンプトが出ていたもの。
+  頻度は許容範囲に収まっているか?
 
-ルールが信頼できると判断したら:
+ルールに納得できたら enforce に切り替えます:
 
 ```bash
 unset CC_SHISA_SHADOW
-export CC_SHISA_LOG=1   # 任意: enforce モードでも監査ログを残す
+export CC_SHISA_LOG=1   # enforce 後も監査ログを残したい場合
 ```
 
 ## カスタムモジュール
 
-チーム / プロジェクト固有のルールは `~/.config/cc-shisa/modules/` に
-JSON ファイルを置いて定義できます:
+チームやプロジェクト固有のルールは `~/.config/cc-shisa/modules/` に
+JSON を置けば追加できます:
 
 ```json
 {
@@ -149,26 +155,27 @@ JSON ファイルを置いて定義できます:
       "match": "regex",
       "pattern": "kubectl.*--context=prod",
       "class": "dangerous",
-      "reason": "本番クラスタに触るのはオンコールだけ"
+      "reason": "本番クラスタを触るのはオンコールの人だけ"
     }
   ]
 }
 ```
 
-ユーザーモジュールは自動ロードされ `enable` 不要。strictest-class-wins
-により `_core` を緩めることはできないので、安全に追加できます。
+ユーザーモジュールは自動でロードされるので `enable` する必要はありません。
+最も厳しい判定が勝つ仕組みのため、ユーザー側のルールから `_core` を
+緩めることは構造的に不可能です。安心して追加してください。
 
-## インタープリター `-c` / `-e` の中身検査
+## インタープリタの `-c` / `-e` を読む
 
 `python -c "..."` / `node -e "..."` / `ruby -e "..."` / `perl -e "..."`
-の中身は通常 `dynamic` (cc-shisa が中身を見られない) として分類され
-ますが、これらのバイナリに対しては言語別インスペクターが内容を解析
-してクラスを refine します。`os.system` は `dangerous`、
-`fs.writeFileSync` は `local.write`、`console.log("hi")` は
-`local.read`、といった具合です。
+は通常、構築された文字列の中身が cc-shisa から見えないため `dynamic`
+として扱われます。ただしこれらのインタープリタについては言語別の
+インスペクタが中身を解析し、より具体的なクラスに振り直します。たとえば
+`os.system` なら `dangerous`、`fs.writeFileSync` なら `local.write`、
+`console.log("hi")` なら `local.read`、といった具合です。
 
 プロジェクト固有のライブラリは `~/.config/cc-shisa/interpreter.json`
-で whitelist 登録できます:
+にホワイトリストとして登録できます:
 
 ```jsonc
 {
@@ -178,17 +185,17 @@ JSON ファイルを置いて定義できます:
 }
 ```
 
-strictest match が勝つので、`pandas` を import しつつシェルアウトする
-スクリプトは依然 `dangerous` 判定です。
+判定は最も厳しいものが勝つので、`pandas` を import しつつシェルアウト
+するスクリプトは引き続き `dangerous` のままです。
 
 ## もっと知りたい場合
 
-- [`CONTRIBUTING.ja.md`](./CONTRIBUTING.ja.md) — 内部の動作、ソース
-  からのビルド、パーサーバックエンド、インスペクター全パターン、テスト
-  実行
-- [`CLAUDE.md`](./CLAUDE.md) — エージェント向けコンテキスト: ファイル
-  レイアウト、フックプロトコル、決定ログ
+- [`CONTRIBUTING.ja.md`](./CONTRIBUTING.ja.md) — 内部の仕組み、
+  ソースからのビルド、パーサーバックエンド、インスペクタの全パターン、
+  テストの動かし方
+- [`CLAUDE.md`](./CLAUDE.md) — エージェント向けの詳細なコンテキスト:
+  ファイル構成、フックプロトコル、設計判断の履歴
 
 ## ライセンス
 
-MIT — [`LICENSE`](./LICENSE) を参照。
+MIT — [`LICENSE`](./LICENSE) を参照してください。
