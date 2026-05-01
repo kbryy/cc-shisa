@@ -3401,5 +3401,68 @@
       "class": "local.write",
       "ruleId": "coreutils.mktemp"
     }
+  },
+  {
+    "name": "cd absolute path allows",
+    "command": "cd /Users/kbryy/work",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "coreutils.cd"
+    }
+  },
+  {
+    "name": "cd .. allows",
+    "command": "cd ..",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "coreutils.cd"
+    }
+  },
+  {
+    "name": "pushd allows",
+    "command": "pushd ~/proj",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "coreutils.pushd"
+    }
+  },
+  {
+    "name": "popd allows",
+    "command": "popd",
+    "expect": {
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "coreutils.popd"
+    }
+  },
+  {
+    "name": "git checkout <branch> allows",
+    "command": "git checkout main",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.checkout.branch"
+    }
+  },
+  {
+    "name": "git checkout -b allows (create + switch)",
+    "command": "git checkout -b feature/foo",
+    "expect": {
+      "action": "allow",
+      "class": "local.write",
+      "ruleId": "git.checkout.branch"
+    }
+  },
+  {
+    "name": "git checkout -- discards still asks",
+    "command": "git checkout -- file.ts",
+    "expect": {
+      "action": "ask",
+      "class": "local.write.destroy",
+      "ruleId": "git.checkout.discard"
+    }
   }
 ]

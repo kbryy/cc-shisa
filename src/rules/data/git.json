@@ -1145,6 +1145,17 @@
       "pattern": "^\\s*git\\s+checkout(\\s+[^\\s]+)*\\s+--(\\s|$)",
       "class": "local.write.destroy",
       "reason": "git checkout -- <path> discards working-tree changes"
+    },
+    {
+      "id": "git.checkout.branch",
+      "match": "ast",
+      "binary": "git",
+      "subcommand": "checkout",
+      "excluded_flags": [
+        "--"
+      ],
+      "class": "local.write",
+      "reason": "git checkout <branch> / -b <name> (changes working tree to another branch state)"
     }
   ]
 }
