@@ -16,14 +16,14 @@ const baseClassification = (cls: Class, ruleId?: string): Classification => ({
 
 const expectations: ReadonlyArray<readonly [Class, Action]> = [
   ["dangerous", "deny"],
-  ["write.remote.destroy", "ask"],
-  ["write.local.destroy", "ask"],
   ["dynamic", "ask"],
-  ["write.remote", "ask"],
-  ["write.local", "allow"],
   ["unknown", "ask"],
-  ["read.remote", "allow"],
   ["read.local", "allow"],
+  ["read.remote", "allow"],
+  ["write.local", "allow"],
+  ["write.local.destroy", "ask"],
+  ["write.remote", "allow"],
+  ["write.remote.destroy", "ask"],
 ];
 
 describe("policy — safe level mapping", () => {

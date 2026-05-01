@@ -219,7 +219,7 @@ Mapping per class:
 | `read.remote`          | allow    | allow            | allow   |
 | `write.local`          | allow    | allow            | allow   |
 | `write.local.destroy`  | ask      | ask              | allow   |
-| `write.remote`         | **deny** | ask              | allow   |
+| `write.remote`         | **deny** | allow            | allow   |
 | `write.remote.destroy` | **deny** | ask              | allow   |
 
 Hierarchy: read/write split by locality (`.local` / `.remote`);
