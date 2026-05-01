@@ -126,3 +126,27 @@ export function defaultSettingsPath(env: NodeJS.ProcessEnv = process.env): strin
   }
   return `${home}/.claude/settings.json`;
 }
+
+/**
+ * Cheap read-only probe used by the CLI to nudge users who never ran
+ * `cc-shisa init`. Returns false on any error (missing file, unparseable
+ * JSON, missing HOME) so callers never crash on a UX warning path.
+ */
+export function isHookRegistered(env: NodeJS.ProcessEnv = process.env): boolean {
+  let path: string;
+  try {
+    path = defaultSettingsPath(env);
+  } catch {
+    return false;
+  }
+  if (!existsSync(path)) return false;
+  try {
+    const parsed = JSON.parse(readFileSync(path, "utf-8")) as unknown;
+    if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+      return false;
+    }
+    return alreadyRegistered(parsed as ClaudeSettings);
+  } catch {
+    return false;
+  }
+}

@@ -1,3 +1,4 @@
+import { isHookRegistered } from "../init/index.ts";
 import {
   disableModules,
   enableModules,
@@ -8,6 +9,7 @@ import {
 } from "../modules/index.ts";
 
 export async function runModules(args: readonly string[]): Promise<number> {
+  warnIfHookUnregistered();
   const sub = args[0];
   if (sub === undefined) {
     return process.stdin.isTTY === true ? runModulesPick() : runModulesList();
@@ -30,6 +32,14 @@ export async function runModules(args: readonly string[]): Promise<number> {
 function runModulesList(): number {
   console.log(listModules());
   return 0;
+}
+
+function warnIfHookUnregistered(): void {
+  if (process.stderr.isTTY !== true) return;
+  if (isHookRegistered()) return;
+  process.stderr.write(
+    "cc-shisa: hook is not registered yet. Run 'cc-shisa init' to enable it for Claude Code.\n\n",
+  );
 }
 
 async function runModulesPick(): Promise<number> {
