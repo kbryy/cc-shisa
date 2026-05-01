@@ -224,12 +224,19 @@
       "binaries": [
         "bun",
         "node",
+        "nodejs",
         "deno",
+        "tsx",
+        "ts-node",
         "perl",
         "python",
         "python3",
+        "python2",
         "ruby",
-        "php"
+        "irb",
+        "php",
+        "lua",
+        "luajit"
       ],
       "any_flags": [
         "-e",

@@ -836,12 +836,12 @@
     }
   },
   {
-    "name": "node -e asks (eval)",
+    "name": "node -e console.log(1) is local.read (inspected)",
     "command": "node -e \"console.log(1)\"",
     "expect": {
-      "action": "ask",
-      "class": "dynamic",
-      "ruleId": "core.eval.flag"
+      "action": "allow",
+      "class": "local.read",
+      "ruleId": "interpreter-inspect"
     }
   },
   {
