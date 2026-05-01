@@ -24,7 +24,7 @@ export async function runHook(): Promise<number> {
   }
 
   try {
-    const decision = evaluate(input.tool_input.command);
+    const decision = evaluate(input.tool_input.command, input.cwd);
     const finalDecision = applyShadow(decision, input.tool_input.command);
     writeOutput(finalDecision.action, finalDecision.reason);
     return 0;

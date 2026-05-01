@@ -5,7 +5,7 @@ export function runCheck(cmd: string | undefined): number {
     process.stderr.write("usage: cc-shisa check '<command>'\n");
     return 2;
   }
-  const decision = evaluate(cmd);
+  const decision = evaluate(cmd, process.cwd());
   console.log(`Action:  ${decision.action}`);
   console.log(`Class:   ${decision.class}`);
   console.log(`Reason:  ${decision.reason}`);

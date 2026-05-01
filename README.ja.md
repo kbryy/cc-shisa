@@ -188,6 +188,32 @@ JSON を置けば追加できます:
 判定は最も厳しいものが勝つので、`pandas` を import しつつシェルアウト
 するスクリプトは引き続き `dangerous` のままです。
 
+## ディレクトリ別のプロファイル
+
+`~/work` 配下では厳しめ、`~/personal-projects` では緩め、特定のリポジトリ
+では `git push` を完全に拒否したい — そういった切り替えはディレクトリ
+単位で登録できます。リポジトリには何も置かず、user 側の設定だけで完結
+します:
+
+```bash
+cd ~/work/sensitive-repo
+
+cc-shisa here set-level strict
+cc-shisa here set-override remote.write deny
+
+cc-shisa here          # 現在のディレクトリで効いている設定を表示
+cc-shisa locations list
+```
+
+設定は `~/.config/cc-shisa/locations.json` (リポジトリ内ではなく自分の
+ホーム) に保存されます。フック発火時には最長のパス前缀マッチで該当
+エントリを適用するので、`~/work/sensitive-repo/src/foo` でも親ディレクトリ
+の登録が拾われます。
+
+ディレクトリごとに変えられるのは `level` と `overrides` だけ。モジュール
+の有効・無効は引き続きグローバルの `~/.config/cc-shisa/profile.json`
+から継承します。
+
 ## トラブルシューティング
 
 > 「このコマンドはなぜ ask / 拒否されたのか?」

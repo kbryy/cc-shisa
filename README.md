@@ -180,6 +180,30 @@ Whitelist project-specific libraries at
 The strictest match wins — a script that imports `pandas` AND shells
 out is still `dangerous`.
 
+## Per-directory profile
+
+Sometimes you want stricter behavior in `~/work` than in `~/personal-projects`,
+or specific repos to deny `git push` outright. Register the rules per
+directory — no need to commit anything to the repo:
+
+```bash
+cd ~/work/sensitive-repo
+
+cc-shisa here set-level strict
+cc-shisa here set-override remote.write deny
+
+cc-shisa here          # show what is effective for the current directory
+cc-shisa locations list
+```
+
+Settings live in `~/.config/cc-shisa/locations.json` (your home dir,
+not the repo). When a hook fires, cc-shisa walks the longest path prefix
+and applies the matching entry — so `~/work/sensitive-repo/src/foo` still
+picks up the `~/work/sensitive-repo` registration.
+
+Only `level` and `overrides` can vary per directory. Modules continue to
+come from your global `~/.config/cc-shisa/profile.json`.
+
 ## Troubleshooting
 
 > "Why was this command asked / blocked?"
