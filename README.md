@@ -197,22 +197,37 @@ file like:
 User modules are auto-loaded — no `enable` step needed. They cannot
 loosen `_core` (strictest-class wins), so they are safe to drop in.
 
-## Configuration
+## Security levels
 
-The single profile is `safe`, which maps:
+cc-shisa ships three levels — `strict` / `safe` (default) / `loose`. Switch
+between them depending on how cautious you want to be:
 
-| Class            | Action |
-|------------------|--------|
-| `dangerous`      | `deny` |
-| `irreversible`   | `ask`  |
-| `arbitrary-code` | `ask`  |
-| `write-remote`   | `ask`  |
-| `write-local`    | `allow`|
-| `unknown`        | `ask`  |
-| `read`           | `allow`|
+```bash
+cc-shisa level                  # show active level + mapping
+cc-shisa level list             # show all built-in levels
+cc-shisa level set strict       # write level to ~/.config/cc-shisa/profile.json
+```
 
-Per-class overrides and per-repo `.claude/cc-shisa.json` are deferred
-to v0.4.
+Mapping per class:
+
+| Class          | `strict` | `safe` (default) | `loose` |
+|----------------|----------|------------------|---------|
+| `dangerous`    | deny     | deny             | deny    |
+| `irreversible` | **deny** | ask              | ask     |
+| `eval`         | **deny** | ask              | **allow** |
+| `write-remote` | **deny** | ask              | **allow** |
+| `unknown`      | ask      | ask              | **allow** |
+| `write-local`  | allow    | allow            | allow   |
+| `read`         | allow    | allow            | allow   |
+
+`safe` is the right default for everyday use. Switch to `strict` if you want
+`git push --force` / `eval` / `npm publish` to outright deny instead of ask;
+switch to `loose` on trusted machines where cc-shisa should only block the
+truly dangerous patterns.
+
+Per-class overrides via `~/.config/cc-shisa/profile.json` (e.g.
+`"overrides": { "eval": "deny" }`) and per-repo `.claude/cc-shisa.json` are
+deferred to v0.4.
 
 ## Documents
 

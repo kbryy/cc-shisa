@@ -125,7 +125,7 @@
       "id": "core.curl.pipe.sh",
       "match": "regex",
       "pattern": "(curl|wget)\\s+[^|]*\\|\\s*(sh|bash|zsh|fish|dash|ksh)\\b",
-      "class": "arbitrary-code",
+      "class": "eval",
       "reason": "piping remote content directly into a shell"
     },
     {
@@ -159,7 +159,7 @@
       "id": "core.eval",
       "match": "ast",
       "binary": "eval",
-      "class": "arbitrary-code",
+      "class": "eval",
       "reason": "eval executes a constructed string"
     },
     {
@@ -167,7 +167,7 @@
       "match": "ast",
       "binaries": ["bash", "sh", "zsh", "ksh", "dash"],
       "any_flags": ["-c"],
-      "class": "arbitrary-code",
+      "class": "eval",
       "reason": "shell -c executes a constructed string"
     },
     {
@@ -175,7 +175,7 @@
       "match": "ast",
       "binaries": ["bun", "node", "deno", "perl", "python", "python3", "ruby", "php"],
       "any_flags": ["-e", "--eval", "--print", "-c"],
-      "class": "arbitrary-code",
+      "class": "eval",
       "reason": "language runtime -e/--eval/--print/-c executes a constructed string"
     },
     {

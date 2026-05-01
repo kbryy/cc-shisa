@@ -17,7 +17,7 @@ const baseClassification = (cls: Class, ruleId?: string): Classification => ({
 const expectations: ReadonlyArray<readonly [Class, Action]> = [
   ["dangerous", "deny"],
   ["irreversible", "ask"],
-  ["arbitrary-code", "ask"],
+  ["eval", "ask"],
   ["write-remote", "ask"],
   ["write-local", "allow"],
   ["unknown", "ask"],
