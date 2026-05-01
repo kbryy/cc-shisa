@@ -11,6 +11,9 @@ Usage:
   cc-shisa modules enable <name>...   Add modules to ~/.config/cc-shisa/profile.json
   cc-shisa modules disable <name>...  Remove modules from ~/.config/cc-shisa/profile.json
   cc-shisa modules pick               Interactive multi-select (same as bare 'modules' on TTY)
+  cc-shisa level [get]                Show the active security level and its class→action mapping
+  cc-shisa level list                 Show all built-in levels (strict / safe / loose)
+  cc-shisa level set <strict|safe|loose>  Switch the active level in ~/.config/cc-shisa/profile.json
   cc-shisa logs [summary]             Aggregate the JSONL decision log
   cc-shisa logs tail [-n N]           Show the last N entries (default 20)
   cc-shisa logs path                  Print the log file path

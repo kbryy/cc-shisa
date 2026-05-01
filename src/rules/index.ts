@@ -1,11 +1,18 @@
 import { BUILTIN_MODULES, BUILTIN_NAMES, defaultProfileData, MANDATORY_MODULE } from "./registry.ts";
-import { safeLevel } from "./level.ts";
+import { levelByName } from "./level.ts";
 import type { Level, Module, Profile } from "./types.ts";
 import { discoverUserModules, readUserProfile } from "./user-config.ts";
 import { validateModule, validateProfile } from "./validate.ts";
 
 export { BUILTIN_MODULES, MANDATORY_MODULE } from "./registry.ts";
-export { safeLevel, strictnessRank } from "./level.ts";
+export {
+  LEVEL_NAMES,
+  levelByName,
+  looseLevel,
+  safeLevel,
+  strictLevel,
+  strictnessRank,
+} from "./level.ts";
 
 export function loadModule(name: string): Module {
   const data = BUILTIN_MODULES[name];
@@ -99,5 +106,5 @@ export function loadDefaults(env: NodeJS.ProcessEnv = process.env): {
     seen.add(name);
     modules.push(validateModule(data));
   }
-  return { modules, profile, level: safeLevel() };
+  return { modules, profile, level: levelByName(profile.level, env) };
 }

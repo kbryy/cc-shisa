@@ -1,11 +1,15 @@
 /**
  * Static-analysis severity bucket assigned to a parsed segment.
- * Strictness ordering: dangerous > irreversible > arbitrary-code > write-remote > unknown > write-local > read.
+ * Strictness ordering: dangerous > irreversible > eval > write-remote > unknown > write-local > read.
+ *
+ * `eval` covers commands that execute a constructed string whose content
+ * cc-shisa cannot statically inspect (eval, bash -c, curl|sh, node -e, etc.).
+ * Old name "arbitrary-code" is accepted as an alias by validateRule/validateProfile.
  */
 export type Class =
   | "dangerous"
   | "irreversible"
-  | "arbitrary-code"
+  | "eval"
   | "write-remote"
   | "write-local"
   | "read"

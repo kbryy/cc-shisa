@@ -3,12 +3,27 @@ import type { Action, Class, Module, Profile, Rule } from "./types.ts";
 const VALID_CLASSES: ReadonlySet<Class> = new Set([
   "dangerous",
   "irreversible",
-  "arbitrary-code",
+  "eval",
   "write-remote",
   "write-local",
   "read",
   "unknown",
 ]);
+
+/**
+ * Backward-compatible aliases for class names that used to exist.
+ * Old user profiles and custom modules may still write the old name.
+ */
+const CLASS_ALIASES: Readonly<Record<string, Class>> = {
+  "arbitrary-code": "eval",
+};
+
+function normalizeClass(raw: unknown): Class | null {
+  if (typeof raw !== "string") return null;
+  const aliased = CLASS_ALIASES[raw];
+  if (aliased !== undefined) return aliased;
+  return VALID_CLASSES.has(raw as Class) ? (raw as Class) : null;
+}
 
 const VALID_ACTIONS: ReadonlySet<Action> = new Set(["allow", "ask", "deny"]);
 
@@ -40,8 +55,8 @@ export function validateRule(data: unknown, index: number, moduleName: string): 
   if (id === null) {
     throw new Error(`${moduleName}.rules[${index}]: missing id`);
   }
-  const cls = r["class"];
-  if (typeof cls !== "string" || !VALID_CLASSES.has(cls as Class)) {
+  const cls = normalizeClass(r["class"]);
+  if (cls === null) {
     throw new Error(`rule ${id}: invalid class`);
   }
   const reason = r["reason"];
@@ -55,7 +70,7 @@ export function validateRule(data: unknown, index: number, moduleName: string): 
     }
     return {
       id,
-      class: cls as Class,
+      class: cls,
       reason,
       match: "regex",
       pattern: r["pattern"],
@@ -71,7 +86,7 @@ export function validateRule(data: unknown, index: number, moduleName: string): 
     const subcommand = normalizeSubcommand(r["subcommand"], id);
     const base = {
       id,
-      class: cls as Class,
+      class: cls,
       reason,
       match: "ast" as const,
       ...(subcommand !== undefined ? { subcommand } : {}),
@@ -122,13 +137,14 @@ export function validateProfile(data: unknown): Profile {
       throw new Error("profile: overrides must be an object");
     }
     for (const [k, v] of Object.entries(overrides)) {
-      if (!VALID_CLASSES.has(k as Class)) {
+      const cls = normalizeClass(k);
+      if (cls === null) {
         throw new Error(`profile: unknown override class ${k}`);
       }
       if (typeof v !== "string" || !VALID_ACTIONS.has(v as Action)) {
         throw new Error(`profile: invalid override action ${String(v)}`);
       }
-      overridesValid[k as Class] = v as Action;
+      overridesValid[cls] = v as Action;
     }
   }
 

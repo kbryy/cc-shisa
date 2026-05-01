@@ -103,7 +103,7 @@ Severity ordering (most strict → least):
 |---|---|---|
 | `dangerous` | **deny** | `rm -rf /`, fork bomb, `dd of=/dev/disk*`, `mkfs`, `chmod -R 777 /` |
 | `irreversible` | ask | `git push --force`, `git reset --hard`, `rm -rf .git` |
-| `arbitrary-code` | ask | `eval`, `bash -c`, `curl ... \| sh` |
+| `eval` | ask | `eval`, `bash -c`, `curl ... \| sh`, `node -e`, `python -c` (was `arbitrary-code`; old name accepted as alias) |
 | `write-remote` | ask | (Phase 2+) `git push`, `gh pr create`, `npm publish` |
 | `write-local` | allow | (Phase 2+) `git commit`, `mkdir`, `cp` |
 | `unknown` | ask | Any binary not matched by any rule |
@@ -212,7 +212,7 @@ cc-shisa/
 ```ts
 // src/rules/types.ts
 export type Class =
-  | "dangerous" | "irreversible" | "arbitrary-code"
+  | "dangerous" | "irreversible" | "eval"
   | "write-remote" | "write-local" | "read" | "unknown";
 
 export type Action = "allow" | "ask" | "deny";

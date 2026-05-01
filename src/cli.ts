@@ -3,6 +3,7 @@ import { runCheck } from "./cli/check.ts";
 import { printHelp } from "./cli/help.ts";
 import { runHook } from "./cli/hook.ts";
 import { runInit } from "./cli/init.ts";
+import { runLevel } from "./cli/level.ts";
 import { runLogs } from "./cli/logs.ts";
 import { runModules } from "./cli/modules.ts";
 import { runTest } from "./cli/test.ts";
@@ -23,6 +24,8 @@ async function main(): Promise<number> {
       return runInit(argv[1]);
     case "modules":
       return runModules(argv.slice(1));
+    case "level":
+      return runLevel(argv.slice(1));
     case "logs":
       return runLogs(argv.slice(1));
     case "version":
