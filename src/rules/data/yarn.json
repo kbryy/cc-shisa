@@ -614,6 +614,85 @@
       "subcommand": "build",
       "class": "local.write",
       "reason": "yarn build (shorthand)"
+    },
+    {
+      "id": "yarn.run.format",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "run",
+        "format"
+      ],
+      "class": "local.write",
+      "reason": "yarn run format"
+    },
+    {
+      "id": "yarn.format",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "format",
+      "class": "local.write",
+      "reason": "yarn format (shorthand)"
+    },
+    {
+      "id": "yarn.run.fmt",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "run",
+        "fmt"
+      ],
+      "class": "local.write",
+      "reason": "yarn run fmt"
+    },
+    {
+      "id": "yarn.fmt",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "fmt",
+      "class": "local.write",
+      "reason": "yarn fmt (shorthand)"
+    },
+    {
+      "id": "yarn.run.clean",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "run",
+        "clean"
+      ],
+      "class": "local.write.destroy",
+      "reason": "yarn run clean"
+    },
+    {
+      "id": "yarn.clean",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": "clean",
+      "class": "local.write.destroy",
+      "reason": "yarn clean (shorthand)"
+    },
+    {
+      "id": "yarn.run.release",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "run",
+        "release"
+      ],
+      "class": "dynamic",
+      "reason": "yarn run release"
+    },
+    {
+      "id": "yarn.run.migrate",
+      "match": "ast",
+      "binary": "yarn",
+      "subcommand": [
+        "run",
+        "migrate"
+      ],
+      "class": "dynamic",
+      "reason": "yarn run migrate"
     }
   ]
 }

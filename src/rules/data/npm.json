@@ -844,6 +844,61 @@
       ],
       "class": "local.write",
       "reason": "npm run build (writes dist/build output)"
+    },
+    {
+      "id": "npm.run.format",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "run",
+        "format"
+      ],
+      "class": "local.write",
+      "reason": "npm run format (rewrites source)"
+    },
+    {
+      "id": "npm.run.fmt",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "run",
+        "fmt"
+      ],
+      "class": "local.write",
+      "reason": "npm run fmt"
+    },
+    {
+      "id": "npm.run.clean",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "run",
+        "clean"
+      ],
+      "class": "local.write.destroy",
+      "reason": "npm run clean (drops build output)"
+    },
+    {
+      "id": "npm.run.release",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "run",
+        "release"
+      ],
+      "class": "dynamic",
+      "reason": "npm run release (typically calls publish)"
+    },
+    {
+      "id": "npm.run.migrate",
+      "match": "ast",
+      "binary": "npm",
+      "subcommand": [
+        "run",
+        "migrate"
+      ],
+      "class": "dynamic",
+      "reason": "npm run migrate (changes external DB state)"
     }
   ]
 }

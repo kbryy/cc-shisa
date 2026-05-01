@@ -180,6 +180,64 @@ Whitelist project-specific libraries at
 The strictest match wins — a script that imports `pandas` AND shells
 out is still `dangerous`.
 
+## Troubleshooting
+
+> "Why was this command asked / blocked?"
+
+```bash
+cc-shisa check 'gh pr create --title foo'
+# → Action / Class / Reason / Rule / Segment
+```
+
+> "Which commands have been asked the most this week?"
+
+```bash
+export CC_SHISA_LOG=1            # enable audit logging if not on
+# … later:
+cc-shisa logs summary            # aggregated by class, rule, top reasons
+cc-shisa logs tail -n 50         # last 50 decisions
+cc-shisa logs path               # JSONL file location
+```
+
+> "Is the module I expect actually enabled?"
+
+```bash
+cc-shisa modules list
+# Newly added modules require `cc-shisa modules enable <name>`.
+```
+
+> "I want a less restrictive level for now"
+
+```bash
+cc-shisa level                   # show the active level + mapping
+cc-shisa level set loose         # only block catastrophic patterns
+cc-shisa level set safe          # back to default
+```
+
+> "A specific class asks too often / too rarely for me"
+
+Drop a per-class override into `~/.config/cc-shisa/profile.json`:
+
+```jsonc
+{
+  "level": "safe",
+  "modules": ["coreutils", "git", "gh"],
+  "overrides": {
+    "remote.write": "ask",          // ask before any remote write
+    "local.write.destroy": "deny"   // never let me destroy locally
+  }
+}
+```
+
+> "I want to try the alternative parser without reinstalling"
+
+```bash
+CC_SHISA_PARSER=tree-sitter cc-shisa check '<the command>'
+```
+
+If cc-shisa gets a classification wrong (too strict / too loose), please
+open an issue with the output of `cc-shisa check '<cmd>'`.
+
 ## Learn more
 
 - [`CONTRIBUTING.md`](./CONTRIBUTING.md) — how cc-shisa works

@@ -691,6 +691,85 @@
       "subcommand": "build",
       "class": "local.write",
       "reason": "pnpm build (shorthand)"
+    },
+    {
+      "id": "pnpm.run.format",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "run",
+        "format"
+      ],
+      "class": "local.write",
+      "reason": "pnpm run format"
+    },
+    {
+      "id": "pnpm.format",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "format",
+      "class": "local.write",
+      "reason": "pnpm format (shorthand)"
+    },
+    {
+      "id": "pnpm.run.fmt",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "run",
+        "fmt"
+      ],
+      "class": "local.write",
+      "reason": "pnpm run fmt"
+    },
+    {
+      "id": "pnpm.fmt",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "fmt",
+      "class": "local.write",
+      "reason": "pnpm fmt (shorthand)"
+    },
+    {
+      "id": "pnpm.run.clean",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "run",
+        "clean"
+      ],
+      "class": "local.write.destroy",
+      "reason": "pnpm run clean"
+    },
+    {
+      "id": "pnpm.clean",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": "clean",
+      "class": "local.write.destroy",
+      "reason": "pnpm clean (shorthand)"
+    },
+    {
+      "id": "pnpm.run.release",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "run",
+        "release"
+      ],
+      "class": "dynamic",
+      "reason": "pnpm run release"
+    },
+    {
+      "id": "pnpm.run.migrate",
+      "match": "ast",
+      "binary": "pnpm",
+      "subcommand": [
+        "run",
+        "migrate"
+      ],
+      "class": "dynamic",
+      "reason": "pnpm run migrate"
     }
   ]
 }
