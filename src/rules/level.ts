@@ -5,14 +5,14 @@ const STRICTNESS: Readonly<Record<Class, number>> = {
   dangerous: 8,
   dynamic: 5,
   unknown: 3,
-  // Read hierarchy
-  "read.local": 0,
-  "read.remote": 1,
-  // Write hierarchy
-  "write.local": 2,
-  "write.local.destroy": 6,
-  "write.remote": 4,
-  "write.remote.destroy": 7,
+  // Local hierarchy
+  "local.read": 0,
+  "local.write": 2,
+  "local.write.destroy": 6,
+  // Remote hierarchy
+  "remote.read": 1,
+  "remote.write": 4,
+  "remote.write.destroy": 7,
 };
 
 export function strictnessRank(c: Class): number {
@@ -32,12 +32,12 @@ export function strictLevel(): Level {
       dangerous: "deny",
       dynamic: "ask",
       unknown: "ask",
-      "read.local": "allow",
-      "read.remote": "allow",
-      "write.local": "allow",
-      "write.local.destroy": "ask",
-      "write.remote": "deny",
-      "write.remote.destroy": "deny",
+      "local.read": "allow",
+      "local.write": "allow",
+      "local.write.destroy": "ask",
+      "remote.read": "allow",
+      "remote.write": "deny",
+      "remote.write.destroy": "deny",
     },
   };
 }
@@ -54,12 +54,12 @@ export function safeLevel(): Level {
       dangerous: "deny",
       dynamic: "ask",
       unknown: "ask",
-      "read.local": "allow",
-      "read.remote": "allow",
-      "write.local": "allow",
-      "write.local.destroy": "ask",
-      "write.remote": "allow",
-      "write.remote.destroy": "ask",
+      "local.read": "allow",
+      "local.write": "allow",
+      "local.write.destroy": "ask",
+      "remote.read": "allow",
+      "remote.write": "allow",
+      "remote.write.destroy": "ask",
     },
   };
 }
@@ -77,12 +77,12 @@ export function looseLevel(): Level {
       dangerous: "deny",
       dynamic: "allow",
       unknown: "allow",
-      "read.local": "allow",
-      "read.remote": "allow",
-      "write.local": "allow",
-      "write.local.destroy": "allow",
-      "write.remote": "allow",
-      "write.remote.destroy": "allow",
+      "local.read": "allow",
+      "local.write": "allow",
+      "local.write.destroy": "allow",
+      "remote.read": "allow",
+      "remote.write": "allow",
+      "remote.write.destroy": "allow",
     },
   };
 }

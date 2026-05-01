@@ -18,12 +18,12 @@ const expectations: ReadonlyArray<readonly [Class, Action]> = [
   ["dangerous", "deny"],
   ["dynamic", "ask"],
   ["unknown", "ask"],
-  ["read.local", "allow"],
-  ["read.remote", "allow"],
-  ["write.local", "allow"],
-  ["write.local.destroy", "ask"],
-  ["write.remote", "allow"],
-  ["write.remote.destroy", "ask"],
+  ["local.read", "allow"],
+  ["remote.read", "allow"],
+  ["local.write", "allow"],
+  ["local.write.destroy", "ask"],
+  ["remote.write", "allow"],
+  ["remote.write.destroy", "ask"],
 ];
 
 describe("policy — safe level mapping", () => {
@@ -51,7 +51,7 @@ describe("policy — overrides", () => {
       ...baseProfile,
       overrides: { dangerous: "ask" },
     };
-    const d = decide(baseClassification("read.local"), profile, level);
+    const d = decide(baseClassification("local.read"), profile, level);
     expect(d.action).toBe("allow");
   });
 });

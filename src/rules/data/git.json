@@ -7,7 +7,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "status",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git status"
     },
     {
@@ -15,7 +15,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "log",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git log"
     },
     {
@@ -23,7 +23,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "show",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git show"
     },
     {
@@ -31,7 +31,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "diff",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git diff"
     },
     {
@@ -39,7 +39,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "blame",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git blame"
     },
     {
@@ -47,7 +47,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "reflog",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git reflog"
     },
     {
@@ -55,7 +55,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "grep",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git grep"
     },
     {
@@ -63,7 +63,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "shortlog",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git shortlog"
     },
     {
@@ -71,7 +71,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "whatchanged",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git whatchanged"
     },
     {
@@ -79,7 +79,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "describe",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git describe"
     },
     {
@@ -87,7 +87,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "ls-files",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git ls-files"
     },
     {
@@ -95,7 +95,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "ls-tree",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git ls-tree"
     },
     {
@@ -103,7 +103,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "ls-remote",
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "git ls-remote"
     },
     {
@@ -111,7 +111,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "cat-file",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git cat-file"
     },
     {
@@ -119,7 +119,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "rev-parse",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git rev-parse"
     },
     {
@@ -127,7 +127,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "rev-list",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git rev-list"
     },
     {
@@ -135,7 +135,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "name-rev",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git name-rev"
     },
     {
@@ -143,7 +143,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "merge-base",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git merge-base"
     },
     {
@@ -151,7 +151,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "fsck",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git fsck"
     },
     {
@@ -159,7 +159,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "fetch",
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "git fetch (writes only to .git refs)"
     },
     {
@@ -167,7 +167,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "help",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git help"
     },
     {
@@ -175,7 +175,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "version",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git version"
     },
     {
@@ -186,7 +186,7 @@
         "stash",
         "list"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git stash list"
     },
     {
@@ -197,7 +197,7 @@
         "stash",
         "show"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git stash show"
     },
     {
@@ -208,7 +208,7 @@
         "worktree",
         "list"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git worktree list"
     },
     {
@@ -219,7 +219,7 @@
         "bisect",
         "log"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git bisect log"
     },
     {
@@ -230,7 +230,7 @@
         "bisect",
         "view"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git bisect view"
     },
     {
@@ -241,7 +241,7 @@
         "remote",
         "show"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "git remote show"
     },
     {
@@ -252,7 +252,7 @@
         "remote",
         "get-url"
       ],
-      "class": "read.remote",
+      "class": "remote.read",
       "reason": "git remote get-url"
     },
     {
@@ -264,7 +264,7 @@
         "-l",
         "--list"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git tag --list"
     },
     {
@@ -280,7 +280,7 @@
         "--list",
         "--show-origin"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git config --get/--list"
     },
     {
@@ -319,7 +319,7 @@
         "-u",
         "--unset-upstream"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git branch listing/inspection (write flags excluded)"
     },
     {
@@ -327,7 +327,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "show-branch",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git show-branch"
     },
     {
@@ -335,7 +335,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "show-ref",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git show-ref"
     },
     {
@@ -343,7 +343,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "for-each-ref",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git for-each-ref"
     },
     {
@@ -351,7 +351,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "diff-tree",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git diff-tree"
     },
     {
@@ -359,7 +359,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "diff-index",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git diff-index"
     },
     {
@@ -367,7 +367,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "diff-files",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git diff-files"
     },
     {
@@ -375,7 +375,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "range-diff",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git range-diff"
     },
     {
@@ -383,7 +383,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "check-ignore",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git check-ignore"
     },
     {
@@ -391,7 +391,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "check-attr",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git check-attr"
     },
     {
@@ -399,7 +399,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "check-mailmap",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git check-mailmap"
     },
     {
@@ -407,7 +407,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "count-objects",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git count-objects"
     },
     {
@@ -415,7 +415,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "verify-commit",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git verify-commit"
     },
     {
@@ -423,7 +423,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "verify-tag",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git verify-tag"
     },
     {
@@ -434,7 +434,7 @@
         "submodule",
         "status"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git submodule status"
     },
     {
@@ -445,7 +445,7 @@
         "submodule",
         "summary"
       ],
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git submodule summary"
     },
     {
@@ -453,7 +453,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "annotate",
-      "class": "read.local",
+      "class": "local.read",
       "reason": "git annotate (alias for blame)"
     },
     {
@@ -461,7 +461,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "add",
-      "class": "write.local",
+      "class": "local.write",
       "reason": "git add (stage changes, no remote push)"
     },
     {
@@ -472,7 +472,7 @@
       "excluded_flags": [
         "--amend"
       ],
-      "class": "write.local",
+      "class": "local.write",
       "reason": "git commit (no --amend, history not rewritten)"
     },
     {
@@ -483,7 +483,7 @@
         "stash",
         "push"
       ],
-      "class": "write.local",
+      "class": "local.write",
       "reason": "git stash push"
     },
     {
@@ -494,7 +494,7 @@
         "stash",
         "save"
       ],
-      "class": "write.local",
+      "class": "local.write",
       "reason": "git stash save (legacy)"
     },
     {
@@ -505,7 +505,7 @@
         "stash",
         "pop"
       ],
-      "class": "write.local",
+      "class": "local.write",
       "reason": "git stash pop"
     },
     {
@@ -516,14 +516,14 @@
         "stash",
         "apply"
       ],
-      "class": "write.local",
+      "class": "local.write",
       "reason": "git stash apply"
     },
     {
       "id": "git.stash.bare",
       "match": "regex",
       "pattern": "^\\s*git\\s+stash\\s*$",
-      "class": "write.local",
+      "class": "local.write",
       "reason": "git stash (bare = stash push of working tree)"
     },
     {
@@ -534,7 +534,7 @@
       "any_flags": [
         "--ff-only"
       ],
-      "class": "write.local",
+      "class": "local.write",
       "reason": "git merge --ff-only (no merge commit, cannot rewrite)"
     },
     {
@@ -548,7 +548,7 @@
         "--skip",
         "--quit"
       ],
-      "class": "write.local",
+      "class": "local.write",
       "reason": "git cherry-pick resume controls (no new commits being applied)"
     },
     {
@@ -564,7 +564,7 @@
         "--edit-todo",
         "--show-current-patch"
       ],
-      "class": "write.local",
+      "class": "local.write",
       "reason": "git rebase resume controls (no new rewriting being initiated)"
     },
     {
@@ -572,7 +572,7 @@
       "match": "ast",
       "binary": "git",
       "subcommand": "switch",
-      "class": "write.local",
+      "class": "local.write",
       "reason": "git switch (changes HEAD; safer than checkout, no file overwrite)"
     },
     {
@@ -590,7 +590,7 @@
         "-l",
         "--list"
       ],
-      "class": "write.local",
+      "class": "local.write",
       "reason": "git tag <name> (creates local tag; not pushed without git push)"
     }
   ]

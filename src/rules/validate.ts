@@ -5,14 +5,14 @@ const VALID_CLASSES: ReadonlySet<Class> = new Set([
   "dangerous",
   "dynamic",
   "unknown",
-  // Read hierarchy
-  "read.local",
-  "read.remote",
-  // Write hierarchy
-  "write.local",
-  "write.local.destroy",
-  "write.remote",
-  "write.remote.destroy",
+  // Local hierarchy
+  "local.read",
+  "local.write",
+  "local.write.destroy",
+  // Remote hierarchy
+  "remote.read",
+  "remote.write",
+  "remote.write.destroy",
 ]);
 
 const VALID_ACTIONS: ReadonlySet<Action> = new Set(["allow", "ask", "deny"]);

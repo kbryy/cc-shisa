@@ -24,12 +24,12 @@ const CLASS_COLUMNS = [
   "dangerous",
   "dynamic",
   "unknown",
-  "read.local",
-  "read.remote",
-  "write.local",
-  "write.local.destroy",
-  "write.remote",
-  "write.remote.destroy",
+  "local.read",
+  "local.write",
+  "local.write.destroy",
+  "remote.read",
+  "remote.write",
+  "remote.write.destroy",
 ] as const;
 
 function runLevelList(): number {

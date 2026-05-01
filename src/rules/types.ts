@@ -1,36 +1,36 @@
 /**
  * Static-analysis severity bucket assigned to a parsed segment.
- * Hierarchical names use `.` to nest sub-kinds:
- *   read.{local,remote}
- *   write.{local,remote}[.destroy]
+ * Hierarchical names use `.` with locality first, then operation:
+ *   local.{read, write[.destroy]}
+ *   remote.{read, write[.destroy]}
  *
- * Three special flat classes sit outside the read/write hierarchy:
+ * Three special flat classes sit outside the locality hierarchy:
  *   - `dangerous` — visible-and-known catastrophic patterns (rm -rf /, dd, mkfs, ...)
  *   - `dynamic`   — content cc-shisa cannot inspect (bash -c, eval, curl|sh, node -e)
  *   - `unknown`   — no rule matched the binary
  *
  * Strictness ordering (high → low):
  *   dangerous
- *   > write.remote.destroy > write.local.destroy
+ *   > remote.write.destroy > local.write.destroy
  *   > dynamic
- *   > write.remote
+ *   > remote.write
  *   > unknown
- *   > write.local
- *   > read.remote > read.local
+ *   > local.write
+ *   > remote.read > local.read
  */
 export type Class =
   // Flat specials
   | "dangerous"
   | "dynamic"
   | "unknown"
-  // Read hierarchy
-  | "read.local"
-  | "read.remote"
-  // Write hierarchy
-  | "write.local"
-  | "write.local.destroy"
-  | "write.remote"
-  | "write.remote.destroy";
+  // Local hierarchy
+  | "local.read"
+  | "local.write"
+  | "local.write.destroy"
+  // Remote hierarchy
+  | "remote.read"
+  | "remote.write"
+  | "remote.write.destroy";
 
 /** Final decision returned to Claude Code. */
 export type Action = "allow" | "ask" | "deny";
